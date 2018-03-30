@@ -7,15 +7,15 @@ package com.app.ChatProject.controller;
 
 import com.app.ChatProject.entities.Users;
 import com.app.ChatProject.exception.ResourceNotFoundException;
+import com.app.ChatProject.exception.UsernameException;
 import com.app.ChatProject.repositories.UsersRepository;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  *
@@ -40,31 +40,49 @@ public class UserController {
     
     @GetMapping("/users")
     public List<Users> getAllUsers(){
-        return usersRepository.findAll();
+        List<Users> users=usersRepository.findAll();
+        return users;
     }
     
-    @RequestMapping(value = "/users", method = RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/users")
     public Users createUsers(@Valid @RequestBody Users user){
+        PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
+        String hashedPassword= passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        try{
+            usersRepository.save(user);
+        } catch(DataIntegrityViolationException e){
+            throw new UsernameException(user.getUsername());
+        }
+        
         return usersRepository.save(user);
     }
     
-    @GetMapping("/users/{id}")
-    public Users getUserById(@PathVariable(value = "id") Integer userId){
-        return usersRepository.findById(userId).
-                orElseThrow(()->new ResourceNotFoundException("Users", "id", userId));
+    @GetMapping("/search/{username}")
+    public List<Users> getUserByUsername(@PathVariable(value = "username") String userName){
+        List <Users> users=usersRepository.findByNameOrLastnameOrUsernameStartingWith("%"+userName, "%"+userName, "%"+userName);
+        
+        if(users.isEmpty()){
+            throw new ResourceNotFoundException("User", "username", userName);
+        }
+        return usersRepository.findByNameOrLastnameOrUsernameStartingWith("%"+userName, "%"+userName, "%"+userName);
     }
     
-    @PutMapping("users/{id}")
-    public Users updateUser(@PathVariable(value = "id") Integer userId, @Valid @RequestBody Users userDetails){
+    @PutMapping("users/{username}")
+    public Users updateUser(@PathVariable(value = "username") String userName, @Valid @RequestBody Users userDetails){
         
-        Users user= usersRepository.findById(userId).
-                orElseThrow(()-> new ResourceNotFoundException("Users", "id", userId));
+        Users user= usersRepository.findByUsername(userName);
         
         user.setName(userDetails.getName());
         user.setLastname(userDetails.getLastname());
         user.setBirthday(userDetails.getBirthday());
         user.setMail(userDetails.getMail());
         user.setSex(userDetails.getSex());
+        try {
+           user.setUsername(userDetails.getUsername());
+        } catch (DataIntegrityViolationException e) {
+            throw new UsernameException(userDetails.getUsername());
+        }
         user.setUsername(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
         
@@ -73,10 +91,9 @@ public class UserController {
         return updateUser;   
     }
     
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Integer userId){
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+    @DeleteMapping("/users/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "username") String userName){
+        Users user = usersRepository.findByUsername(userName);
         
         usersRepository.delete(user);
         
