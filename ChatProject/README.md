@@ -55,7 +55,7 @@ Return a JSON contains a only user when you pass a username;
 ```json
 [
     {
-        "id": value,
+        "id": "value",
         "name": "value",
         "lastname": "value",
         "birthday": "value",
@@ -98,7 +98,7 @@ Return a JSON contains a list Users. This list is filtered according to username
 ```json
 [
     {
-        "id": value,
+        "id": "value",
         "name": "Saul",
         "lastname": "value",
         "birthday": "value",
@@ -107,7 +107,7 @@ Return a JSON contains a list Users. This list is filtered according to username
         "username": "value"
     }
     {
-        "id": value,
+        "id": "value",
         "name": "Salice",
         "lastname": "value",
         "birthday": "value",
@@ -121,7 +121,7 @@ Return a JSON contains a list Users. This list is filtered according to username
 ]
 ```
 
-If don't exist Users with this string return the same Error JSON in [GET User]
+If don't exist Users with this string return the same Error JSON in [GET User](#get-user)
 
 
 ## POST New User
@@ -143,7 +143,7 @@ Create a new User. POST Request use a JSON body to create new User;
         "birthday": "value",
         "sex": "value",
         "mail": "value",
-        "username": "value"
+        "username": "value",
         "password": "value"
     }
 ]
@@ -186,12 +186,12 @@ Modify a User if a username passed in the request. It use a JSON body to modify 
         "birthday": "value",
         "sex": "value",
         "mail": "value",
-        "username": "value"
+        "username": "value",
         "password": "value"
     }
 ]
 ```
-If you modify the username but this is already taken it return a same Error JSON [POST New User]
+If you modify the username but this is already taken it return a same Error JSON [POST New User](#post-new-user)
 
 
 ## DELETE User
@@ -208,21 +208,6 @@ Delete a User if a username passed in the request.
 
 `localhost:8080/chatty/users/saulAquino`
 
-#### Body
-
-```json
-[
-    {
-        "name": "value",
-        "lastname": "value",
-        "birthday": "value",
-        "sex": "value",
-        "mail": "value",
-        "username": "value"
-        "password": "value"
-    }
-]
-```
 
 ## Still to do
 
