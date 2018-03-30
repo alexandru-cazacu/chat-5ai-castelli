@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
-import logo from "./logo.svg";
 import './App.css';
 
 import RegisterPage from './pages/register';
-import LoginPage from './pages/login'
+
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+
+const store = createStore(
+    (state = []) => state,
+    applyMiddleware(thunk)
+);
 
 class App extends Component {
     render() {
         return (
-            <div className="App">
-                <img src={logo} className="icon" />
-                <RegisterPage />
-            </div>
+            <Provider store={store}>
+                <div className="App">
+                    <RegisterPage />
+                </div>
+            </Provider>
         );
     }
 }

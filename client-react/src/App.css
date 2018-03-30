@@ -9,17 +9,6 @@
 
 .icon {
     width: 300px;
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-ul {
-    list-style-type: none;
-    display: inline-block;
-    width: 300px;
 }
 
 select {
@@ -27,8 +16,9 @@ select {
 }
 
 .centeredCard {
+    width: 500px;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -57,11 +47,12 @@ select {
 }
 
 .inputField.error {
-    border: 2px solid #ff8888;
+    border: 2px solid #ff0000;
 }
 
 .customButton {
-    border: 2px solid #ddd;
+    border: 2px solid #bbb;
+    background-color: #ddd;
     border-radius: 200px;
     padding: 0.5em 1em;
     margin: 0.5em 0;
@@ -76,4 +67,31 @@ select {
     padding: 0.5em 1em;
     margin: 0.5em 0;
     width: 100%;
+}
+
+.register-errors {
+    text-align: left;
+    color: red;
+}
+
+.DayPickerInput {
+    width: 50%;
+    display: inline-block;
+}
+
+.DayPickerInput input {
+    box-sizing: border-box;
+    border: 2px solid #ddd;
+    border-radius: 200px;
+    padding: 0.5em 1em;
+    margin: 0.5em 0;
+    width: 100%;
+}
+
+.DayPickerInput input.error {
+    border: 2px solid #ff0000;
+}
+
+.DayPickerInput input:focus {
+    border: 2px solid #aaa;
 }
