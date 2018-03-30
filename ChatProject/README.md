@@ -24,7 +24,7 @@ Return a JSON contains a list of Users
 ```json
 [
     {
-        "id": value,
+        "id": "value",
         "name": "value",
         "lastname": "value",
         "birthday": "value",
