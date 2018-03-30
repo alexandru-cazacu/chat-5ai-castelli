@@ -64,6 +64,7 @@ Return a JSON contains a only user when you pass a username;
         "username": "value"
     }
 ]
+```
 
 If don't exist a User with this return a Error JSON
 
@@ -77,6 +78,7 @@ If don't exist a User with this return a Error JSON
         "path": "/chatty/users/saulAquino"
     }
 ]
+```
 
 ## GET User
 
@@ -117,6 +119,7 @@ Return a JSON contains a list Users. This list is filtered according to username
         ...
     }
 ]
+```
 
 If don't exist Users with this string return the same Error JSON in [GET User]
 
@@ -144,17 +147,20 @@ Create a new User. POST Request use a JSON body to create new User;
         "password": "value"
     }
 ]
+```
 
 If teh username is already taken it return a Error JSON
-
-{
-    "timestamp": "2018-03-30T09:44:37.140+0000",
-    "status": 409,
-    "error": "Conflict",
-    "message": "The username saulAquino is already taken. Please choose another",
-    "path": "/chatty/users"
-}
-
+```json
+[
+    {
+        "timestamp": "2018-03-30T09:44:37.140+0000",
+        "status": 409,
+        "error": "Conflict",
+        "message": "The username saulAquino is already taken. Please choose another",
+        "path": "/chatty/users"
+    }
+]
+```
 
 ## PUT Update User
 
@@ -184,8 +190,8 @@ Modify a User if a username passed in the request. It use a JSON body to modify 
         "password": "value"
     }
 ]
-
-If you modify the username but this is already taken it return a same Error JSON [POST new User]
+```
+If you modify the username but this is already taken it return a same Error JSON [POST New User]
 
 
 ## DELETE User
@@ -216,9 +222,10 @@ Delete a User if a username passed in the request.
         "password": "value"
     }
 ]
+```
 
 ## Still to do
 
-Manage the rest request from users so that only the authorized users can do these reques for example: Username or password can be modifided by a user that have the same username and password
+Manage the rest request  users so that only the authorized users can do these reques for example: Username or password can be modifided by a user that have the same username and password
 
 
