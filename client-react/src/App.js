@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import RegisterPage from './pages/register';
+import ChatPage from './pages/chat';
 
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -17,7 +17,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <div className="App">
-                    <RegisterPage />
+                    <ChatPage />
                 </div>
             </Provider>
         );

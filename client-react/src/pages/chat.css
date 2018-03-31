@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+/* ==================================================
+GENERAL
+================================================== */
+
+* {
+    margin: 0;
+    border: 0;
+    font-family: sans-serif, 'Roboto';
+}
+
+body,
+html,
+.wrapper {
+    height: 100%;
+}
+
+.wrapper {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==================================================
+HEADER
+================================================== */
+
+.header {
+    background-color: #3498db;
+    padding: 1em;
+    margin-bottom: 1em;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.header .title {
+    color: white;
+    font-weight: bold;
+}
+
+/* ==================================================
+LEFT COLUMN
+================================================== */
+
+.left-column {
+    width: 30%;
+    height: 90%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    overflow-y: hidden;
+    float: left;
+    border-radius: 5px;
+}
+
+.chat-card-no-hover {
+    padding: 0.8em;
+    position: relative;
+}
+
+.chat-card {
+    padding: 0.8em;
+    cursor: pointer;
+    position: relative;
+    height: 60px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.chat-card.active {
+    background-color: #3498db44;
+}
+
+.chat-card:hover {
+    background-color: #3498db88;
+}
+
+.chat-card .avatar {
+    height: 60px;
+    width: 60px;
+    float: left;
+    border-radius: 100px;
+    margin-right: 1em;
+    border: 3px solid #ffffff00;
+    box-sizing: border-box;
+}
+
+.chat-card .avatar.online {
+    border: 3px solid #2ecc71;
+}
+
+.chat-card .title {
+    font-weight: bold;
+}
+
+.chat-card .status {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.input-field.search {
+    width: 100%;
+}
+
+/* ==================================================
+CONTENT
+================================================== */
+
+.content {
+    width: 70%;
+    float: right;
+    box-sizing: border-box;
+    height: 90%;
+    position: relative;
+}
+
+.message-area-container {
+    overflow-y: scroll;
+    height: 94%;
+}
+
+.row {
+    padding: 1em;
+}
+
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.row .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    float: left;
+    margin: 0 10px 0 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.row .message {
+    border-radius: 1em;
+    border-top-left-radius: 0;
+    padding: 1em;
+    max-width: 60%;
+    float: left;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.row.right .avatar {
+    float: right;
+    margin: 0 0 0 10px;
+}
+
+.row.right .message {
+    border-radius: 1em;
+    border-top-right-radius: 0;
+    float: right;
+}
+
+.input-area {
+    position: absolute;
+    bottom: 0;
+    left: 1em;
+    right: 0;
+}
+
+.input-area .connect-right {
+    width: 80%;
+}
+
+.input-area .connect-left {
+    width: 20%;
+}
+
+/* ==================================================
+COMPONENTS
+==================================================*/
+
+.input-field {
+    box-sizing: border-box;
+    border: 2px solid #bbb;
+    border-radius: 200px;
+    padding: 0.5em 1em;
+}
+
+.input-field:focus {
+    border: 2px solid #888;
+}
+
+.search {
+    padding-left: 3em;
+    position: relative;
+}
+
+.custom-button {
+    border: 2px solid #bbb;
+    background-color: #bbbbbb66;
+    border-radius: 200px;
+    padding: 0.5em 1em;
+    margin: 0.5em 0;
+    outline: 0;
+}
+
+.custom-button:hover {
+    border: 2px solid #9b59b6;
+    background-color: #9b59b666;
+    cursor: pointer;
+}
+
+.connect-right {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+}
+
+.connect-left {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 0;
+}
+
+.fa-search {
+    position: absolute;
+    left: 1.6em;
+    top: 1.4em;
+}

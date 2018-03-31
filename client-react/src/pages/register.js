@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
 
 import DayPickerInput from 'react-day-picker/DayPickerInput';
@@ -14,90 +13,164 @@ export default class RegisterPage extends React.Component {
         this.state = {
             firstName: '',
             lastName: '',
+            birthday: undefined,
             sex: '',
             mail: '',
             username: '',
             password: '',
             confirmPassword: '',
-            date: undefined,
 
             invalidFirstName: '',
             invalidLastName: '',
+            invalidBirthday: '',
             invalidSex: '',
             invalidMail: '',
             invalidUsername: '',
             invalidPassword: '',
             invalidConfirmPassword: '',
-            invalidDate: '',
 
             errors: [],
         }
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleDayChange = this.handleDayChange.bind(this);
     }
 
     onChange(e) {
         this.setState({ 
             [e.target.name]: e.target.value
         });
+        console.log([e.target.name] + '-' + e.target.value);
     }
 
-    handleDayChange(day) {
-        this.setState({ date: day });
+    isMailValid(mail) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(String(mail).toLowerCase())) {
+            return false;
+        }
+        return true;
     }
 
-    onSubmit(e) {
-        var err = [];
+    isDateValid(date) {
+        if (date === undefined)
+            return false;
+        var regEx = /^\d{4}-\d{2}-\d{2}$/;
+        if(!date.match(regEx))
+            return false;  // Invalid format
+        var d = new Date(date);
+        if(!d.getTime() && d.getTime() !== 0)
+            return false; // Invalid date
+        return true
+    }
+
+    validateInput() {
+        var errorsList = [];
 
         this.setState({
             invalidFirstName: '',
             invalidLastName: '',
+            invalidBirthday: '',
             invalidSex: '',
             invalidMail: '',
             invalidUsername: '',
             invalidPassword: '',
             invalidConfirmPassword: '',
-            invalidDate: '',
         });
 
-
-        if (this.state.firstName < 1 || this.state.firstName > 20) {
+        // First Name
+        if (this.state.firstName.length < 4) {
             this.setState({invalidFirstName: "error"});
-            err.push("Invalid first name");
+            errorsList[0] = "First Name is too short";
+        }
+        if (this.state.firstName.length > 20) {
+            this.setState({invalidFirstName: "error"});
+            errorsList[0] = "First Name is too long";
+        }
+        if (this.state.firstName === '') {
+            this.setState({invalidFirstName: "error"});
+            errorsList[0] = "First Name can't be blank";
         }
 
-        if (this.state.lastName < 1 || this.state.lastName > 20) {
+        // Last name
+        if (this.state.lastName.length < 4) {
             this.setState({invalidLastName: "error"});
-            err.push("Invalid last name");
+            errorsList[1] = "Last Name is too short";
+        }
+        if (this.state.lastName.length > 20) {
+            this.setState({invalidLastName: "error"});
+            errorsList[1] = "Last Name is too long";
+        }
+        if (this.state.lastName === '') {
+            this.setState({invalidLastName: "error"});
+            errorsList[1] = "Last Name can't be blank";
         }
 
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(String(this.state.mail).toLowerCase())) {
+        // Birthday
+        if (this.state.birthday === '') {
+            this.setState({invalidBirthday: "error"});
+            errorsList[2] = "Birtday can't be blank";
+        }
+        if (!this.isDateValid(this.state.birthday)) {
+            this.setState({invalidBirthday: "error"});
+            errorsList[2] = "Invalid date";
+        }
+
+        // Sex
+        if (this.state.sex === "") {
+            this.setState({invalidSex: "error"});
+            errorsList[3] = "Sex can't be blank";
+        }
+
+        // Email
+        if (!this.isMailValid(this.state.mail)) {
             this.setState({invalidMail: "error"});
-            err.push("An account with that email already exists");
+            errorsList[4] = "Email is invalid";
         }
         
-        if (this.state.username === "") {
+        // Username
+        if (this.state.username === '') {
             this.setState({invalidUsername: "error"});
-            err.push("Username can't be empty");
+            errorsList[5] = "Username can't be blank";
+        }
+        if (this.state.username.length < 1 || this.state.username.length > 20) {
+            this.setState({invalidUsername: "error"});
+            errorsList[5] = "Username must be 1-20 characters";
+        }
+        
+        // Password        
+        if (this.state.password.length < 8 || this.state.password.length > 20) {
+            this.setState({invalidPassword: "error"});
+            errorsList[8]  = "Password must be 8-20 characters";
+        }
+        if (this.state.password === '') {
+            this.setState({invalidPassword: "error"});
+            errorsList[8]  = "Password can't be blank";
+        }
+
+        if (this.state.confirmPassword.length < 8 || this.state.confirmPassword.length > 20) {
+            this.setState({invalidConfirmPassword: "error"});
+            errorsList[9]  = "Confirmation Password must be 8-20 characters";
+        }
+        if (this.state.confirmPassword === '') {
+            this.setState({invalidConfirmPassword: "error"});
+            errorsList[9]  = "Confirmation Password can't be blank";
         }
 
         if (this.state.password !== this.state.confirmPassword) {
-            this.setState({invalidPassword: "error"});
             this.setState({invalidConfirmPassword: "error"});
-            err.push("Passwords doesn't match");
-        }
-        
-        if (this.state.password.length < 8 || this.state.password.length > 20) {
-            this.setState({invalidPassword: "error"});
-            err.push("Password must be 8-20 characters");
+            errorsList[9] = "Confirmation Password doesn't match";
         }
 
-        this.setState({errors: err});
+        this.setState({errors: errorsList});
 
-        // else {
+        if (errorsList.length === 0)
+            return true;
+        return false;
+    }
+
+    onSubmit(e) {
+        if (this.validateInput()) {
+            console.log("Performing POST request.");
             axios({
                 method:'post',
                 url:'http://localhost:8080/chatty/users/',
@@ -105,7 +178,7 @@ export default class RegisterPage extends React.Component {
                     name: this.state.firstName,
                     lastname: this.state.lastName,
                     sex: this.state.sex,
-                    birthday: this.state.year + "-" + this.state.month + "-" + this.state.day,
+                    birthday: this.state.birthday,
                     mail: this.state.mail,
                     username: this.state.username,
                     password: this.state.password,
@@ -117,41 +190,82 @@ export default class RegisterPage extends React.Component {
             .catch(function (error) {
                 console.log(error);
             });
-        // }
+        }
     }
 
     render() {
-
-        const {date} = this.state;
-
         return (
             <div>
-                <div className="centeredCard">
-                    <img src={logo} className="icon" alt="" />
+                <img src={logo} className="main-logo" alt="Main Logo" />
+                <p className="main-title">Chatty</p>
+                <div className="centered-card">
                     <h1>Sign Up</h1>
-                    <input type="text" name="firstName" placeholder="First Name" className={"inputField half " + this.state.invalidFirstName} onChange={this.onChange} />
-                    <input type="text" name="lastName" placeholder="Last Name" className={"inputField half " + this.state.invalidLastName} onChange={this.onChange} />
-                    <DayPickerInput onDayChange={day => console.log(day)} />
-                    <select name="sex" className="inputField half" onChange={this.onChange} >
+
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name" 
+                        className={"input-field half " + this.state.invalidFirstName} 
+                        onChange={this.onChange} />
+
+                    <input
+                        type="text"
+                        name="lastName" 
+                        placeholder="Last Name" 
+                        className={"input-field half " + this.state.invalidLastName} 
+                        onChange={this.onChange} />
+
+                    <input
+                        type="date"
+                        name="birthday" 
+                        className={"input-field half " + this.state.invalidBirthday} 
+                        onChange={this.onChange} />
+
+                    <select
+                        name="sex"
+                        className={"input-field half " + this.state.invalidSex}
+                        onChange={this.onChange}>
+                        <option value="" disabled selected>Sex</option>
                         <option>Male</option>
                         <option>Female</option>
                         <option>Other</option>
                     </select>
-                    <input type="text" name="mail" placeholder="Email" className={"inputField " + this.state.invalidMail} onChange={this.onChange} />
-                    <input type="text" name="username" placeholder="Username" className={"inputField " + this.state.invalidUsername} onChange={this.onChange} />
-                    <input type="password" name="password" placeholder="Password" className={"inputField half " + this.state.invalidPassword} onChange={this.onChange} />
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" className={"inputField half " + this.state.invalidConfirmPassword} onChange={this.onChange} />
-                    <button className="customButton" onClick={this.onSubmit}>Sign Up</button>
 
-                    <ul className="register-errors">
-                        {this.state.errors.map((value) => <li>{value}</li>)}
-                        {/* <li>Username is already taken</li>
-                        <li>An account with that name already exists</li>
-                        <li>All fields must be filled</li>
-                        <li>Password must be 8-20 characters</li>
-                        <li>Passwords doesn't match</li>
-                        <li>Date isn't valid</li>
-                        <li>Are you sure you inserted a valid date?</li> */}
+                    <input
+                        type="email" 
+                        name="mail" 
+                        placeholder="Email" 
+                        className={"input-field " + this.state.invalidMail} 
+                        onChange={this.onChange} />
+
+                    <input 
+                        type="text" 
+                        name="username" 
+                        placeholder="Username" 
+                        className={"input-field " + this.state.invalidUsername} 
+                        onChange={this.onChange} />
+
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Password" 
+                        className={"input-field half " + this.state.invalidPassword} 
+                        onChange={this.onChange} />
+
+                    <input 
+                        type="password" 
+                        name="confirmPassword" 
+                        placeholder="Confirm Password" 
+                        className={"input-field half " + this.state.invalidConfirmPassword} 
+                        onChange={this.onChange} />
+
+                    <button 
+                        className="custom-button" 
+                        onClick={this.onSubmit}>Sign Up
+                    </button>
+
+                    <ul className="errors-list">
+                        {this.state.errors.map((value) => <li key={value[0]}>{value}</li>)}
                     </ul>
                 </div>
             </div>
