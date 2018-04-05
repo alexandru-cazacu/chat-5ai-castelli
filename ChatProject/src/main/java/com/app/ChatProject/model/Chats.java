@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.app.ChatProject.entities;
+package com.app.ChatProject.model;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public class Chats implements Serializable {
     @Column(name = "link")
     private String link;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idChat")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_chat")
     //@JsonManagedReference
     private Collection<ChatUser> chatUserCollection;
     
@@ -92,6 +92,10 @@ public class Chats implements Serializable {
         this.chatUserCollection = chatUserCollection;
     }
 
+    public void addChatUser(ChatUser chatUser){
+        chatUserCollection.add(chatUser);
+    }
+
     public Messages getMessages() {
         return messages;
     }
@@ -122,7 +126,7 @@ public class Chats implements Serializable {
 
     @Override
     public String toString() {
-        return "com.app.ChatProject.entities.Chats[ id=" + id + " ]";
+        return "com.app.ChatProject.model.Chats[ id=" + id + " ]";
     }
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.app.ChatProject.entities;
+package com.app.ChatProject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -84,6 +84,20 @@ public class Users implements Serializable {
         this.password = password;
     }
 
+    public Users(Users users) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.birthday = birthday;
+        this.sex = sex;
+        this.mail = mail;
+        this.username = username;
+        this.password = password;
+        this.chatUserCollection=users.getChatUserCollection();
+        this.messagesCollection=users.getMessagesCollection();
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -157,6 +171,10 @@ public class Users implements Serializable {
         this.chatUserCollection = chatUserCollection;
     }
 
+    public void addChatUser(ChatUser chatUser){
+        chatUserCollection.add(chatUser);
+    }
+
     @XmlTransient
     public Collection<Messages> getMessagesCollection() {
         return messagesCollection;
@@ -188,7 +206,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "com.app.ChatProject.entities.Users[ id=" + id + " ]";
+        return "com.app.ChatProject.model.Users[ id=" + id + " ]";
     }
     
 }

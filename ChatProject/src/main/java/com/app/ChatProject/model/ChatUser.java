@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.app.ChatProject.entities;
+package com.app.ChatProject.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -123,7 +123,7 @@ public class ChatUser implements Serializable {
 
     @Override
     public String toString() {
-        return "com.app.ChatProject.entities.ChatUser[ id=" + id + " ]";
+        return "com.app.ChatProject.model.ChatUser[ id=" + id + " ]";
     }
     
 }
