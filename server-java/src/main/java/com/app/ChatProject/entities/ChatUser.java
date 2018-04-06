@@ -1,5 +1,6 @@
 package com.app.ChatProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ public class ChatUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "admin")
@@ -36,6 +38,7 @@ public class ChatUser implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_chat")
+    @JsonIgnore
     private Chat chat;
 
     public ChatUser() {

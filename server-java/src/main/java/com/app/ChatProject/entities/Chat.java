@@ -22,23 +22,25 @@ public class Chat implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "uid")
     private String uid;
 
     @Column(name = "link")
+    @JsonIgnore
     private String link;
 
     @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "chat")
-    @JsonIgnore
+    //@JsonIgnore // Used to return only chat.
     private List<Message> messages;
 
     @OneToMany(mappedBy = "chat")
-    @JsonIgnore
+    //@JsonIgnore // Used to return only chat.
     private List<ChatUser> chatUsers;
 
     public Chat() {

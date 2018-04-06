@@ -29,6 +29,7 @@ public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "content")
@@ -47,6 +48,7 @@ public class Message implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_chat")
+    @JsonIgnore
     private Chat chat;
 
     public Message() {
@@ -105,4 +107,10 @@ public class Message implements Serializable {
     public User getUser() {
         return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
 }

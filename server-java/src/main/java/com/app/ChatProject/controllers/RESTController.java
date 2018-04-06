@@ -1,5 +1,6 @@
 package com.app.ChatProject.controllers;
 
+import com.app.ChatProject.JsonMaps.ChatUserMap;
 import com.app.ChatProject.entities.Chat;
 import com.app.ChatProject.entities.ChatUser;
 import com.app.ChatProject.entities.Message;
@@ -21,6 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.app.ChatProject.repositories.ChatUsersRepository;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,22 +43,24 @@ public class RESTController {
     private ChatsRepository chatsRepository;
 
     @Autowired
-    private MessagesRepository messageRepository;
+    private MessagesRepository messagesRepository;
 
     @Autowired
     private ChatUsersRepository chatUsersRepository;
 
     /**
-     * Create User
+     * Create User.
      *
      * @param user
      * @return
      */
     @PostMapping(value = "/users")
-    public ResponseEntity<?> createUsers(@Valid @RequestBody User user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
+
         try {
             usersRepository.save(user);
         }
@@ -65,19 +72,21 @@ public class RESTController {
     }
 
     /**
-     * Retrieve Users
+     * Retrieve Users.
      *
      * @param username
      * @return
      */
     @GetMapping("/users")
-    public List<User> getUsersByUsername(@RequestParam(value = "searchByUsername", required = false) String username) {
+    public List<User> getUsers(@RequestParam(value = "searchByUsername", required = false) String username) {
 
+        // Searches a User by username.
         if (username == null) {
             List<User> users = usersRepository.findAll();
             return users;
         }
 
+        // Gets a User by username normally.
         List<User> users = usersRepository.findByNameOrSurnameOrUsernameStartingWith(username, username, username);
 
         if (users.isEmpty()) {
@@ -87,13 +96,14 @@ public class RESTController {
     }
 
     /**
-     * Retrieve User
+     * Retrieve User.
      *
      * @param username
      * @return
      */
     @GetMapping("/users/{username}")
-    public User getUserByUsername(@PathVariable(value = "username") String username) {
+    public User getUser(@PathVariable(value = "username") String username) {
+
         User user = usersRepository.findByUsername(username);
 
         if (user == null) {
@@ -104,7 +114,7 @@ public class RESTController {
     }
 
     /**
-     * Update User
+     * Update User.
      *
      * @param username
      * @param userDetails
@@ -127,7 +137,10 @@ public class RESTController {
             throw new UsernameException(userDetails.getUsername());
         }
         user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(userDetails.getPassword());
+        user.setPassword(hashedPassword);
 
         User updateUser = usersRepository.save(user);
 
@@ -135,13 +148,14 @@ public class RESTController {
     }
 
     /**
-     * Delete User
+     * Delete User.
      *
      * @param username
      * @return
      */
     @DeleteMapping("/users/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "username") String username) {
+
         User user = usersRepository.findByUsername(username);
 
         usersRepository.delete(user);
@@ -149,23 +163,67 @@ public class RESTController {
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================
+//    /**
+//     * Create Chat.
+//     *
+//     * @param username
+//     * @param chat
+//     * @return
+//     */
+//    @PostMapping("/users/{username}/chats")
+//    public ResponseEntity<?> createChat(@PathVariable("username") String username, @Valid @RequestBody Chat chat) {
+//
+//        String uId = UUID.randomUUID().toString();
+//        chat.setUid(uId);
+//        chat.setLink(uId);
+//        chatsRepository.save(chat);
+//
+//        User user = usersRepository.findByUsername(username);
+//        ChatUser chatUser = new ChatUser();
+//        chatUser.setAdmin(true);
+//        chatUser.setUser(user);
+//        chatUser.setChat(chat);
+//
+//        chatUsersRepository.save(chatUser);
+//
+//        return ResponseEntity.ok().build();
+//    }
     /**
-     * Create Chat
+     * Create Chat.
      *
-     * @param chat
+     * @param username
+     * @param chatUserMap
      * @return
      */
     @PostMapping("/users/{username}/chats")
-    public ResponseEntity<?> createChat(@Valid @RequestBody Chat chat) {
+    public ResponseEntity<?> createChat(@PathVariable("username") String username, @Valid @RequestBody ChatUserMap chatUserMap) {
+
         String uId = UUID.randomUUID().toString();
+        
+        Chat chat = new Chat();
         chat.setUid(uId);
         chat.setLink(uId);
+        chat.setName(chatUserMap.getChatName());
+        
         chatsRepository.save(chat);
+        
+        for (int i = 0; i < chatUserMap.getUsers().size(); i++) {
+            User user = usersRepository.findByUsername(chatUserMap.getUsers().get(i).getUsername());
+            
+            ChatUser chatUser = new ChatUser();
+            chatUser.setUser(user);
+            chatUser.setChat(chat);
+            chatUser.setAdmin(chatUserMap.getUsers().get(i).isIsAdmin());
+            
+            chatUsersRepository.save(chatUser);
+        }
+        
         return ResponseEntity.ok().build();
     }
 
     /**
-     * Retrieve Chats
+     * Retrieve Chats.
      *
      * @param username
      * @return
@@ -186,28 +244,52 @@ public class RESTController {
     }
 
     /**
-     * Retrieve Chat
+     * Retrieve Chat.
      *
      * @param chatid
      * @return
      */
-    @GetMapping("/users/{username}/chats/{chatid}")
-    public Chat getChatByUsername(@PathVariable(value = "chatid") String chatid) {
+    @GetMapping("/chats/{chatid}")
+    public Chat getChat(@PathVariable(value = "chatid") String chatid) {
 
         Chat chat = chatsRepository.findByUid(chatid);
         return chat;
     }
 
+    // ================================================================================
     /**
+     * Create Message.
      *
-     * @param username
+     * @param chatid
+     * @param message
+     * @return
+     */
+    @PostMapping("/chats/{chatid}/messages")
+    public ResponseEntity<?> createMessage(@PathVariable(value = "chatid") String chatid, @Valid @RequestBody Message message) {
+
+        Message msg = new Message();
+
+        Chat chat = chatsRepository.findByUid(chatid);
+
+        msg.setChat(chat);
+        msg.setContent(message.getContent());
+        msg.setType(message.getType());
+        msg.setUser(usersRepository.findByUsername(message.getUser().getUsername()));
+
+        messagesRepository.save(msg);
+
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Retrieve Messages.
+     *
      * @param chatid
      * @return
      */
-    @GetMapping("/users/{username}/chats/{chatid}/messages")
-    public List<Message> getMessages(@PathVariable(value = "username") String username, @PathVariable(value = "chatid") String chatid) {
+    @GetMapping("/chats/{chatid}/messages")
+    public List<Message> getMessages(@PathVariable(value = "chatid") String chatid) {
 
-        return null;
-
+        return messagesRepository.findByChatUid(chatid);
     }
 }

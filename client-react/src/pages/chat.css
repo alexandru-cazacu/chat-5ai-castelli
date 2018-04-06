@@ -12,7 +12,9 @@ GENERAL
 
 body,
 html,
-.wrapper {
+.wrapper,
+.App,
+#root {
     height: 100%;
 }
 
@@ -191,7 +193,7 @@ COMPONENTS
 }
 
 .search {
-    padding-left: 3em;
+    padding-left: 1em;
     position: relative;
 }
 

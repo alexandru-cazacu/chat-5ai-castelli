@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 05, 2018 alle 22:18
+-- Creato il: Apr 06, 2018 alle 21:25
 -- Versione del server: 10.1.28-MariaDB
 -- Versione PHP: 7.1.10
 
@@ -25,19 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `chat-user`
---
-
-CREATE TABLE `chat-user` (
-  `ID` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_chat` int(11) NOT NULL,
-  `admin` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `chats`
 --
 
@@ -53,9 +40,29 @@ CREATE TABLE `chats` (
 --
 
 INSERT INTO `chats` (`ID`, `uid`, `link`, `name`) VALUES
-(2, '12347898', 'awesomeLink', 'Super cool chat'),
-(5, 'a550fa04-4318-4712-bb2a-8559f671daf3', 'awesomeLink', 'Super cool chat'),
-(6, '57cb9057-28b2-4b70-a4ca-98b235cbdb9a', '57cb9057-28b2-4b70-a4ca-98b235cbdb9a', 'Super cool chat');
+(12, '18aeaa39-591b-4710-8bc6-6a4637536ad5', '18aeaa39-591b-4710-8bc6-6a4637536ad5', 'awesome chat');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `chat_user`
+--
+
+CREATE TABLE `chat_user` (
+  `ID` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_chat` int(11) NOT NULL,
+  `admin` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `chat_user`
+--
+
+INSERT INTO `chat_user` (`ID`, `id_user`, `id_chat`, `admin`) VALUES
+(9, 11, 12, 1),
+(10, 14, 12, 1),
+(11, 13, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -65,19 +72,12 @@ INSERT INTO `chats` (`ID`, `uid`, `link`, `name`) VALUES
 
 CREATE TABLE `messages` (
   `ID` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `id_chat` int(11) NOT NULL,
   `content` text NOT NULL,
   `type` enum('Text','Image','Video') NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `messages`
---
-
-INSERT INTO `messages` (`ID`, `id_user`, `id_chat`, `content`, `type`, `timestamp`) VALUES
-(1, 11, 2, 'Hello', 'Text', '2018-03-31 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -103,9 +103,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `name`, `surname`, `birthday`, `sex`, `mail`, `username`, `password`, `last_seen`) VALUES
 (1, 'Aldo', 'Malerba', '1997-08-10', 'Male', 'malerba.hello@gmail.com', 'aldoMalerba', '$2a$10$5juDwb.j6CesRoNhv5ZKCuxj.4BPVLYFRi.J/ppKXFvm..jMLYF0m', NULL),
-(8, 'Name', 'Surname', '1997-08-10', 'Male', 'mail@host.com', 'Test', '$2a$10$bKN1ZSU.olycuLmEBDyGXOkDyKe72OhXG7JxPx6uoNLz9izV5jeXm', NULL),
-(10, 'Name', 'Surname', '1997-08-10', 'Male', 'mail@host.com', 'Test2', 'SuperSecrety', NULL),
-(11, 'Alexandru', 'Cazacu', '1998-06-08', 'Male', 'alexandru.cazacu.9889@gmail.com', 'alex', 'alex', NULL),
+(11, 'Alexandru', 'Cazacu', '1998-06-08', 'Male', 'alexandru.cazacu.9889@gmail.com', 'alex', '$2a$10$/ifzYKi6o/HVTl70UdniVOx76bjV3jStRYktQodiwliGVjiCU7dPi', NULL),
 (13, 'Antonio', 'Barensfeld', '1998-06-08', 'Male', 'antonio.barensfeld@gmail.com', 'anto', '$2a$10$GJNaG8HiDAv36N438e.ZeexD4zjck1ZODVPEOYrk2M0SEMaIlalYC', NULL),
 (14, 'Aquino', 'Visso', '1998-06-08', 'Male', 'aquino.visso@gmail.com', 'aqui', '$2a$10$LLXhWxEH1xd59O60eZqSe.JGZdgkYqkJoJ8GR9GGXNrUC3rfVZtni', NULL),
 (15, 'Federino', 'Panarese', '1998-06-08', 'Male', 'federico.panarese@gmail.com', 'fede', '$2a$10$cefvfQOmFhTxfP4rh1i33.kwBi5N.QFpJqf4vmn6/6lEqZQo7L0Gu', NULL),
@@ -116,18 +114,18 @@ INSERT INTO `users` (`ID`, `name`, `surname`, `birthday`, `sex`, `mail`, `userna
 --
 
 --
--- Indici per le tabelle `chat-user`
---
-ALTER TABLE `chat-user`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `id_user` (`id_user`),
-  ADD KEY `id_chat` (`id_chat`);
-
---
 -- Indici per le tabelle `chats`
 --
 ALTER TABLE `chats`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Indici per le tabelle `chat_user`
+--
+ALTER TABLE `chat_user`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_chat` (`id_chat`);
 
 --
 -- Indici per le tabelle `messages`
@@ -149,46 +147,46 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT per la tabella `chat-user`
---
-ALTER TABLE `chat-user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT per la tabella `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT per la tabella `chat_user`
+--
+ALTER TABLE `chat_user`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT per la tabella `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
--- Limiti per la tabella `chat-user`
+-- Limiti per la tabella `chat_user`
 --
-ALTER TABLE `chat-user`
-  ADD CONSTRAINT `chat-user_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `chat-user_ibfk_2` FOREIGN KEY (`id_chat`) REFERENCES `chats` (`ID`);
+ALTER TABLE `chat_user`
+  ADD CONSTRAINT `chat_user_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_user_ibfk_3` FOREIGN KEY (`id_chat`) REFERENCES `chats` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`id_chat`) REFERENCES `chats` (`ID`);
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`id_chat`) REFERENCES `chats` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

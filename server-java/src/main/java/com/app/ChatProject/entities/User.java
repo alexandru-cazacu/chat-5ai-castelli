@@ -61,11 +61,11 @@ public class User implements Serializable {
     private Date lastSeen;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @JsonIgnore // Used to return only user.
     private List<Message> messages;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @JsonIgnore // Used to return only user.
     private List<ChatUser> chatUsers;
 
     public User() {
