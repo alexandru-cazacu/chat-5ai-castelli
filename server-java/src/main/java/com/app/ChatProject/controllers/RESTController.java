@@ -1,6 +1,7 @@
 package com.app.ChatProject.controllers;
 
 import com.app.ChatProject.entities.Chat;
+import com.app.ChatProject.entities.ChatUser;
 import com.app.ChatProject.entities.Message;
 import com.app.ChatProject.entities.User;
 import com.app.ChatProject.exception.ResourceNotFoundException;
@@ -8,6 +9,7 @@ import com.app.ChatProject.exception.UsernameException;
 import com.app.ChatProject.repositories.ChatsRepository;
 import com.app.ChatProject.repositories.MessagesRepository;
 import com.app.ChatProject.repositories.UsersRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.app.ChatProject.repositories.ChatUsersRepository;
 
 /**
  *
@@ -36,6 +39,9 @@ public class RESTController {
 
     @Autowired
     private MessagesRepository messageRepository;
+
+    @Autowired
+    private ChatUsersRepository chatUsersRepository;
 
     /**
      * Create User
@@ -159,19 +165,28 @@ public class RESTController {
     }
 
     /**
-     * Retireve Chats
+     * Retrieve Chats
      *
+     * @param username
      * @return
      */
     @GetMapping("/users/{username}/chats")
-    public List<Chat> getChatByUsername() {
+    public List<Chat> getUserChats(@PathVariable("username") String username) {
 
-        List<Chat> chats = chatsRepository.findAll();
+        List<ChatUser> chatUsers = chatUsersRepository.findByUserUsername(username);
+
+        List<Chat> chats = new ArrayList();
+
+        for (int i = 0; i < chatUsers.size(); i++) {
+            Chat chat = chatUsers.get(i).getChat();
+            chats.add(chat);
+        }
+
         return chats;
     }
 
     /**
-     * Retireve Chat
+     * Retrieve Chat
      *
      * @param chatid
      * @return

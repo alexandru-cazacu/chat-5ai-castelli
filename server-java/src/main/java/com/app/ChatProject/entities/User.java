@@ -1,6 +1,7 @@
 package com.app.ChatProject.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "name")
@@ -59,9 +61,12 @@ public class User implements Serializable {
     private Date lastSeen;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    //@JsonBackReference
-    private List<Message> messages = new ArrayList<Message>();
+    @JsonIgnore
+    private List<Message> messages;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<ChatUser> chatUsers;
 
     public User() {
     }
@@ -70,7 +75,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String name, String surname, Date birthday, String sex, String mail, String username, String password, Date lastSeen, List<Message> messages) {
+    public User(Integer id, String name, String surname, Date birthday, String sex, String mail, String username, String password, Date lastSeen, List<Message> messages, List<ChatUser> chatUsers) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -81,6 +86,7 @@ public class User implements Serializable {
         this.password = password;
         this.lastSeen = lastSeen;
         this.messages = messages;
+        this.chatUsers = chatUsers;
     }
 
     public Integer getId() {
@@ -161,6 +167,14 @@ public class User implements Serializable {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public List<ChatUser> getChatUsers() {
+        return chatUsers;
+    }
+
+    public void setChatUsers(List<ChatUser> chatUsers) {
+        this.chatUsers = chatUsers;
     }
 
 }

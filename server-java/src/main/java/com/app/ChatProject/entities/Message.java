@@ -1,6 +1,7 @@
 package com.app.ChatProject.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Date;
@@ -40,31 +41,23 @@ public class Message implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
-    @Column(name = "id_user", updatable = false, insertable = false)
-    private int idUser;
-
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonBackReference
-    //@JsonManagedReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_chat")
-    @JsonBackReference
-    //@JsonManagedReference
     private Chat chat;
 
     public Message() {
 
     }
 
-    public Message(Integer id, String content, String type, Date timestamp, int idUser, User user, Chat chat) {
+    public Message(Integer id, String content, String type, Date timestamp, User user, Chat chat) {
         this.id = id;
         this.content = content;
         this.type = type;
         this.timestamp = timestamp;
-        this.idUser = idUser;
         this.user = user;
         this.chat = chat;
     }
@@ -112,13 +105,4 @@ public class Message implements Serializable {
     public User getUser() {
         return user;
     }
-
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-    
 }
