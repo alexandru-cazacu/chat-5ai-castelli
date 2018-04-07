@@ -1,6 +1,7 @@
 package com.app.ChatProject.controllers;
 
 import com.app.ChatProject.JsonMaps.ChatUserMap;
+import com.app.ChatProject.JsonMaps.UserMap;
 import com.app.ChatProject.entities.Chat;
 import com.app.ChatProject.entities.ChatUser;
 import com.app.ChatProject.entities.Message;
@@ -63,8 +64,7 @@ public class RESTController {
 
         try {
             usersRepository.save(user);
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new UsernameException(user.getUsername());
         }
 
@@ -75,24 +75,39 @@ public class RESTController {
      * Retrieve Users.
      *
      * @param username
+     * @param mode
      * @return
      */
     @GetMapping("/users")
-    public List<User> getUsers(@RequestParam(value = "searchByUsername", required = false) String username) {
+    public List<?> getUsers(
+            @RequestParam(value = "searchByUsername", required = false) String username,
+            @RequestParam(value = "mode", required = false) String mode) {
 
-        // Searches a User by username.
-        if (username == null) {
-            List<User> users = usersRepository.findAll();
-            return users;
+        List<User> users;
+
+        // Searches Users by string.
+        if (username != null) {
+            users = usersRepository.findByNameOrSurnameOrUsernameStartingWith(username, username, username);
+
+            if (users.isEmpty()) {
+                throw new ResourceNotFoundException("User", "username, name or lastname", username);
+            }
+        } // Gets all Users.
+        else {
+            users = usersRepository.findAll();
         }
 
-        // Gets a User by username normally.
-        List<User> users = usersRepository.findByNameOrSurnameOrUsernameStartingWith(username, username, username);
+        if (mode != null && mode.equals("compact")) {
+            List<UserMap> userMaps = new ArrayList();
 
-        if (users.isEmpty()) {
-            throw new ResourceNotFoundException("User", "username, name or lastname", username);
+            for (User user : users) {
+                userMaps.add(new UserMap(user.getUsername()));
+            }
+
+            return userMaps;
         }
-        return usersRepository.findByNameOrSurnameOrUsernameStartingWith(username, username, username);
+        
+        return users;
     }
 
     /**
@@ -132,8 +147,7 @@ public class RESTController {
         user.setSex(userDetails.getSex());
         try {
             user.setUsername(userDetails.getUsername());
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new UsernameException(userDetails.getUsername());
         }
         user.setUsername(userDetails.getUsername());
@@ -164,31 +178,6 @@ public class RESTController {
     }
 
     // ================================================================================
-//    /**
-//     * Create Chat.
-//     *
-//     * @param username
-//     * @param chat
-//     * @return
-//     */
-//    @PostMapping("/users/{username}/chats")
-//    public ResponseEntity<?> createChat(@PathVariable("username") String username, @Valid @RequestBody Chat chat) {
-//
-//        String uId = UUID.randomUUID().toString();
-//        chat.setUid(uId);
-//        chat.setLink(uId);
-//        chatsRepository.save(chat);
-//
-//        User user = usersRepository.findByUsername(username);
-//        ChatUser chatUser = new ChatUser();
-//        chatUser.setAdmin(true);
-//        chatUser.setUser(user);
-//        chatUser.setChat(chat);
-//
-//        chatUsersRepository.save(chatUser);
-//
-//        return ResponseEntity.ok().build();
-//    }
     /**
      * Create Chat.
      *
@@ -200,25 +189,25 @@ public class RESTController {
     public ResponseEntity<?> createChat(@PathVariable("username") String username, @Valid @RequestBody ChatUserMap chatUserMap) {
 
         String uId = UUID.randomUUID().toString();
-        
+
         Chat chat = new Chat();
         chat.setUid(uId);
         chat.setLink(uId);
         chat.setName(chatUserMap.getChatName());
-        
+
         chatsRepository.save(chat);
-        
+
         for (int i = 0; i < chatUserMap.getUsers().size(); i++) {
             User user = usersRepository.findByUsername(chatUserMap.getUsers().get(i).getUsername());
-            
+
             ChatUser chatUser = new ChatUser();
             chatUser.setUser(user);
             chatUser.setChat(chat);
             chatUser.setAdmin(chatUserMap.getUsers().get(i).isIsAdmin());
-            
+
             chatUsersRepository.save(chatUser);
         }
-        
+
         return ResponseEntity.ok().build();
     }
 
