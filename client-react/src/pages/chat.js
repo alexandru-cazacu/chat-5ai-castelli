@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react';
 import axios from 'axios';
 
 import './chat.css';
 
-export default class ChatPage extends Component {
+export default class ChatPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -12,15 +12,15 @@ export default class ChatPage extends Component {
 
     componentDidMount() {
         axios({
-            method:'get',
-            url:'http://localhost:8080/users/alex/chats'
+            method: 'get',
+            url: 'http://localhost:8080/users/11/chats'
         })
-        .then((response) => {
-            this.setState({ chats: response.data });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((response) => {
+                this.setState({ chats: response.data });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -29,14 +29,14 @@ export default class ChatPage extends Component {
 
         if (this.state.chats !== undefined) {
             chatList = this.state.chats.map((value) => {
-                var usrs = "";
+                var usrs = '';
                 for (var i = 0; i < value.chatUsers.length; i++) {
-                    usrs += value.chatUsers[i].user.username + ", ";
+                    usrs += value.chatUsers[i].user.username + ', ';
                 }
-                usrs = usrs.substring(0, usrs.length - 2)
+                usrs = usrs.substring(0, usrs.length - 2);
 
-                var time = "";
-                var lastMessage = "";
+                var time = '';
+                var lastMessage = '';
 
                 if (value.messages.length !== 0) {
                     //time = value.messages[value.messages.length - 1].timestamp;
@@ -46,7 +46,7 @@ export default class ChatPage extends Component {
 
                 return (
                     <div className="chat-card" key={value.uid}>
-                        <img className="avatar" src="https://source.unsplash.com/dily" />
+                        <img className="avatar" src="https://source.unsplash.com/dily" alt="Avatar" />
                         <p className="title">{value.name}</p>
                         <p className="subtitle1">{usrs}</p>
                         <p className="subtitle2">{lastMessage}</p>
@@ -70,6 +70,6 @@ export default class ChatPage extends Component {
                     {chatList}
                 </div>
             </div>
-        )
+        );
     }
 }

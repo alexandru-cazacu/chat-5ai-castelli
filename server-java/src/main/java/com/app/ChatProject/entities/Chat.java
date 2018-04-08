@@ -22,7 +22,6 @@ public class Chat implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    @JsonIgnore
     private Integer id;
 
     @Column(name = "uid")

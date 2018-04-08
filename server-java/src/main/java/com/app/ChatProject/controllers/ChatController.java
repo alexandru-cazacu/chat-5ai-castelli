@@ -8,8 +8,11 @@ import com.app.ChatProject.repositories.ChatUsersRepository;
 import com.app.ChatProject.repositories.ChatsRepository;
 import com.app.ChatProject.repositories.MessagesRepository;
 import com.app.ChatProject.repositories.UsersRepository;
+import com.sun.jndi.toolkit.url.Uri;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +42,15 @@ public class ChatController {
     /**
      * Create Chat.
      *
-     * @param username
+     * @param id
      * @param chatUserMap
      * @return
      */
-    @PostMapping("/users/{username}/chats")
-    public ResponseEntity<?> createChat(@PathVariable("username") String username, @Valid @RequestBody ChatUserMap chatUserMap) {
-
+    @PostMapping("/users/{id}/chats")
+    public ResponseEntity<?> createChat(
+            @PathVariable("id") int id,
+            @Valid @RequestBody ChatUserMap chatUserMap) {
+        
         String uId = UUID.randomUUID().toString();
 
         Chat chat = new Chat();
@@ -65,20 +70,32 @@ public class ChatController {
 
             chatUsersRepository.save(chatUser);
         }
-
-        return ResponseEntity.ok().build();
+        
+        ChatUser chatUser = new ChatUser();
+        
+        Optional<User> user = usersRepository.findById(id);
+        
+        chatUser.setUser(user.get());
+        chatUser.setChat(chat);
+        chatUser.setAdmin(true);
+        
+        chatUsersRepository.save(chatUser);
+        
+        URI location = URI.create("/chats/" + chat.getId());
+        
+        return ResponseEntity.created(location).body("");
     }
 
     /**
      * Retrieve Chats.
      *
-     * @param username
+     * @param id
      * @return
      */
-    @GetMapping("/users/{username}/chats")
-    public List<Chat> getUserChats(@PathVariable("username") String username) {
+    @GetMapping("/users/{id}/chats")
+    public List<Chat> getUserChats(@PathVariable("id") int id) {
 
-        List<ChatUser> chatUsers = chatUsersRepository.findByUserUsername(username);
+        List<ChatUser> chatUsers = chatUsersRepository.findByUserId(id);
 
         List<Chat> chats = new ArrayList();
 
@@ -93,14 +110,14 @@ public class ChatController {
     /**
      * Retrieve Chat.
      *
-     * @param chatid
+     * @param id
      * @return
      */
-    @GetMapping("/chats/{chatid}")
-    public Chat getChat(@PathVariable(value = "chatid") String chatid) {
+    @GetMapping("/chats/{id}")
+    public Chat getChat(@PathVariable("id") int id) {
 
-        Chat chat = chatsRepository.findByUid(chatid);
+        Optional<Chat> chat = chatsRepository.findById(id);
 
-        return chat;
+        return chat.get();
     }
 }
