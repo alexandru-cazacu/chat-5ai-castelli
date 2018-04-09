@@ -1,0 +1,15 @@
+.snackbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #222;
+    height: 48px;
+}
+
+.snackbar .text {
+    line-height: 16px;
+    padding: 16px;
+    color: #eee;
+    text-align: center;
+}

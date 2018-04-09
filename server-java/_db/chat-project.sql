@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 06, 2018 alle 21:25
+-- Creato il: Apr 09, 2018 alle 22:18
 -- Versione del server: 10.1.28-MariaDB
 -- Versione PHP: 7.1.10
 
@@ -40,7 +40,7 @@ CREATE TABLE `chats` (
 --
 
 INSERT INTO `chats` (`ID`, `uid`, `link`, `name`) VALUES
-(12, '18aeaa39-591b-4710-8bc6-6a4637536ad5', '18aeaa39-591b-4710-8bc6-6a4637536ad5', 'awesome chat');
+(41, 'b9ca3ec9-a520-4ecf-8611-a6ebc1d82c9e', 'b9ca3ec9-a520-4ecf-8611-a6ebc1d82c9e', 'Test serio 1');
 
 -- --------------------------------------------------------
 
@@ -60,9 +60,11 @@ CREATE TABLE `chat_user` (
 --
 
 INSERT INTO `chat_user` (`ID`, `id_user`, `id_chat`, `admin`) VALUES
-(9, 11, 12, 1),
-(10, 14, 12, 1),
-(11, 13, 12, 1);
+(103, 1, 41, 0),
+(104, 13, 41, 0),
+(105, 14, 41, 0),
+(106, 16, 41, 0),
+(107, 11, 41, 1);
 
 -- --------------------------------------------------------
 
@@ -103,7 +105,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `name`, `surname`, `birthday`, `sex`, `mail`, `username`, `password`, `last_seen`) VALUES
 (1, 'Aldo', 'Malerba', '1997-08-10', 'Male', 'malerba.hello@gmail.com', 'aldoMalerba', '$2a$10$5juDwb.j6CesRoNhv5ZKCuxj.4BPVLYFRi.J/ppKXFvm..jMLYF0m', NULL),
-(11, 'Alexandru', 'Cazacu', '1998-06-08', 'Male', 'alexandru.cazacu.9889@gmail.com', 'alex', '$2a$10$/ifzYKi6o/HVTl70UdniVOx76bjV3jStRYktQodiwliGVjiCU7dPi', NULL),
+(11, 'Alexandru', 'Cazacu', '1998-06-08', 'Male', 'alexandru.cazacu@o.it', 'alex', '$2a$10$CDPXnQYthWCLblJGkJD/..qceH8Iv.JaBiPJd0cr7WH8YelVmFQ8a', NULL),
 (13, 'Antonio', 'Barensfeld', '1998-06-08', 'Male', 'antonio.barensfeld@gmail.com', 'anto', '$2a$10$GJNaG8HiDAv36N438e.ZeexD4zjck1ZODVPEOYrk2M0SEMaIlalYC', NULL),
 (14, 'Aquino', 'Visso', '1998-06-08', 'Male', 'aquino.visso@gmail.com', 'aqui', '$2a$10$LLXhWxEH1xd59O60eZqSe.JGZdgkYqkJoJ8GR9GGXNrUC3rfVZtni', NULL),
 (15, 'Federino', 'Panarese', '1998-06-08', 'Male', 'federico.panarese@gmail.com', 'fede', '$2a$10$cefvfQOmFhTxfP4rh1i33.kwBi5N.QFpJqf4vmn6/6lEqZQo7L0Gu', NULL),
@@ -150,25 +152,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT per la tabella `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT per la tabella `chat_user`
 --
 ALTER TABLE `chat_user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT per la tabella `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Limiti per le tabelle scaricate

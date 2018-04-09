@@ -4,19 +4,6 @@
 GENERAL
 ============================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-family: "sans-serif", Roboto;
-}
-
-.wrapper {
-    width: 80%;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
 .space {
     width: 100%;
     height: 1em;

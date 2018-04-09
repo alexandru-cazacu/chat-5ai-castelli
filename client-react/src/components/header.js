@@ -1,5 +1,6 @@
 import React from 'react';
-import './header.css';
+
+import '../styles/header.css';
 
 export default class Header extends React.Component {
     render() {
@@ -8,7 +9,7 @@ export default class Header extends React.Component {
                 <div className="wrapper">
                     <div className="title">Chatty</div>
                     <div className="nav">
-                        <i className="material-icons">add</i>
+                        <i className="material-icons" onClick={this.props.onOpenCreateChatPanel}>add</i>
                         <i className="material-icons">account_circle</i>
                     </div>
                 </div>

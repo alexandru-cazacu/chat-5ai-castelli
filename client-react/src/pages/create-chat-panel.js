@@ -2,36 +2,48 @@ import React from 'react';
 import axios from 'axios';
 import Subtract from 'array-subtract';
 
-import close from '../close.svg';
+import PersonInGroupList from '../components/personInGroupList';
+import { postChat, getUsersBySearch } from '../utils/rest-requests';
 
-export default class NewChatCard extends React.Component {
+import close from '../images/close.svg';
+
+import '../styles/create-chat-panel.css';
+
+export default class CreateChatPanel extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             invitedPeople: [],
             suggestedPeople: [],
-            currentPerson: '',
+            searchedPerson: '',
             chatName: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChatCreation = this.handleChatCreation.bind(this);
+        this.handleRemoveUser = this.handleRemoveUser.bind(this);
     }
 
     handleChatCreation() {
-        axios.post('http://localhost:8080/users/11/chats', {
-            chatName: this.state.chatName,
-            users: this.state.invitedPeople
-        })
-            .then((response) => {
-                console.log(response);
-                this.props.onCloseCreateChatPanel();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+
+    }
+
+    handleRemoveUser(username) {
+        console.log(username);
+        var invitedPeople = this.state.invitedPeople;
+        console.log(invitedPeople);
+        var newInvitedPeople = [];
+
+        for (var i = 0; i < invitedPeople.length; i++) {
+            if (invitedPeople[i].username !== username) {
+                newInvitedPeople.push(invitedPeople[i]);
+                console.log(username);
+            }
+        }
+
+        this.setState({ invitedPeople: newInvitedPeople });
     }
 
     handleSubmit(e) {
@@ -42,7 +54,7 @@ export default class NewChatCard extends React.Component {
             this.setState({
                 invitedPeople: invPeople,
                 suggestedPeople: [],
-                currentPerson: ''
+                searchedPerson: ''
             });
         }
     }
@@ -50,49 +62,34 @@ export default class NewChatCard extends React.Component {
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
 
-        if (e.target.name === 'chatName')
-            return;
+        if (e.target.name === 'chatName') return;
 
-        axios.get('http://localhost:8080/users?searchByUsername=' + e.target.value + '&mode=compact')
-            .then((response) => {
+        getUsersBySearch(e.target.value, (data) => {
+            var subtract = new Subtract((itemA, itemB) => { return itemA.username === itemB.username; });
+            data = subtract.sub(data, this.state.invitedPeople);
+            this.setState({ suggestedPeople: data });
+        }, () => {
 
-                var subtract = new Subtract((itemA, itemB) => { return itemA.username === itemB.username; });
-
-                response.data = subtract.sub(response.data, this.state.invitedPeople);
-                this.setState({ suggestedPeople: response.data });
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        });
     }
 
     render() {
-        var suggestedPeople = [];
-        if (this.state.suggestedPeople !== undefined) {
-            suggestedPeople = this.state.suggestedPeople.map((value) => {
-                return <li key={value.username}>{value.username}</li>;
-            });
-        }
+        var suggestedPeople = this.state.suggestedPeople.map((value) =>
+            <li key={value.username}>{value.username}</li>
+        );
 
-        var invitedPeople = [];
-        if (this.state.suggestedPeople !== undefined) {
-            invitedPeople = this.state.invitedPeople.map((value) => {
-                return <div key={value.username} className="line">
-
-                    <div className="col-5">{value.username}</div>
-                    <div className="col-5"><input type="checkbox" /> Admin</div>
-                    <div className="circle-button">
-                        <img src={close} alt="Close create chat panel"/>
-                    </div>
-                </div>;
-            });
-        }
+        var invitedPeople = this.state.invitedPeople.map((value) =>
+            <PersonInGroupList
+                key={value.username}
+                username={value.username}
+                onRemoveUser={this.handleRemoveUser}
+            />
+        );
 
         return (
             <div className="floating-card-container">
                 <div className="floating-card">
-                    <img src={close} className="close-button-img" onClick={this.props.onCloseCreateChatPanel} alt="Remove user from list" />
+                    <img src={close} className="close-button-img" onClick={this.props.onCloseCreateChatPanel} alt="Close panel" />
                     <h1>New Chat</h1>
                     <div className="space"></div>
 
@@ -102,18 +99,19 @@ export default class NewChatCard extends React.Component {
                         placeholder="Chat name..."
                         value={this.state.chatName}
                         onChange={this.handleChange}
-                        className="input-field col-6 first" />
+                        className="input-field col-6 first"
+                    />
 
                     <div className="suggestions-list-container col-6 last">
-
                         <input
                             type="text"
-                            name="currentPerson"
+                            name="searchedPerson"
                             placeholder="Add a person..."
-                            value={this.state.currentPerson}
+                            value={this.state.searchedPerson}
                             onChange={this.handleChange}
                             onKeyPress={this.handleSubmit}
-                            className="input-field" />
+                            className="input-field"
+                        />
 
                         <ul className="suggestions-list">{suggestedPeople}</ul>
                     </div>

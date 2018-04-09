@@ -1,0 +1,66 @@
+.left-column {
+    width: 300px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 5px;
+    position: absolute;
+    bottom: 1em;
+    top: 72px;
+}
+
+.left-column-scrollable-area {
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0;
+    top: 64px;
+    width: 100%;
+}
+
+.chat-card-no-hover {
+    padding: 0.8em;
+    position: relative;
+}
+
+.chat-card {
+    padding: 0.8em;
+    cursor: pointer;
+    position: relative;
+    height: 60px;
+}
+
+.chat-card.active {
+    background-color: #3498db44;
+}
+
+.chat-card:hover {
+    background-color: #3498db88;
+}
+
+.chat-card .avatar {
+    height: 60px;
+    width: 60px;
+    float: left;
+    border-radius: 100px;
+    margin-right: 1em;
+    border: 3px solid #ffffff00;
+    box-sizing: border-box;
+}
+
+.chat-card .avatar.online {
+    border: 3px solid #2ecc71;
+}
+
+.chat-card .title {
+    font-weight: bold;
+}
+
+.chat-card .status {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.input-field.search {
+    width: 100%;
+}
