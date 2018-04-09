@@ -1,0 +1,61 @@
+
+body{
+background: linear-gradient(to bottom ,#D2BA10, #D27410);
+}
+
+.banda { width: 50%;
+}
+
+  .testolog{
+  font-family: sans-serif;
+  color: black;
+  font-size: 80;
+  align-items: center;
+}
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    height:400px;
+    margin-left: 50%;
+
+
+}
+.wrapper2 {
+    position: relative;
+    width: 100%;
+    height:400px;
+    margin: auto;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+.wrapper1 {
+    position: relative;
+    width: 100%;
+    height:400px;
+    margin-left:83.6%;
+
+}
+
+
+img{
+    position: absolute;
+    margin: auto;
+    top: 175;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .button {
+      background-color: #4C03A8;
+      color: white ;
+      border: none;
+      margin-left: 0;
+      size:40;
+      width: 33.3%;
+      opacity: 0.9;
+
+  }
