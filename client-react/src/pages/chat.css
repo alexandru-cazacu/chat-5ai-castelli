@@ -1,58 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 /* ==================================================
-GENERAL
-================================================== */
-
-* {
-    margin: 0;
-    border: 0;
-    font-family: sans-serif, 'Roboto';
-}
-
-body,
-html,
-.wrapper,
-.App,
-#root {
-    height: 100%;
-}
-
-.wrapper {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* ==================================================
-HEADER
-================================================== */
-
-.header {
-    background-color: #3498db;
-    padding: 1em;
-    margin-bottom: 1em;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.header .title {
-    color: white;
-    font-weight: bold;
-}
-
-/* ==================================================
 LEFT COLUMN
 ================================================== */
 
 .left-column {
-    width: 30%;
-    height: 90%;
+    width: 300px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    overflow-y: hidden;
-    float: left;
     border-radius: 5px;
+    position: absolute;
+    bottom: 1em;
+    top: 72px;
+}
+
+.left-column-scrollable-area {
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0;
+    top: 64px;
+    width: 100%;
 }
 
 .chat-card-no-hover {
@@ -65,7 +31,6 @@ LEFT COLUMN
     cursor: pointer;
     position: relative;
     height: 60px;
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .chat-card.active {

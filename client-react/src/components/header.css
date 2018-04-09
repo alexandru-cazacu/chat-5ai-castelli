@@ -1,0 +1,39 @@
+.header {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    height: 56px;
+    margin-bottom: 1em;
+}
+
+.header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.header .title {
+    color: black;
+    padding: 20px 16px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+.nav {
+    float: right;
+}
+
+.header .title {
+    float: left;
+}
+
+.nav .material-icons {
+    color: #888;
+    padding: 15px 16px;
+    font-size: 26px;
+    border-radius: 100%;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.nav .material-icons:hover {
+    cursor: pointer;
+    background-color: #eee;
+}

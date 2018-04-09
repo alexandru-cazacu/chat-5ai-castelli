@@ -16,15 +16,15 @@
         "react"
     ],
     "rules": {
-        "no-unused-vars": 0,
         "no-console": 0,
+        "no-unused-vars": 0,
         "indent": [
             "error",
             4
         ],
         "linebreak-style": [
             "error",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "error",
