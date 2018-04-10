@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { getChats } from '../utils/rest-requests';
+import Snackbar from './snackbar';
 
 import '../styles/chats-list.css';
 
@@ -81,10 +81,13 @@ export default class ChatsList extends React.Component {
                         className="input-field search" />
                 </div>
                 <div className="left-column-scrollable-area">
-                    {this.state.showError && <div className="error">
-                        <i className="material-icons">error_outline</i>
-                        <p>It seems like there is a problem visualizing the chats list.</p>
-                    </div>}
+                    {this.state.showError &&
+                        <div className="error">
+                            <i className="material-icons">error_outline</i>
+                            <p>It seems like there is a problem visualizing the chats list.</p>
+                        </div>}
+                    {this.state.showError &&
+                        <Snackbar text='Please check your Internet connection.' />}
                     {chatList}
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import Subtract from 'array-subtract';
 
 import PersonInGroupList from '../components/personInGroupList';
@@ -8,6 +7,7 @@ import { postChat, getUsersBySearch } from '../utils/rest-requests';
 import close from '../images/close.svg';
 
 import '../styles/create-chat-panel.css';
+import Snackbar from '../components/snackbar';
 
 export default class CreateChatPanel extends React.Component {
 
@@ -17,7 +17,8 @@ export default class CreateChatPanel extends React.Component {
             invitedPeople: [],
             suggestedPeople: [],
             searchedPerson: '',
-            chatName: ''
+            chatName: '',
+            error: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +28,11 @@ export default class CreateChatPanel extends React.Component {
     }
 
     handleChatCreation() {
-
+        postChat(this.state.chatName, this.state.invitedPeople, (response) => {
+            this.setState({ error: '' });
+        }, (error) => {
+            this.setState({ error: error });
+        });
     }
 
     handleRemoveUser(username) {
@@ -125,6 +130,8 @@ export default class CreateChatPanel extends React.Component {
                         <button className="button" onClick={this.handleChatCreation}>Confirm</button>
                     </div>
                 </div>
+                {this.state.error !== '' &&
+                    <Snackbar text={this.state.error} />}
             </div>
         );
     }

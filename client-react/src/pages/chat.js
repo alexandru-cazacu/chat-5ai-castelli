@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../components/header';
 import ChatsList from '../components/chats-list';
 import CreateChatPanel from './create-chat-panel';
-import Snackbar from '../components/snackbar';
 
 import '../styles/chat.css';
 
@@ -49,7 +48,6 @@ export default class ChatPage extends React.Component {
                             onSuccessfullyCreatedGroup={this.handleSuccessfullyCreatedGroup}
                             onUnsuccessfullyCreatedChat={this.handleUnsuccessfullyCreatedChat}
                         />}
-                    <Snackbar text='Please check your Internet connection.' />
                 </div>
             </div>
         );

@@ -7,6 +7,16 @@ export function getChats(responseCallback, errorCallback) {
 }
 
 export function postChat(chatName, users, responseCallback, errorCallback) {
+    if (chatName === '') {
+        errorCallback('Please select a chat name and try again');
+        return;
+    }
+    if (users.length === 0) {
+        errorCallback('Please add at least one user and try again');
+        return;
+    }
+    // TODO check if only current user is added in invited people.
+
     axios.post('http://localhost:8080/users/11/chats', {
         chatName: chatName,
         users: users
