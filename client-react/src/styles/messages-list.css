@@ -1,0 +1,68 @@
+.messages-list {
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+}
+
+.row {
+    padding: 1em;
+}
+
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.row .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    float: left;
+    margin: 0 10px 0 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.row .message {
+    border-radius: 1em;
+    border-top-left-radius: 0;
+    padding: 1em;
+    max-width: 60%;
+    float: left;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.row.right .avatar {
+    float: right;
+    margin: 0 0 0 10px;
+}
+
+.row.right .message {
+    border-radius: 1em;
+    border-top-right-radius: 0;
+    float: right;
+}
+
+.message-area-container {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* overflow-y: scroll; */
+}
+
+.input-area {
+    padding: 8px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.messages-list .header.chat {
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 0 0;
+}

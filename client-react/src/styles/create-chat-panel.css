@@ -5,6 +5,7 @@
     bottom: 0;
     position: fixed;
     background-color: #00000044;
+    z-index: 999;
 }
 
 .floating-card {
@@ -16,4 +17,13 @@
     padding: 1em;
     border-radius: 5px;
     background-color: white;
+}
+
+.close-button-img {
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    cursor: pointer;
 }

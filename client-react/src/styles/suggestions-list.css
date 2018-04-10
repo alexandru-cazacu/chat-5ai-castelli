@@ -1,0 +1,29 @@
+.suggestions-list-container {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+.suggestions-list {
+    list-style-type: none;
+    position: absolute;
+    top: 34.3px;
+    left: 0;
+    right: 0;
+    padding: 0;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 16.15px;
+}
+
+.suggestions-list li {
+    padding: 0.4em 0.8em;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 16.15px;
+}
+
+.suggestions-list li:hover {
+    background-color: #ddd;
+}

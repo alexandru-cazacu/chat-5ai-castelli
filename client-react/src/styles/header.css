@@ -15,17 +15,14 @@
     padding: 20px 16px;
     line-height: 16px;
     font-weight: bold;
-}
-
-.nav {
-    float: right;
-}
-
-.header .title {
     float: left;
 }
 
-.nav .material-icons {
+.header .nav {
+    float: right;
+}
+
+.header .nav .material-icons {
     color: #888;
     padding: 15px 16px;
     font-size: 26px;
@@ -33,7 +30,7 @@
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-.nav .material-icons:hover {
+.header .nav .material-icons:hover {
     cursor: pointer;
     background-color: #eee;
 }

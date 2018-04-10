@@ -1,0 +1,36 @@
+.line {
+    width: 100%;
+    border-radius: 100px;
+    background-color: #eee;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    padding: 0.5em 1em;
+    height: 2em;
+    line-height: 1em;
+    position: relative;
+}
+
+.line .circle-button {
+    box-sizing: border-box;
+    border-radius: 100px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2em;
+    height: 2em;
+    border: 2px solid #bbb;
+}
+
+.line .circle-button:hover {
+    background-color: #bbb;
+    border: 2px solid #444;
+}
+
+.line .circle-button img {
+    position: absolute;
+    top: 0.375em;
+    right: 0.375em;
+    width: 1em;
+    height: 1em;
+}

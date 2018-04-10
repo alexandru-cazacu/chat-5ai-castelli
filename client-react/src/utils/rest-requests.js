@@ -22,11 +22,24 @@ export function postChat(chatName, users, responseCallback, errorCallback) {
         users: users
     })
         .then((response) => responseCallback(response.data))
-        .catch((error) => errorCallback());
+        .catch((error) => errorCallback(error));
 }
 
 export function getUsersBySearch(searchValue, responseCallback, errorCallback) {
     axios.get('http://localhost:8080/users?searchByUsername=' + searchValue + '&mode=compact')
         .then((response) => responseCallback(response.data))
         .catch((error) => errorCallback());
+}
+
+export function getMessages(chatid, responseCallback, errorCallback) {
+    axios.get('http://localhost:8080/chats/' + chatid + '/messages')
+        .then((response) => responseCallback(response.data))
+        .catch((error) => errorCallback());
+}
+
+export function postMessage(message, chatid, responseCallback, errorCallback) {
+    console.log(message);
+    axios.post('http://localhost:8080/chats/' + chatid + '/messages', message)
+        .then((response) => responseCallback(response.data))
+        .catch((error) => errorCallback(error));
 }

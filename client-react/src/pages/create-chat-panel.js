@@ -8,6 +8,8 @@ import close from '../images/close.svg';
 
 import '../styles/create-chat-panel.css';
 import Snackbar from '../components/snackbar';
+import SuggestionsList from '../components/suggestions-list';
+import ButtonGroup from '../components/button-group';
 
 export default class CreateChatPanel extends React.Component {
 
@@ -18,7 +20,7 @@ export default class CreateChatPanel extends React.Component {
             suggestedPeople: [],
             searchedPerson: '',
             chatName: '',
-            error: ''
+            error: undefined
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,22 +31,23 @@ export default class CreateChatPanel extends React.Component {
 
     handleChatCreation() {
         postChat(this.state.chatName, this.state.invitedPeople, (response) => {
-            this.setState({ error: '' });
+            this.sendSuccess();
         }, (error) => {
-            this.setState({ error: error });
+            console.log(error);
         });
+    }
+    
+    sendSuccess() {
+        this.props.onSuccessfullyCreateChat();
     }
 
     handleRemoveUser(username) {
-        console.log(username);
         var invitedPeople = this.state.invitedPeople;
-        console.log(invitedPeople);
         var newInvitedPeople = [];
 
         for (var i = 0; i < invitedPeople.length; i++) {
             if (invitedPeople[i].username !== username) {
                 newInvitedPeople.push(invitedPeople[i]);
-                console.log(username);
             }
         }
 
@@ -79,15 +82,19 @@ export default class CreateChatPanel extends React.Component {
     }
 
     render() {
-        var suggestedPeople = this.state.suggestedPeople.map((value) =>
-            <li key={value.username}>{value.username}</li>
-        );
-
         var invitedPeople = this.state.invitedPeople.map((value) =>
             <PersonInGroupList
                 key={value.username}
                 username={value.username}
                 onRemoveUser={this.handleRemoveUser}
+            />
+        );
+
+        invitedPeople.push(
+            <PersonInGroupList
+                key='alex'
+                username='alex'
+                removable={false}
             />
         );
 
@@ -118,20 +125,26 @@ export default class CreateChatPanel extends React.Component {
                             className="input-field"
                         />
 
-                        <ul className="suggestions-list">{suggestedPeople}</ul>
+                        <SuggestionsList suggestions={this.state.suggestedPeople} />
                     </div>
                     <div className="space"></div>
                     <h3>Invited</h3>
                     <div className="space"></div>
                     <div>{invitedPeople}</div>
-                    <div className="button-container">
-                        <button className="button" onClick={this.props.onCloseCreateChatPanel}>Cancel</button>
-                        <div className="space-v"></div>
-                        <button className="button" onClick={this.handleChatCreation}>Confirm</button>
-                    </div>
+
+                    <ButtonGroup
+                        buttons={[
+                            {
+                                value: 'Cancel',
+                                callback: this.props.onCloseCreateChatPanel
+                            },
+                            {
+                                value: 'Confirm',
+                                callback: this.handleChatCreation
+                            }
+                        ]} />
                 </div>
-                {this.state.error !== '' &&
-                    <Snackbar text={this.state.error} />}
+                {this.state.error}
             </div>
         );
     }

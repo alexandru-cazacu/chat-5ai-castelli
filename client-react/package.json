@@ -6,6 +6,8 @@
     "array-subtract": "^2.0.0",
     "axios": "^0.18.0",
     "react": "^16.2.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-custom-scroll": "^3.1.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1"
   },

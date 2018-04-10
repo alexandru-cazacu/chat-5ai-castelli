@@ -1,23 +1,16 @@
 .left-column {
-    width: 300px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    border-radius: 5px;
-    position: absolute;
-    bottom: 1em;
-    top: 72px;
-}
-
-.left-column-scrollable-area {
-    overflow-y: scroll;
-    position: absolute;
-    bottom: 0;
-    top: 64px;
-    width: 100%;
+    width: 350px;
+    float: left;
+    position: relative;
+    height: 100%;
+    border-right: 1px solid #ddd;
 }
 
 .chat-card-no-hover {
-    padding: 0.8em;
+    padding: 8px;
     position: relative;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
 }
 
 .chat-card {

@@ -1,12 +1,16 @@
 package com.app.ChatProject.controllers;
 
+import com.app.ChatProject.JsonMaps.MessageMap;
 import com.app.ChatProject.entities.Chat;
 import com.app.ChatProject.entities.Message;
+import com.app.ChatProject.entities.User;
 import com.app.ChatProject.repositories.ChatUsersRepository;
 import com.app.ChatProject.repositories.ChatsRepository;
 import com.app.ChatProject.repositories.MessagesRepository;
 import com.app.ChatProject.repositories.UsersRepository;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,36 +44,39 @@ public class MessageController {
     /**
      * Create Message.
      *
-     * @param chatid
-     * @param message
+     * @param id
+     * @param messageMap
      * @return
      */
-    @PostMapping("/chats/{chatid}/messages")
-    public ResponseEntity<?> createMessage(@PathVariable(value = "chatid") String chatid, @Valid @RequestBody Message message) {
+    @PostMapping("/chats/{id}/messages")
+    public ResponseEntity<?> createMessage(@PathVariable("id") int id, @Valid @RequestBody MessageMap messageMap) {
 
         Message msg = new Message();
 
-        Chat chat = chatsRepository.findByUid(chatid);
+        Optional<Chat> chat = chatsRepository.findById(id);
+        User user = usersRepository.findByUsername(messageMap.getUsername());
 
-        msg.setChat(chat);
-        msg.setContent(message.getContent());
-        msg.setType(message.getType());
-        msg.setUser(usersRepository.findByUsername(message.getUser().getUsername()));
+        msg.setChat(chat.get());
+        msg.setContent(messageMap.getContent());
+        msg.setType(messageMap.getType());
+        msg.setUser(user);
 
         messagesRepository.save(msg);
 
-        return ResponseEntity.ok().build();
+        URI location = URI.create("/chats/" + chat.get().getId() + "/messages");
+
+        return ResponseEntity.created(location).body("");
     }
 
     /**
      * Retrieve Messages.
      *
-     * @param chatid
+     * @param id
      * @return
      */
-    @GetMapping("/chats/{chatid}/messages")
-    public List<Message> getMessages(@PathVariable(value = "chatid") String chatid) {
+    @GetMapping("/chats/{id}/messages")
+    public List<Message> getMessages(@PathVariable("id") int id) {
 
-        return messagesRepository.findByChatUid(chatid);
+        return messagesRepository.findByChatId(id);
     }
 }

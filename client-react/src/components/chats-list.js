@@ -1,6 +1,10 @@
 import React from 'react';
 import { getChats } from '../utils/rest-requests';
 import Snackbar from './snackbar';
+import ErrorMessage from './error-message';
+import InputField from './input-field';
+import CustomScroll from 'react-custom-scroll';
+import 'react-custom-scroll/dist/customScroll.css';
 
 import '../styles/chats-list.css';
 
@@ -61,7 +65,7 @@ export default class ChatsList extends React.Component {
             }
 
             return (
-                <div className="chat-card" key={chat.uid}>
+                <div className="chat-card" key={chat.uid} onClick={() => this.props.onOpenChat(chat.id)}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
                     <p className="title">{chat.name}</p>
                     <p className="subtitle1">{usrs}</p>
@@ -73,23 +77,16 @@ export default class ChatsList extends React.Component {
         return (
             <div className="left-column" >
                 <div className="chat-card-no-hover">
-                    <input
-                        type="text"
-                        value={this.state.chatFilter}
-                        placeholder="Search..."
-                        onChange={this.handleChatSearch}
-                        className="input-field search" />
+                    <InputField placeholder='Search...' onChange={this.handleChatSearch} />
                 </div>
-                <div className="left-column-scrollable-area">
-                    {this.state.showError &&
-                        <div className="error">
-                            <i className="material-icons">error_outline</i>
-                            <p>It seems like there is a problem visualizing the chats list.</p>
-                        </div>}
-                    {this.state.showError &&
-                        <Snackbar text='Please check your Internet connection.' />}
-                    {chatList}
-                </div>
+                <CustomScroll heightRelativeToParent="calc(100% - 60px)">
+                    <div>
+                        <ErrorMessage show={this.state.showError} message={'It seems like there is a problem visualizing the chats list.'} />
+                        {this.state.showError &&
+                            <Snackbar text='Please check your Internet connection.' />}
+                        {chatList}
+                    </div>
+                </CustomScroll>
             </div>
         );
     }
