@@ -5,6 +5,7 @@
  */
 package com.app.ChatProject.controller;
 
+import com.app.ChatProject.config.JwtSecurityConfig;
 import com.app.ChatProject.model.Users;
 import com.app.ChatProject.exception.MailException;
 import com.app.ChatProject.exception.ResourceNotFoundException;
@@ -12,11 +13,15 @@ import com.app.ChatProject.exception.UsernameException;
 import com.app.ChatProject.repositories.UsersRepository;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import com.app.ChatProject.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -33,32 +38,15 @@ public class UserController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping("/users")
+
+
+    /*@GetMapping("/users")
     public List<Users> getAllUsers(){
         List<Users> users=usersRepository.findAll();
         return users;
-    }
-
-    @PostMapping("/users")
-    public Users createUsers(@Valid @RequestBody Users user){
-        PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
-        String hashedPassword= passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
-        try{
-            usersRepository.save(user);
-        } catch(DataIntegrityViolationException e ){
-            if(usersRepository.findByUsername(user.getUsername())!=null){
-                throw new UsernameException(user.getUsername());
-            }
-            if(usersRepository.findByMail(user.getMail())!=null){
-                throw new MailException(user.getMail());
-            }
-        }
-
-        return usersRepository.save(user);
-    }
+    }*/
     
-    @GetMapping("/users/{username}")
+    /*@GetMapping("/users/{username}")
     public Users getUserByUsername(@PathVariable(value = "username") String userName){
         Users user=usersRepository.findByUsername(userName);
         
@@ -66,10 +54,25 @@ public class UserController {
             throw new ResourceNotFoundException("User", "username", userName);
         }
         return usersRepository.findByUsername(userName);
+    }*/
+
+    @GetMapping("/users")
+    public Users getUserByUsername(HttpServletRequest request){
+
+        String token= request.getHeader("Authorization");
+
+        JwtUtil jwtUtil=new JwtUtil();
+        String userName=jwtUtil.getUsernameFromToken(token);
+        Users user=usersRepository.findByUsername(userName);
+
+        if(user==null){
+            throw new ResourceNotFoundException("User", "username", userName);
+        }
+        return usersRepository.findByUsername(userName);
     }
     
     @GetMapping("/search")
-    public List<Users> getUsersByUsername(/*@PathVariable(value = "username") String userName*/@RequestParam("byUser") String userName){
+    public List<Users> getUsersByUsername(@RequestParam("byUser") String userName){
         List <Users> users=usersRepository.findByNameOrLastnameOrUsernameStartingWith(userName, userName, userName);
         
         if(users.isEmpty()){

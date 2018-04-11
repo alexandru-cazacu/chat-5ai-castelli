@@ -1,4 +1,4 @@
-package com.app.ChatProject.model;
+package com.app.ChatProject.jwtModel;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 

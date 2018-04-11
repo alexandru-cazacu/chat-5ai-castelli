@@ -10,16 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -32,6 +24,7 @@ public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
     
     @Column(name = "name")
@@ -57,14 +50,14 @@ public class Users implements Serializable {
     @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @JsonIgnore
+    private List<ChatUser> chatUsers;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     @JsonIgnore
-    private Collection<ChatUser> chatUserCollection;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    @JsonIgnore
-    private Collection<Messages> messagesCollection;
+    private List<Messages> messages;
 
     public Users() {
     }
@@ -82,20 +75,6 @@ public class Users implements Serializable {
         this.mail = mail;
         this.username = username;
         this.password = password;
-    }
-
-    public Users(Users users) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.mail = mail;
-        this.username = username;
-        this.password = password;
-        this.chatUserCollection=users.getChatUserCollection();
-        this.messagesCollection=users.getMessagesCollection();
-
     }
 
     public Integer getId() {
@@ -162,26 +141,21 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    @XmlTransient
-    public Collection<ChatUser> getChatUserCollection() {
-        return chatUserCollection;
+
+    public List<ChatUser> getChatUsers() {
+        return chatUsers;
     }
 
-    public void setChatUserCollection(Collection<ChatUser> chatUserCollection) {
-        this.chatUserCollection = chatUserCollection;
+    public void setChatUsers(List<ChatUser> chatUsers) {
+        this.chatUsers = chatUsers;
     }
 
-    public void addChatUser(ChatUser chatUser){
-        chatUserCollection.add(chatUser);
+    public List<Messages> getMessages() {
+        return messages;
     }
 
-    @XmlTransient
-    public Collection<Messages> getMessagesCollection() {
-        return messagesCollection;
-    }
-
-    public void setMessagesCollection(Collection<Messages> messagesCollection) {
-        this.messagesCollection = messagesCollection;
+    public void setMessages(List<Messages> messages) {
+        this.messages = messages;
     }
 
     @Override

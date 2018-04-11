@@ -5,18 +5,12 @@
  */
 package com.app.ChatProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,28 +18,24 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author saul
  */
 @Entity
-@Table(name = "chat-user")
+@Table(name = "chat_user")
 @XmlRootElement
 public class ChatUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
+
     @Column(name = "admin")
     private boolean admin;
-    
-    @Column(name = "last-seen")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastSeen;
-    
+
+
     @JoinColumn(name = "id_user", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Users idUser;
-    
+
     @JoinColumn(name = "id_chat", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    //@JsonBackReference
     private Chats idChat;
 
     public ChatUser() {
@@ -58,7 +48,6 @@ public class ChatUser implements Serializable {
     public ChatUser(Integer id, boolean admin, Date lastSeen) {
         this.id = id;
         this.admin = admin;
-        this.lastSeen = lastSeen;
     }
 
     public Integer getId() {
@@ -77,12 +66,8 @@ public class ChatUser implements Serializable {
         this.admin = admin;
     }
 
-    public Date getLastSeen() {
-        return lastSeen;
-    }
-
-    public void setLastSeen(Date lastSeen) {
-        this.lastSeen = lastSeen;
+    public boolean isAdmin() {
+        return admin;
     }
 
     public Users getIdUser() {

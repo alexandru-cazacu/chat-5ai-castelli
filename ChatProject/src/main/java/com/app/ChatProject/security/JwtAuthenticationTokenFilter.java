@@ -1,7 +1,6 @@
 package com.app.ChatProject.security;
 
-import com.app.ChatProject.model.JwtAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
+import com.app.ChatProject.jwtModel.JwtAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -23,11 +22,13 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 
         String header=httpServletRequest.getHeader("Authorization");
 
-        if(header==null || !header.startsWith("Token ")){
+        if(header==null){
             throw new RuntimeException("JWT Token is missing");
         }
 
         String authenticationToken =header.substring(6);
+
+        System.out.println();
 
         JwtAuthenticationToken token= new JwtAuthenticationToken(authenticationToken);
 

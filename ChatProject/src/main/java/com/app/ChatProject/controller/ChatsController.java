@@ -3,9 +3,11 @@ package com.app.ChatProject.controller;
 
 import com.app.ChatProject.model.ChatUser;
 import com.app.ChatProject.model.Chats;
+import com.app.ChatProject.model.Messages;
 import com.app.ChatProject.model.Users;
 import com.app.ChatProject.repositories.ChatUserRepository;
 import com.app.ChatProject.repositories.ChatsRepository;
+import com.app.ChatProject.repositories.MessagesRepository;
 import com.app.ChatProject.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,30 +25,48 @@ public class ChatsController {
     private ChatsRepository chatsRepository;
 
     @Autowired
+    private  ChatUserRepository chatUserRepository;
+
+    @Autowired
     private UsersRepository usersRepository;
 
     @Autowired
-    private ChatUserRepository chatUserRepository;
+    private MessagesRepository messagesRepository;
 
     @PostMapping("/users/{username}/chats")
-    public Chats createChat(@Valid @RequestBody Chats chat, @PathVariable(value = "username") String username){
-        chatsRepository.save(chat);
+    public String createChat(@Valid @RequestBody Messages message, @PathVariable(value = "username") String username, @RequestParam("contact") String contact){
+
+        if(message!=null){
+
+        }
+        Chats chat=new Chats();
+        chat.setUid("nsdfadfaf");
+        chat.setLink("suifgbaidsfa");
+
+        try{
+            chatsRepository.save(chat);
+        }
+        catch (Exception e){
+            System.out.println("Non funziona");
+        }
         Users user=usersRepository.findByUsername(username);
+        Users contactUser=usersRepository.findByUsername(contact);
 
-        ChatUser chatUser=new ChatUser();
-        chatUser.setIdChat(chat);
-        chatUser.setIdUser(user);
+        ChatUser chatUser1=new ChatUser();
+        chatUser1.setIdChat(chat);
+        chatUser1.setIdUser(user);
 
-        chatUserRepository.save(chatUser);
+        ChatUser chatUser2=new ChatUser();
+        chatUser2.setIdChat(chat);
+        chatUser2.setIdUser(user);
 
-        user.addChatUser(chatUser);
+        chatUserRepository.save(chatUser1);
+        chatUserRepository.save(chatUser2);
 
-        chat.addChatUser(chatUser);
-
-        return chatsRepository.save(chat);
+        return "ok";
     }
 
-    @GetMapping("/users/{username}/chats/{chat_id}")
+    /*@GetMapping("/users/{username}/chats/")
     public List<Chats> getChats(@PathVariable(value = "username") String username, @PathVariable(value = "chat_id") int id){
         Users users=usersRepository.findByUsername(username);
 
@@ -54,4 +74,14 @@ public class ChatsController {
 
         return chats;
     }
+
+    @GetMapping("/users/{username}/chats/{chat_id}/messages")
+    public List<Messages> getMessages(@PathVariable(value = "username") String username, @PathVariable(value = "chat_id") String uid){
+        Users user=usersRepository.findByUsername(username);
+        Chats chat=chatsRepository.findByUid(uid);
+
+        List<Messages> messages=messagesRepository.findByIdUserAndByIdChat(user, chat);
+
+        return messages;
+    }*/
 }

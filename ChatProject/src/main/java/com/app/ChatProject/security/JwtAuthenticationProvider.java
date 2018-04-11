@@ -1,13 +1,11 @@
 package com.app.ChatProject.security;
 
-import com.app.ChatProject.model.JwtAuthenticationToken;
-import com.app.ChatProject.model.JwtUser;
-import com.app.ChatProject.model.JwtUserDetails;
+import com.app.ChatProject.jwtModel.JwtAuthenticationToken;
+import com.app.ChatProject.jwtModel.JwtUser;
+import com.app.ChatProject.jwtModel.JwtUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,7 +18,7 @@ import java.util.List;
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Autowired
-    private JwtValidator validator;
+    private JwtUtil validator;
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
@@ -39,9 +37,9 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
             throw new RuntimeException("JWT token is incorrect");
         }
 
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(jwtUser.getRole());
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("user");
 
-        return new JwtUserDetails(jwtUser.getUserName(), jwtUser.getId(), token, grantedAuthorities);
+        return new JwtUserDetails(jwtUser.getUsername(), jwtUser.getPassword(), token, grantedAuthorities);
     }
 
     @Override

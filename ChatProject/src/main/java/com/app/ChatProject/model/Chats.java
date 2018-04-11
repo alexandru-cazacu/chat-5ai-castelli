@@ -5,18 +5,12 @@
  */
 package com.app.ChatProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -37,14 +31,12 @@ public class Chats implements Serializable {
     
     @Column(name = "link")
     private String link;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "idChat")
+    private List<ChatUser> chatUsersers;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_chat")
-    //@JsonManagedReference
-    private Collection<ChatUser> chatUserCollection;
-    
-    @JoinColumn(name = "ID", referencedColumnName = "id_chat", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Messages messages;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idChat")
+    private List<Messages> messages;
 
     public Chats() {
     }
@@ -83,24 +75,19 @@ public class Chats implements Serializable {
         this.link = link;
     }
 
-    @XmlTransient
-    public Collection<ChatUser> getChatUserCollection() {
-        return chatUserCollection;
+    public List<ChatUser> getChatUsersers() {
+        return chatUsersers;
     }
 
-    public void setChatUserCollection(Collection<ChatUser> chatUserCollection) {
-        this.chatUserCollection = chatUserCollection;
+    public void setChatUsersers(List<ChatUser> chatUsersers) {
+        this.chatUsersers = chatUsersers;
     }
 
-    public void addChatUser(ChatUser chatUser){
-        chatUserCollection.add(chatUser);
-    }
-
-    public Messages getMessages() {
+    public List<Messages> getMessages() {
         return messages;
     }
 
-    public void setMessages(Messages messages) {
+    public void setMessages(List<Messages> messages) {
         this.messages = messages;
     }
 

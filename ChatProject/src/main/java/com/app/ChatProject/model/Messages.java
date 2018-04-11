@@ -6,7 +6,6 @@
 package com.app.ChatProject.model;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -28,12 +26,7 @@ public class Messages implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
 
-    @Column(name = "id_chat")
-    private int idChat;
-    
-    
     @Column(name = "content")
     private String content;
     
@@ -42,27 +35,22 @@ public class Messages implements Serializable {
     
     @Column(name = "timestamp")
     private int timestamp;
-    
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "messages")
-    private Chats chats;
-    
+
+
     @JoinColumn(name = "id_user", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Users idUser;
 
-    public Messages() {
+    @JoinColumn(name = "id_chat", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Chats idChat;
+
+    public Messages(Chats idChat) {
+        this.idChat = idChat;
     }
 
     public Messages(Integer id) {
         this.id = id;
-    }
-
-    public Messages(Integer id, int idChat, String content, String type, int timestamp) {
-        this.id = id;
-        this.idChat = idChat;
-        this.content = content;
-        this.type = type;
-        this.timestamp = timestamp;
     }
 
     public Integer getId() {
@@ -71,14 +59,6 @@ public class Messages implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getIdChat() {
-        return idChat;
-    }
-
-    public void setIdChat(int idChat) {
-        this.idChat = idChat;
     }
 
     public String getContent() {
@@ -105,12 +85,12 @@ public class Messages implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Chats getChats() {
-        return chats;
+    public Chats getIdChat() {
+        return idChat;
     }
 
-    public void setChats(Chats chats) {
-        this.chats = chats;
+    public void setIdChat(Chats idChat) {
+        this.idChat = idChat;
     }
 
     public Users getIdUser() {

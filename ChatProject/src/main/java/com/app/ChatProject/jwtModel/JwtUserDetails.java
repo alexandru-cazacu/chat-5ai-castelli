@@ -1,4 +1,4 @@
-package com.app.ChatProject.model;
+package com.app.ChatProject.jwtModel;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,13 +9,13 @@ import java.util.List;
 public class JwtUserDetails implements UserDetails {
 
     private String userName;
-    private long id;
+    private String password;
     private String token;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(String userName, long id, String token, List<GrantedAuthority> grantedAuthorities) {
+    public JwtUserDetails(String userName, String password, String token, List<GrantedAuthority> grantedAuthorities) {
         this.userName=userName;
-        this.id=id;
+        this.password=password;
         this.token=token;
         this.authorities=grantedAuthorities;
     }
@@ -59,8 +59,20 @@ public class JwtUserDetails implements UserDetails {
         return userName;
     }
 
-    public long getId() {
-        return id;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getToken() {
