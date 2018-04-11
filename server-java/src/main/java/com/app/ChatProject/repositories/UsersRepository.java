@@ -1,6 +1,5 @@
 package com.app.ChatProject.repositories;
 
-import com.app.ChatProject.entities.ChatUser;
 import com.app.ChatProject.entities.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

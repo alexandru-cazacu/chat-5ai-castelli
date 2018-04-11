@@ -8,7 +8,6 @@ import com.app.ChatProject.repositories.ChatUsersRepository;
 import com.app.ChatProject.repositories.ChatsRepository;
 import com.app.ChatProject.repositories.MessagesRepository;
 import com.app.ChatProject.repositories.UsersRepository;
-import com.sun.jndi.toolkit.url.Uri;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;

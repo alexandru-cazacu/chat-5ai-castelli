@@ -5,9 +5,7 @@
  */
 package com.app.ChatProject.controller;
 
-import com.app.ChatProject.config.JwtSecurityConfig;
 import com.app.ChatProject.model.Users;
-import com.app.ChatProject.exception.MailException;
 import com.app.ChatProject.exception.ResourceNotFoundException;
 import com.app.ChatProject.exception.UsernameException;
 import com.app.ChatProject.repositories.UsersRepository;
@@ -20,10 +18,6 @@ import com.app.ChatProject.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
