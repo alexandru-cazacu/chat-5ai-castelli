@@ -8,7 +8,10 @@ import com.app.ChatProject.repositories.UsersRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import com.app.ChatProject.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +37,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @PostMapping(value = "/users")
+    /*@PostMapping(value = "/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -49,7 +52,7 @@ public class UserController {
         }
 
         return ResponseEntity.ok().build();
-    }
+    }*/
 
     /**
      * Retrieve Users.
@@ -58,7 +61,7 @@ public class UserController {
      * @param mode
      * @return
      */
-    @GetMapping("/users")
+    @GetMapping("/search")
     public List<?> getUsers(
             @RequestParam(value = "searchByUsername", required = true) String username,
             @RequestParam(value = "mode", required = false) String mode) {
@@ -90,41 +93,46 @@ public class UserController {
     /**
      * Retrieve User.
      *
-     * @param id
+     *
      * @return 200, 
      */
-    @GetMapping("/users/{id}")
-    public User getUser(@PathVariable("id") int id) {
+    @GetMapping("/users")
+    public User getUser(HttpServletRequest request) {
 
-        Optional<User> user = usersRepository.findById(id);
+        String token= request.getHeader("Authorization");
 
-        if (!user.isPresent()) {
-            throw new ResourceNotFoundException("User", "username", id);
+        JwtUtil jwtUtil=new JwtUtil();
+        String userName=jwtUtil.getUsernameFromToken(token);
+        User user=usersRepository.findByUsername(userName);
+
+        if(user==null){
+            throw new ResourceNotFoundException("User", "username", userName);
         }
 
-        return user.get();
+        return user;
     }
 
     /**
      * Update User.
      *
-     * @param id
+     * @param
      * @param userDetails
      * @param errors
      * @return 200, 400, 401, 404, 409
      */
-    @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(
-            @PathVariable("id") int id,
+    @PutMapping("/users")
+    public ResponseEntity<?> updateUser(HttpServletRequest request,
             @Valid @RequestBody User userDetails, Errors errors) {
 
-        Optional<User> optUser = usersRepository.findById(id);
+        String token= request.getHeader("Authorization");
 
-        if (!optUser.isPresent()) {
-            throw new ResourceNotFoundException("User", "username", id);
+        JwtUtil jwtUtil=new JwtUtil();
+        String userName=jwtUtil.getUsernameFromToken(token);
+        User user=usersRepository.findByUsername(userName);
+
+        if(user==null){
+            throw new ResourceNotFoundException("User", "username", userName);
         }
-
-        User user = optUser.get();
 
         user.setName(userDetails.getName());
         user.setSurname(userDetails.getSurname());
@@ -151,19 +159,24 @@ public class UserController {
     /**
      * Delete User.
      *
-     * @param id
+     * @param
      * @return 200, 400, 401, 404
      */
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
+    @DeleteMapping("/users")
+    public ResponseEntity<?> deleteUser(HttpServletRequest request) {
 
-        Optional<User> user = usersRepository.findById(id);
 
-        if (!user.isPresent()) {
-            return ResponseEntity.notFound().build();
+        String token= request.getHeader("Authorization");
+
+        JwtUtil jwtUtil=new JwtUtil();
+        String userName=jwtUtil.getUsernameFromToken(token);
+        User user=usersRepository.findByUsername(userName);
+
+        if(user==null){
+            throw new ResourceNotFoundException("User", "username", userName);
         }
 
-        usersRepository.delete(user.get());
+        usersRepository.delete(user);
 
         return ResponseEntity.ok().build();
     }
