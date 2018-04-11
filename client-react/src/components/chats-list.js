@@ -1,6 +1,5 @@
 import React from 'react';
 import { getChats } from '../utils/rest-requests';
-import Snackbar from './snackbar';
 import ErrorMessage from './error-message';
 import InputField from './input-field';
 import CustomScroll from 'react-custom-scroll';
@@ -15,7 +14,8 @@ export default class ChatsList extends React.Component {
         this.state = {
             filteredChatsList: [],
             chatFilter: '',
-            showError: false
+            showError: false,
+            errorMessage: ''
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
@@ -25,10 +25,18 @@ export default class ChatsList extends React.Component {
     updateChatsList() {
         getChats((chatsList) => {
             var filteredChatsList = [];
-            chatsList.forEach((chat) => {
+            chatsList.data.forEach((chat) => {
                 if (chat.name.includes(this.state.chatFilter))
                     filteredChatsList.push(chat);
             });
+
+            if (chatsList.data.length === 0) {
+                this.setState({
+                    errorMessage: 'Be the first one to write to a friend.',
+                    showError: true
+                });
+                return;
+            }
 
             this.setState({
                 filteredChatsList: filteredChatsList,
@@ -81,9 +89,7 @@ export default class ChatsList extends React.Component {
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 60px)">
                     <div>
-                        <ErrorMessage show={this.state.showError} message={'It seems like there is a problem visualizing the chats list.'} />
-                        {this.state.showError &&
-                            <Snackbar text='Please check your Internet connection.' />}
+                        <ErrorMessage show={this.state.showError} message={this.state.errorMessage} />
                         {chatList}
                     </div>
                 </CustomScroll>

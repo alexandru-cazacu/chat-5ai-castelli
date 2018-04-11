@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/signup")
-@CrossOrigin(origins = "*")
 public class SignUpController {
 
     @Autowired

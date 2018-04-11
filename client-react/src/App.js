@@ -10,7 +10,7 @@ import ChatPage from './pages/chat-page';
 import NotFoundPage from './pages/not-found-page';
 
 
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 export default class App extends React.Component {
     render() {

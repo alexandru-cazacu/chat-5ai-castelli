@@ -1,12 +1,8 @@
 import React from 'react';
-import Message from './message';
 import '../styles/messages-list.css';
 import { getMessages, postMessage } from '../utils/rest-requests';
 import InputField from './input-field';
-import CustomScroll from 'react-custom-scroll';
 import 'react-custom-scroll/dist/customScroll.css';
-import Button from './button';
-import ErrorMessage from './error-message';
 import MessagesList from './messages-list';
 
 export default class Chat extends React.Component {

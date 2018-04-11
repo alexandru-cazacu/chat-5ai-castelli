@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
  * @author Alex
  */
 @RestController
-@CrossOrigin(origins = "*")
 public class ChatController {
 
     @Autowired
@@ -45,14 +44,14 @@ public class ChatController {
     /**
      * Create Chat.
      *
-     * @param
      * @param chatUserMap
+     * @param request
      * @return
      */
     @PostMapping("/users/chats")
     public ResponseEntity<?> createChat(
             @Valid @RequestBody ChatUserMap chatUserMap, HttpServletRequest request) {
-        
+
         String uId = UUID.randomUUID().toString();
 
         Chat chat = new Chat();
@@ -72,39 +71,39 @@ public class ChatController {
 
             chatUsersRepository.save(chatUser);
         }
-        
+
         ChatUser chatUser = new ChatUser();
 
-        String token= request.getHeader("Authorization");
+        String token = request.getHeader("Authorization");
 
-        JwtUtil jwtUtil=new JwtUtil();
-        String userName=jwtUtil.getUsernameFromToken(token);
-        User user=usersRepository.findByUsername(userName);
-        
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User user = usersRepository.findByUsername(userName);
+
         chatUser.setUser(user);
         chatUser.setChat(chat);
         chatUser.setAdmin(true);
-        
+
         chatUsersRepository.save(chatUser);
-        
+
         URI location = URI.create("/chats/" + chat.getId());
-        
+
         return ResponseEntity.created(location).body("");
     }
 
     /**
      * Retrieve Chats.
      *
-     * @param
+     * @param request
      * @return
      */
     @GetMapping("/users/chats")
     public List<Chat> getUserChats(HttpServletRequest request) {
-        String token= request.getHeader("Authorization");
+        String token = request.getHeader("Authorization");
 
-        JwtUtil jwtUtil=new JwtUtil();
-        String userName=jwtUtil.getUsernameFromToken(token);
-        User user=usersRepository.findByUsername(userName);
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User user = usersRepository.findByUsername(userName);
 
         List<ChatUser> chatUsers = chatUsersRepository.findByUserId(user.getId());
 

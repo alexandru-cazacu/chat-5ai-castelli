@@ -5,7 +5,6 @@ import AuthService from '../utils/auth-service';
 import InputField from '../components/input-field';
 import Button from '../components/button';
 import ErrorsList from '../components/errors-list';
-import logo from '../images/chat3.svg';
 import '../styles/sign-up-page.css';
 
 export default class SignInPage extends React.Component {
@@ -19,6 +18,9 @@ export default class SignInPage extends React.Component {
         };
 
         this.Auth = new AuthService();
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit() {
@@ -28,14 +30,16 @@ export default class SignInPage extends React.Component {
         }
 
         this.Auth.login(this.state.username, this.state.password)
-            .then(res => {
+            .then(() => {
                 this.props.history.replace('/chat');
             })
-            .catch(err => {
-                this.setState({ errorsList: ['Please check your credentials and try again'] });
-                // toast.info(err.toString(), {
-                //     position: toast.POSITION.BOTTOM_CENTER
-                // });
+            .catch((error) => {
+                if (error.name === 'TypeError')
+                    toast.error('Check your Connection and try again', {
+                        position: toast.POSITION.BOTTOM_CENTER
+                    });
+                else
+                    this.setState({ errorsList: ['Please check your credentials and try again'] });
             });
     }
 
@@ -49,8 +53,6 @@ export default class SignInPage extends React.Component {
     }
 
     render() {
-        const errorsList = this.state.errorsList.map((error) => { return <li>{error}</li>; });
-
         return (
             <div>
                 <div className="header">
@@ -73,14 +75,10 @@ export default class SignInPage extends React.Component {
                     </div>
                 </div>
 
-                <div className='logo-container'>
-                    <img src={logo} className="main-logo" alt="Main Logo" />
-                    <p className="main-title">Chatty</p>
-                </div>
                 <div className="centered-card">
                     <h1 className='card-title'>Sign In</h1>
                     <InputField name='username' placeholder='Username...' onChange={this.handleChange.bind(this)} />
-                    <InputField name='password' placeholder='Password...' onChange={this.handleChange.bind(this)} />
+                    <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange.bind(this)} />
                     <Button value='Sign In' onClick={this.handleSubmit.bind(this)} />
                     <ErrorsList errors={this.state.errorsList} />
                 </div>

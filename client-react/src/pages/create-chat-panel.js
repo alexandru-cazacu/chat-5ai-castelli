@@ -7,7 +7,6 @@ import { postChat, getUsersBySearch } from '../utils/rest-requests';
 import close from '../images/close.svg';
 
 import '../styles/create-chat-panel.css';
-import Snackbar from '../components/snackbar';
 import SuggestionsList from '../components/suggestions-list';
 import ButtonGroup from '../components/button-group';
 
@@ -30,7 +29,7 @@ export default class CreateChatPanel extends React.Component {
     }
 
     handleChatCreation() {
-        postChat(this.state.chatName, this.state.invitedPeople, (response) => {
+        postChat(this.state.chatName, this.state.invitedPeople, () => {
             this.sendSuccess();
         }, (error) => {
             console.log(error);

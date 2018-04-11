@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Alex
  */
 @RestController
-@CrossOrigin(origins = "*")
 public class MessageController {
 
     @Autowired

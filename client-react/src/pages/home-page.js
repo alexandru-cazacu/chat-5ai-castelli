@@ -1,9 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import InputField from '../components/input-field';
-import Button from '../components/button';
-import Select from '../components/select';
-import ErrorsList from '../components/errors-list';
 import logo from '../images/chat3.svg';
 import '../styles/sign-up-page.css';
 import '../styles/home-page.css';
