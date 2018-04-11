@@ -22,15 +22,28 @@
     float: right;
 }
 
-.header .nav .material-icons {
+.header .nav .item {
     color: #888;
-    padding: 15px 16px;
-    font-size: 26px;
-    border-radius: 100%;
+    border-radius: 28px;
+    cursor: pointer;
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    display: inline-block;
 }
 
-.header .nav .material-icons:hover {
-    cursor: pointer;
-    background-color: #eee;
+.header .nav .item:hover {
+    background-color: #00000011;
 }
+
+.header .nav .material-icons {
+    color: rgb(128, 128, 128);
+    font-size: 26px;
+    line-height: 26px;
+    padding: 15px;
+}
+
+.header .nav .item .text {
+    padding: 20px 20px 20px 0;/* 16px;*/
+    line-height: 16px;
+    float: right;
+}
+

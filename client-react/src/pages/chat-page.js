@@ -3,9 +3,9 @@ import React from 'react';
 import Header from '../components/header';
 import ChatsList from '../components/chats-list';
 import CreateChatPanel from './create-chat-panel';
-import MessagesList from '../components/messages-list';
+import Chat from '../components/chat';
 
-import '../styles/chat.css';
+import '../styles/chat-page.css';
 
 export default class ChatPage extends React.Component {
 
@@ -32,16 +32,14 @@ export default class ChatPage extends React.Component {
     }
 
     handleSuccessfullyCreateChat() {
-        console.log('Created successfully');
         this.setState({ showCreateChatPanel: false });
     }
 
     handleUnsuccessfullyCreateChat() {
-        console.log('Created unsuccessfully');
+        
     }
 
     handleOpenChat(chatid) {
-        console.log(chatid);
         this.setState({ chatid: chatid });
     }
 
@@ -58,7 +56,7 @@ export default class ChatPage extends React.Component {
                                 onSuccessfullyCreateChat={this.handleSuccessfullyCreateChat}
                                 onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
                             />}
-                        <MessagesList chatid={this.state.chatid} />
+                        <Chat chatid={this.state.chatid} />
                     </div>
                 </div>
             </div>
