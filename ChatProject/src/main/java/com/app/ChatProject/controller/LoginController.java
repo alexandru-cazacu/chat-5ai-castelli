@@ -5,17 +5,11 @@ import com.app.ChatProject.jwtModel.JwtUser;
 import com.app.ChatProject.model.Users;
 import com.app.ChatProject.repositories.UsersRepository;
 import com.app.ChatProject.security.JwtUtil;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
-
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.http.HTTPException;
 
 @RestController
