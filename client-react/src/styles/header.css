@@ -45,5 +45,7 @@
     padding: 20px 20px 20px 0;/* 16px;*/
     line-height: 16px;
     float: right;
+    color: rgb(128, 128, 128);
+    text-decoration: none;
 }
 

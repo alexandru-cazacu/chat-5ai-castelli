@@ -3,8 +3,10 @@ import InputField from '../components/input-field';
 import Button from '../components/button';
 import Select from '../components/select';
 import ErrorsList from '../components/errors-list';
+import AuthService from '../utils/auth-service';
 import logo from '../images/chat3.svg';
 import '../styles/sign-up-page.css';
+import { Link } from 'react-router-dom';
 
 export default class SignUpPage extends React.Component {
 
@@ -18,6 +20,8 @@ export default class SignUpPage extends React.Component {
             password: '',
             errorsList: []
         };
+
+        this.Auth = new AuthService();
     }
 
     handleSubmit() {
@@ -36,9 +40,33 @@ export default class SignUpPage extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    componentWillMount() {
+        if (this.Auth.loggedIn())
+            this.props.history.replace('/chat');
+    }
+
     render() {
         return (
             <div>
+                <div className="header">
+                    <div className="wrapper">
+                        <div className="title">Chatty</div>
+                        <div className="nav">
+                            <div className="item">
+                                <i className="material-icons">home</i>
+                                <Link to="/" className="text">Home</Link>
+                            </div>
+                            <div className="item">
+                                <i className="material-icons">account_circle</i>
+                                <Link to="/sign-in" className="text">Sign In</Link>
+                            </div>
+                            <div className="item">
+                                <i className="material-icons">account_circle</i>
+                                <Link to="/sign-up" className="text">Sign Up</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className='logo-container'>
                     <img src={logo} className="main-logo" alt="Main Logo" />
                     <p className="main-title">Chatty</p>

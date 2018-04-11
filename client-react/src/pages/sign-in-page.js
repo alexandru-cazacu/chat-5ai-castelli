@@ -53,6 +53,26 @@ export default class SignInPage extends React.Component {
 
         return (
             <div>
+                <div className="header">
+                    <div className="wrapper">
+                        <div className="title">Chatty</div>
+                        <div className="nav">
+                            <div className="item">
+                                <i className="material-icons">home</i>
+                                <Link to="/" className="text">Home</Link>
+                            </div>
+                            <div className="item">
+                                <i className="material-icons">account_circle</i>
+                                <Link to="/sign-in" className="text">Sign In</Link>
+                            </div>
+                            <div className="item">
+                                <i className="material-icons">account_circle</i>
+                                <Link to="/sign-up" className="text">Sign Up</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className='logo-container'>
                     <img src={logo} className="main-logo" alt="Main Logo" />
                     <p className="main-title">Chatty</p>

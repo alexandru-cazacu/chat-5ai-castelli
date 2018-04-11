@@ -5,11 +5,15 @@
   "dependencies": {
     "array-subtract": "^2.0.0",
     "axios": "^0.18.0",
+    "jwt-decode": "^2.2.0",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-custom-scroll": "^3.1.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "react-toastify": "^3.4.3"
   },
   "scripts": {
     "start": "react-scripts start",

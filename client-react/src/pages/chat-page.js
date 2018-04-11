@@ -7,7 +7,11 @@ import Chat from '../components/chat';
 
 import '../styles/chat-page.css';
 
-export default class ChatPage extends React.Component {
+import AuthService from '../utils/auth-service';
+import withAuth from '../components/with-auth';
+const Auth = new AuthService();
+
+class ChatPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -21,6 +25,7 @@ export default class ChatPage extends React.Component {
         this.handleSuccessfullyCreateChat = this.handleSuccessfullyCreateChat.bind(this);
         this.handleUnsuccessfullyCreateChat = this.handleUnsuccessfullyCreateChat.bind(this);
         this.handleOpenChat = this.handleOpenChat.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     handleOpenCreateChatPanel() {
@@ -36,17 +41,25 @@ export default class ChatPage extends React.Component {
     }
 
     handleUnsuccessfullyCreateChat() {
-        
+
     }
 
     handleOpenChat(chatid) {
         this.setState({ chatid: chatid });
     }
 
+    handleLogout() {
+        Auth.logout();
+        this.props.history.replace('/sign-in');
+    }
+
     render() {
         return (
             <div className="App">
-                <Header onOpenCreateChatPanel={this.handleOpenCreateChatPanel} />
+                <Header
+                    onOpenCreateChatPanel={this.handleOpenCreateChatPanel}
+                    onLogout={this.handleLogout}
+                />
                 <div className='fixed-body'>
                     <div className="wrapper shadow">
                         <ChatsList onOpenChat={this.handleOpenChat} />
@@ -63,3 +76,5 @@ export default class ChatPage extends React.Component {
         );
     }
 }
+
+export default withAuth(ChatPage);

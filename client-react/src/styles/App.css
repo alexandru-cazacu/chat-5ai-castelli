@@ -31,27 +31,6 @@ html,
     border-radius: 5px;
 }
 
-.main-logo {
-    width: 300px;
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.main-title {
-    width: 500px;
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    box-sizing: border-box;
-    font-weight: bold;
-    font-size: 6em;
-    letter-spacing: 0.2em;
-}
-
 /* ==================== GRID ==================== */
 
 .col-1,

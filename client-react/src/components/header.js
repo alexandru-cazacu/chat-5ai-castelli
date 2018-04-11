@@ -17,7 +17,7 @@ export default class Header extends React.Component {
                             <i className="material-icons">account_circle</i>
                             <p className="text">Account</p>
                         </div>
-                        <div className="item">
+                        <div className="item" onClick={this.props.onLogout}>
                             <i className="material-icons">exit_to_app</i>
                             <p className="text">Log out</p>
                         </div>

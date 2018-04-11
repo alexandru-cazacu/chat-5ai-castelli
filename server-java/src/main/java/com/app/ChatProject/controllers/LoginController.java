@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.http.HTTPException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/login")
+@CrossOrigin(origins = "*")
 public class LoginController {
 
     @Autowired

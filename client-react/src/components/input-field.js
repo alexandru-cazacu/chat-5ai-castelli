@@ -26,7 +26,8 @@ export default class InputField extends React.Component {
     render() {
         return (
             <input
-                type="text"
+                type={this.props.type === undefined ? 'text' : this.props.type}
+                name={this.props.name}
                 placeholder={this.props.placeholder}
                 value={this.state.value}
                 onChange={this.handleChange}
