@@ -1,5 +1,7 @@
 .home-message {
     font-size: 3em;
+    margin-bottom: 8px;
+    display: inline-block;
 }
 
 .home-message.color {
@@ -11,14 +13,14 @@
 }
 
 .centered-card.clean {
-    width: 800px;
+    width: 100%;
     position: absolute;
     top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     text-align: center;
     overflow: visible;
+    text-align: center;
 }
 
 .centered-card.clean:hover {
@@ -26,17 +28,17 @@
 }
 
 .left-card-home {
-    width: 50%;
-    float: left;
+    width: 300px;
     padding-left: 150px;
     padding-right: 8px;
     box-sizing: border-box;
+    display: inline-block;
 }
 
 .right-card-home {
-    width: 50%;
-    float: right;
+    width: 300px;
     padding-left: 8px;
     padding-right: 150px;
     box-sizing: border-box;
+    display: inline-block;
 }

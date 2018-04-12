@@ -36,15 +36,14 @@ export default class HomePage extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className='logo-container'>
-                    <img src={logo} className="main-logo" alt="Main Logo" />
-                    <p className="main-title">Chatty</p>
-                </div>
+
                 <div className="centered-card clean">
+                    <img src={logo} className="main-logo" alt="Main Logo" />
                     <div className='home-message'>Chatty is <div className='home-message color' style={{ color: this.state.colors[Math.floor((Math.random() * 9))] }}>
                         {this.state.messages[Math.floor((Math.random() * 9))]}.
                     </div>
                     </div>
+                    <br />
                     <div className='left-card-home'>
                         <Link to="/sign-in" className="button">Sign In</Link>
                     </div>

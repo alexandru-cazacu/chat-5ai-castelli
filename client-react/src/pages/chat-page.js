@@ -4,6 +4,9 @@ import Header from '../components/header';
 import ChatsList from '../components/chats-list';
 import CreateChatPanel from './create-chat-panel';
 import Chat from '../components/chat';
+import {
+    CHATTY_API_GET_CHAT
+} from '../utils/api-requests';
 
 import '../styles/chat-page.css';
 
@@ -17,7 +20,8 @@ class ChatPage extends React.Component {
         super(props);
         this.state = {
             showCreateChatPanel: false,
-            chatid: -1
+            chatid: -1,
+            chatName: ''
         };
 
         this.handleOpenCreateChatPanel = this.handleOpenCreateChatPanel.bind(this);
@@ -45,7 +49,14 @@ class ChatPage extends React.Component {
     }
 
     handleOpenChat(chatid) {
-        this.setState({ chatid: chatid });
+        CHATTY_API_GET_CHAT(chatid)
+            .then((response) => {
+                this.setState({
+                    chatName: response.data.name,
+                    chatid: chatid
+                });
+            })
+            .catch();
     }
 
     handleLogout() {
@@ -62,14 +73,14 @@ class ChatPage extends React.Component {
                 />
                 <div className='fixed-body'>
                     <div className="wrapper shadow">
-                        <ChatsList onOpenChat={this.handleOpenChat} />
+                        <ChatsList onOpenChat={this.handleOpenChat} currentOpenChat={this.state.chatid} />
                         {this.state.showCreateChatPanel &&
                             <CreateChatPanel
                                 onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
                                 onSuccessfullyCreateChat={this.handleSuccessfullyCreateChat}
                                 onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
                             />}
-                        <Chat chatid={this.state.chatid} />
+                        {this.state.chatid !== -1 && <Chat chatid={this.state.chatid} chatName={this.state.chatName} />}
                     </div>
                 </div>
             </div>

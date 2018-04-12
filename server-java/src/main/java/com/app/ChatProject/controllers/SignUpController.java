@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/signup")
@@ -24,22 +23,22 @@ public class SignUpController {
     private UsersRepository usersRepository;
 
     @PostMapping
-    public User createUsers(@Valid @RequestBody User user){
+    public User createUsers(@Valid @RequestBody User user) {
 
-        PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
-        String hashedPassword= passwordEncoder.encode(user.getPassword());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        try{
+        try {
             usersRepository.save(user);
-        } catch(DataIntegrityViolationException e ){
-            if(usersRepository.findByUsername(user.getUsername())!=null){
+        }
+        catch (DataIntegrityViolationException e) {
+            if (usersRepository.findByUsername(user.getUsername()) != null) {
                 throw new UsernameException(user.getUsername());
             }
-            if(usersRepository.findByMail(user.getMail())!=null){
+            if (usersRepository.findByMail(user.getMail()) != null) {
                 throw new MailException(user.getMail());
             }
         }
-
         return usersRepository.save(user);
     }
 

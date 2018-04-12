@@ -1,5 +1,5 @@
-import React from 'react';
-import { getChats } from '../utils/rest-requests';
+import React, { Component } from 'react';
+import { CHATTY_API_GET_CHATS } from '../utils/api-requests';
 import ErrorMessage from './error-message';
 import InputField from './input-field';
 import CustomScroll from 'react-custom-scroll';
@@ -7,73 +7,97 @@ import 'react-custom-scroll/dist/customScroll.css';
 
 import '../styles/chats-list.css';
 
-export default class ChatsList extends React.Component {
+export default class ChatsList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            filteredChatsList: [],
+            chatsList: [],
             chatFilter: '',
-            showError: false,
-            errorMessage: ''
+            errorMessage: {
+                message: '',
+                icon: ''
+            }
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
+        this.tick = this.tick.bind(this);
     }
 
     // ==================================================
     updateChatsList() {
-        getChats((chatsList) => {
-            var filteredChatsList = [];
-            chatsList.data.forEach((chat) => {
-                if (chat.name.includes(this.state.chatFilter))
-                    filteredChatsList.push(chat);
-            });
+        CHATTY_API_GET_CHATS()
+            .then((chatsList) => {
+                if (chatsList.data.length === 0) {
+                    this.setState({
+                        chatsList: [],
+                        errorMessage: {
+                            message: 'Be the first one to write to a friend.',
+                            icon: 'tag_faces'
+                        }
+                    });
+                    return;
+                }
 
-            if (chatsList.data.length === 0) {
                 this.setState({
-                    errorMessage: 'Be the first one to write to a friend.',
-                    showError: true
+                    chatsList: chatsList.data,
+                    errorMessage: {},
                 });
-                return;
-            }
-
-            this.setState({
-                filteredChatsList: filteredChatsList,
-                showError: false
+            })
+            .catch((error) => {
+                this.setState({
+                    chatsList: [],
+                    errorMessage: { message: 'Please check your Connection.' }
+                });
             });
-        }, () => {
-            this.setState({
-                filteredChatsList: [],
-                showError: true
-            });
-        });
     }
 
     // ==================================================
     handleChatSearch(e) {
-        this.setState({ chatFilter: e.target.value });
-        this.updateChatsList();
+        this.setState({
+            chatFilter: e.target.value,
+            errorMessage: { message: '' }
+        });
     }
 
     // ==================================================
+    filterChats(filter) {
+        var filteredChats = [];
+
+        if (filter !== '') {
+            this.state.chatsList.forEach((chat) => {
+                if (chat.name.toLowerCase().includes(filter.toLowerCase()))
+                    filteredChats.push(chat);
+            });
+            return filteredChats;
+        }
+        return this.state.chatsList;
+    }
+
+    tick() {
+        this.updateChatsList();
+    }
     componentDidMount() {
         this.updateChatsList();
+        this.interval = setInterval(this.tick, 5000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     // ==================================================
     render() {
-        const filteredChats = this.state.filteredChatsList;
-
+        var filteredChats = this.filterChats(this.state.chatFilter);
         var chatList = filteredChats.map((chat) => {
             var usrs = '';
             for (var i = 0; i < chat.chatUsers.length; i++) {
-                if (i !== 0) usrs += ', ';
-                usrs += chat.chatUsers[i].user.username;
+                usrs += (i !== 0 ? ', ' + chat.chatUsers[i].user.username : chat.chatUsers[i].user.username);
             }
 
             return (
-                <div className="chat-card" key={chat.uid} onClick={() => this.props.onOpenChat(chat.id)}>
+                <div className={this.props.currentOpenChat === chat.id ? 'chat-card active' : 'chat-card'}
+                    key={chat.uid}
+                    onClick={() => this.props.onOpenChat(chat.id)}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
                     <p className="title">{chat.name}</p>
                     <p className="subtitle1">{usrs}</p>
@@ -89,7 +113,11 @@ export default class ChatsList extends React.Component {
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 60px)">
                     <div>
-                        <ErrorMessage show={this.state.showError} message={this.state.errorMessage} />
+                        <ErrorMessage
+                            show={this.state.errorMessage.message}
+                            message={this.state.errorMessage.message}
+                            icon={this.state.errorMessage.icon}
+                        />
                         {chatList}
                     </div>
                 </CustomScroll>

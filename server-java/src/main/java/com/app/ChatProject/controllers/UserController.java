@@ -30,12 +30,7 @@ public class UserController {
     @Autowired
     private UsersRepository usersRepository;
 
-    /**
-     * Create User.
-     *
-     * @param user
-     * @return
-     */
+
     /*@PostMapping(value = "/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
 
@@ -52,7 +47,7 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }*/
-
+    
     /**
      * Retrieve Users.
      *
@@ -92,19 +87,19 @@ public class UserController {
     /**
      * Retrieve User.
      *
-     *
-     * @return 200, 
+     * @param request
+     * @return 200,
      */
     @GetMapping("/users")
     public User getUser(HttpServletRequest request) {
 
-        String token= request.getHeader("Authorization");
+        String token = request.getHeader("Authorization");
 
-        JwtUtil jwtUtil=new JwtUtil();
-        String userName=jwtUtil.getUsernameFromToken(token);
-        User user=usersRepository.findByUsername(userName);
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User user = usersRepository.findByUsername(userName);
 
-        if(user==null){
+        if (user == null) {
             throw new ResourceNotFoundException("User", "username", userName);
         }
 
@@ -114,7 +109,7 @@ public class UserController {
     /**
      * Update User.
      *
-     * @param
+     * @param request
      * @param userDetails
      * @param errors
      * @return 200, 400, 401, 404, 409
@@ -123,13 +118,13 @@ public class UserController {
     public ResponseEntity<?> updateUser(HttpServletRequest request,
             @Valid @RequestBody User userDetails, Errors errors) {
 
-        String token= request.getHeader("Authorization");
+        String token = request.getHeader("Authorization");
 
-        JwtUtil jwtUtil=new JwtUtil();
-        String userName=jwtUtil.getUsernameFromToken(token);
-        User user=usersRepository.findByUsername(userName);
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User user = usersRepository.findByUsername(userName);
 
-        if(user==null){
+        if (user == null) {
             throw new ResourceNotFoundException("User", "username", userName);
         }
 
@@ -158,20 +153,19 @@ public class UserController {
     /**
      * Delete User.
      *
-     * @param
+     * @param request
      * @return 200, 400, 401, 404
      */
     @DeleteMapping("/users")
     public ResponseEntity<?> deleteUser(HttpServletRequest request) {
 
+        String token = request.getHeader("Authorization");
 
-        String token= request.getHeader("Authorization");
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User user = usersRepository.findByUsername(userName);
 
-        JwtUtil jwtUtil=new JwtUtil();
-        String userName=jwtUtil.getUsernameFromToken(token);
-        User user=usersRepository.findByUsername(userName);
-
-        if(user==null){
+        if (user == null) {
             throw new ResourceNotFoundException("User", "username", userName);
         }
 

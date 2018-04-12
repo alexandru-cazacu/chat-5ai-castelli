@@ -4,10 +4,13 @@ import '../styles/message.css';
 export default class Message extends React.Component {
     render() {
         return (
-            <div className="row">
-                <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
-                <p className="message">{this.props.message}</p>
+            <div className={this.props.currentUser === this.props.author ? 'row right' : 'row'}>
+                <div className="message">
+                    <p className="message-author">{this.props.visibleAuthor && this.props.author}</p>
+                    {this.props.message}
+                </div>
             </div>
         );
+
     }
 }

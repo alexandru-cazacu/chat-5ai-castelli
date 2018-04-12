@@ -5,7 +5,7 @@ import '../styles/button-group.css';
 export default class ButtonGroup extends React.Component {
     render() {
         var buttons = this.props.buttons.map((button) => {
-            return <Button key={button.value} value={button.value} onClick={button.callback} />;
+            return <div key={button.value} className='button-container'><Button value={button.value} onClick={button.callback} /></div>;
         });
         return (
             <div className="button-group">

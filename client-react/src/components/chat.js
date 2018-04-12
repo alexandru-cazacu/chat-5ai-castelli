@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../styles/messages-list.css';
-import { getMessages, postMessage } from '../utils/rest-requests';
+import {
+    CHATTY_API_GET_MESSAGES,
+    CHATTY_API_CREATE_MESSAGE,
+    CHATTY_API_GET_USER
+} from '../utils/api-requests';
 import InputField from './input-field';
 import 'react-custom-scroll/dist/customScroll.css';
 import MessagesList from './messages-list';
 
-export default class Chat extends React.Component {
+export default class Chat extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             value: '',
-            messages: []
+            messages: [],
+            currentUser: '',
+            chatName: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.tick = this.tick.bind(this);
+        this.renderMessages = this.renderMessages.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -22,12 +30,24 @@ export default class Chat extends React.Component {
             this.renderMessages(nextProps.chatid);
     }
 
-    renderMessages(chatid) {
-        getMessages(chatid, (response) => {
-            this.setState({ messages: response });
-        }, () => {
+    componentDidMount() {
+        this.renderMessages();
+        this.interval = setInterval(this.tick, 1000);
 
-        });
+        CHATTY_API_GET_USER()
+            .then((response) => {
+                this.setState({ currentUser: response.data.username });
+            })
+            .catch();
+    }
+
+    renderMessages(chatid) {
+        if (chatid === undefined)
+            chatid = this.props.chatid;
+
+        CHATTY_API_GET_MESSAGES(chatid)
+            .then((response) => this.setState({ messages: response.data }))
+            .catch();
     }
 
     handleChange(e) {
@@ -39,15 +59,21 @@ export default class Chat extends React.Component {
             var message = {
                 content: this.state.value,
                 type: 'Text',
-                username: 'alex'
+                username: this.state.currentUser
             };
 
-            postMessage(message, 41, (response) => {
-
-            }, () => {
-
-            });
+            CHATTY_API_CREATE_MESSAGE(message, this.props.chatid)
+                .then(() => this.renderMessages())
+                .catch();
         }
+    }
+
+    tick() {
+        this.renderMessages();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {
@@ -55,14 +81,14 @@ export default class Chat extends React.Component {
             return (
                 <div className="messages-list">
                     <div className="header chat">
-                        <div className="title">Chat title</div>
+                        <div className="title">{this.props.chatName}</div>
                         <div className="nav">
                             <div className="item">
                                 <i className="material-icons">more_vert</i>
                             </div>
                         </div>
                     </div>
-                    <MessagesList messages={this.state.messages} />
+                    <MessagesList messages={this.state.messages} currentUser={this.state.currentUser} />
                     <div className="input-area">
                         <InputField
                             placeholder='Type a message'

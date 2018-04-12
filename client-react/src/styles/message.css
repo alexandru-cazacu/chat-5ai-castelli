@@ -1,0 +1,33 @@
+.row {
+    padding: 8px 3em;
+}
+
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.row .message {
+    border-radius: 1em;
+    border-top-left-radius: 0;
+    padding: 8px 12px;
+    max-width: 60%;
+    min-width: 200px;
+    float: left;
+    /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+    border: 2px solid #ddd;
+    color: #111;
+}
+
+.row .message-author {
+    color: black;
+    font-weight: bold;
+}
+
+.row.right .message {
+    border-radius: 1em;
+    border-top-right-radius: 0;
+    float: right;
+    text-align: right;
+}

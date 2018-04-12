@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 09, 2018 alle 22:18
+-- Creato il: Apr 12, 2018 alle 23:31
 -- Versione del server: 10.1.28-MariaDB
 -- Versione PHP: 7.1.10
 
@@ -40,7 +40,7 @@ CREATE TABLE `chats` (
 --
 
 INSERT INTO `chats` (`ID`, `uid`, `link`, `name`) VALUES
-(41, 'b9ca3ec9-a520-4ecf-8611-a6ebc1d82c9e', 'b9ca3ec9-a520-4ecf-8611-a6ebc1d82c9e', 'Test serio 1');
+(59, 'ed9480f0-95e9-4583-acd8-20df3981ac0e', 'ed9480f0-95e9-4583-acd8-20df3981ac0e', 'awesome chat');
 
 -- --------------------------------------------------------
 
@@ -60,11 +60,9 @@ CREATE TABLE `chat_user` (
 --
 
 INSERT INTO `chat_user` (`ID`, `id_user`, `id_chat`, `admin`) VALUES
-(103, 1, 41, 0),
-(104, 13, 41, 0),
-(105, 14, 41, 0),
-(106, 16, 41, 0),
-(107, 11, 41, 1);
+(147, 18, 59, 1),
+(148, 14, 59, 1),
+(149, 17, 59, 0);
 
 -- --------------------------------------------------------
 
@@ -80,6 +78,18 @@ CREATE TABLE `messages` (
   `type` enum('Text','Image','Video') NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `messages`
+--
+
+INSERT INTO `messages` (`ID`, `id_user`, `id_chat`, `content`, `type`, `timestamp`) VALUES
+(41, 14, 59, 'Hello, world!', 'Text', '2018-04-12 20:01:23'),
+(42, 18, 59, 'Ciao a tutti', 'Text', '2018-04-12 20:03:58'),
+(43, 18, 59, 'Sono ancora io.', 'Text', '2018-04-12 21:01:35'),
+(44, 18, 59, 'Messaggi anche molto lunghi non mostrano l\'autore, se è lo stesso del messaggio precedente, per risparmiare dello spazio.', 'Text', '2018-04-12 21:07:15'),
+(45, 14, 59, 'Wow, super awesome!', 'Text', '2018-04-12 21:07:53'),
+(46, 18, 59, 'Concordo', 'Text', '2018-04-12 21:08:10');
 
 -- --------------------------------------------------------
 
@@ -105,11 +115,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `name`, `surname`, `birthday`, `sex`, `mail`, `username`, `password`, `last_seen`) VALUES
 (1, 'Aldo', 'Malerba', '1997-08-10', 'Male', 'malerba.hello@gmail.com', 'aldoMalerba', '$2a$10$5juDwb.j6CesRoNhv5ZKCuxj.4BPVLYFRi.J/ppKXFvm..jMLYF0m', NULL),
-(11, 'Alexandru', 'Cazacu', '1998-06-08', 'Male', 'alexandru.cazacu@o.it', 'alex', '$2a$10$CDPXnQYthWCLblJGkJD/..qceH8Iv.JaBiPJd0cr7WH8YelVmFQ8a', NULL),
 (13, 'Antonio', 'Barensfeld', '1998-06-08', 'Male', 'antonio.barensfeld@gmail.com', 'anto', '$2a$10$GJNaG8HiDAv36N438e.ZeexD4zjck1ZODVPEOYrk2M0SEMaIlalYC', NULL),
 (14, 'Aquino', 'Visso', '1998-06-08', 'Male', 'aquino.visso@gmail.com', 'aqui', '$2a$10$LLXhWxEH1xd59O60eZqSe.JGZdgkYqkJoJ8GR9GGXNrUC3rfVZtni', NULL),
 (15, 'Federino', 'Panarese', '1998-06-08', 'Male', 'federico.panarese@gmail.com', 'fede', '$2a$10$cefvfQOmFhTxfP4rh1i33.kwBi5N.QFpJqf4vmn6/6lEqZQo7L0Gu', NULL),
-(16, 'Silger', 'Gacaj', '1998-06-08', 'Male', 'silger.gacaj@gmail.com', 'silg', '$2a$10$FDsYfTPznEFEEYX4qG2/9e2uvYpnFW5.PVGG3jvMWSAU2tbZeh0/O', NULL);
+(16, 'Silger', 'Gacaj', '1998-06-08', 'Male', 'silger.gacaj@gmail.com', 'silg', '$2a$10$FDsYfTPznEFEEYX4qG2/9e2uvYpnFW5.PVGG3jvMWSAU2tbZeh0/O', NULL),
+(17, 'Test', 'Test', '1998-06-08', 'Male', 'test@gmail.com', 'test', '$2a$10$ifeEx0lGfJpVfHu0IrikjOSik1wa8ei/ek0bFzQNaIgkSn7irejbG', NULL),
+(18, 'Alex', 'Cazaci', '1998-06-08', 'Male', 'alex.caz@gmail.com', 'alex', '$2a$10$3E1T47Y40waWFyD2mZPjv.djsJyfSUqKu93UX2gyrxq1ejxq8bNHa', NULL);
 
 --
 -- Indici per le tabelle scaricate
@@ -152,25 +163,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT per la tabella `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT per la tabella `chat_user`
 --
 ALTER TABLE `chat_user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT per la tabella `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Limiti per le tabelle scaricate

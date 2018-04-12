@@ -1,3 +1,13 @@
-.button-group {
-    text-align: right;
+.button-group .button-container:first-child{
+    box-sizing: border-box;
+    padding-right: 8px;
+    width: 50%;
+    display: inline-block;
+}
+
+.button-group .button-container:last-child{
+    box-sizing: border-box;
+    padding-left: 8px;
+    width: 50%;
+    display: inline-block;
 }

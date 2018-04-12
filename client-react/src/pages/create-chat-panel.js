@@ -2,7 +2,11 @@ import React from 'react';
 import Subtract from 'array-subtract';
 
 import PersonInGroupList from '../components/personInGroupList';
-import { postChat, getUsersBySearch } from '../utils/rest-requests';
+import {
+    CHATTY_API_CREATE_CHAT,
+    CHATTY_API_SEARCH_USERS,
+    CHATTY_API_GET_USER
+} from '../utils/api-requests';
 
 import close from '../images/close.svg';
 
@@ -19,7 +23,8 @@ export default class CreateChatPanel extends React.Component {
             suggestedPeople: [],
             searchedPerson: '',
             chatName: '',
-            error: undefined
+            error: undefined,
+            currentUser: {}
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,14 +33,20 @@ export default class CreateChatPanel extends React.Component {
         this.handleRemoveUser = this.handleRemoveUser.bind(this);
     }
 
-    handleChatCreation() {
-        postChat(this.state.chatName, this.state.invitedPeople, () => {
-            this.sendSuccess();
-        }, (error) => {
-            console.log(error);
-        });
+    componentDidMount() {
+        CHATTY_API_GET_USER()
+            .then((response) => {
+                this.setState({ currentUser: response.data });
+            })
+            .catch();
     }
-    
+
+    handleChatCreation() {
+        CHATTY_API_CREATE_CHAT(this.state.chatName, this.state.invitedPeople)
+            .then(() => this.sendSuccess())
+            .catch((error) => console.log(error));
+    }
+
     sendSuccess() {
         this.props.onSuccessfullyCreateChat();
     }
@@ -71,13 +82,13 @@ export default class CreateChatPanel extends React.Component {
 
         if (e.target.name === 'chatName') return;
 
-        getUsersBySearch(e.target.value, (data) => {
-            var subtract = new Subtract((itemA, itemB) => { return itemA.username === itemB.username; });
-            data = subtract.sub(data, this.state.invitedPeople);
-            this.setState({ suggestedPeople: data });
-        }, () => {
-
-        });
+        CHATTY_API_SEARCH_USERS(e.target.value, 'compact')
+            .then((result) => {
+                var subtract = new Subtract((itemA, itemB) => { return itemA.username === itemB.username; });
+                result = subtract.sub(result.data, this.state.invitedPeople);
+                this.setState({ suggestedPeople: result });
+            })
+            .catch();
     }
 
     render() {
@@ -91,11 +102,14 @@ export default class CreateChatPanel extends React.Component {
 
         invitedPeople.push(
             <PersonInGroupList
-                key='alex'
-                username='alex'
+                key={this.state.currentUser.id}
+                username={this.state.currentUser.username}
+                onRemoveUser={this.handleRemoveUser}
                 removable={false}
             />
         );
+
+        invitedPeople = invitedPeople.reverse();
 
         return (
             <div className="floating-card-container">
@@ -127,7 +141,7 @@ export default class CreateChatPanel extends React.Component {
                         <SuggestionsList suggestions={this.state.suggestedPeople} />
                     </div>
                     <div className="space"></div>
-                    <h3>Invited</h3>
+                    <h3>Invited people</h3>
                     <div className="space"></div>
                     <div>{invitedPeople}</div>
 

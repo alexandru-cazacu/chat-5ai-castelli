@@ -6,7 +6,7 @@ export default class ErrorMessage extends React.Component {
         if (this.props.show)
             return (
                 <div className="error">
-                    <i className="material-icons">error_outline</i>
+                    <i className="material-icons">{this.props.icon || 'error_outline'}</i>
                     <p>{this.props.message}</p>
                 </div>
             );

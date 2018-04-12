@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.http.HTTPException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/login")
@@ -30,16 +29,14 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity generate(@RequestBody JwtUser jwtUser){
-        BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
+    public ResponseEntity generate(@RequestBody JwtUser jwtUser) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         //System.out.println(hashedPassword);
-
-        User user =usersRepository.findByUsername(jwtUser.getUsername());
+        User user = usersRepository.findByUsername(jwtUser.getUsername());
 
         //System.out.println(user.getPassword());
-
-        if(passwordEncoder.matches(jwtUser.getPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(jwtUser.getPassword(), user.getPassword())) {
             return ResponseEntity.ok(new JwtAuthenticationResponse(jwtGenerator.generate(jwtUser)));
         }
         throw new HTTPException(401);

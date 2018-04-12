@@ -6,7 +6,7 @@ import ErrorsList from '../components/errors-list';
 import AuthService from '../utils/auth-service';
 import '../styles/sign-up-page.css';
 import { Link } from 'react-router-dom';
-import { signUpUser } from '../utils/rest-requests';
+import { CHATTY_API_SIGNIN_USER } from '../utils/api-requests';
 
 export default class SignUpPage extends React.Component {
 
@@ -29,26 +29,15 @@ export default class SignUpPage extends React.Component {
     }
 
     handleSubmit() {
-        var errors = [];
-        if (this.state.username.length === 0 || this.state.password.length === 0)
-            errors.push('Please fill both fields');
-
-        this.setState({ errorsList: errors });
-
         // TODO validate input
 
-        console.log(this.state);
-
-        signUpUser(this.state, () => {
-
-        }, () => {
-
-        });
+        CHATTY_API_SIGNIN_USER(this.state)
+            .then()
+            .catch();
 
     }
 
     handleChange(e) {
-        console.log(e.target.value);
         this.setState({ [e.target.name]: e.target.value });
     }
 

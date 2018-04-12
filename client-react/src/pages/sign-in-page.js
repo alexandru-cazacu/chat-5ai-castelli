@@ -39,7 +39,7 @@ export default class SignInPage extends React.Component {
                         position: toast.POSITION.BOTTOM_CENTER
                     });
                 else
-                    this.setState({ errorsList: ['Please check your credentials and try again'] });
+                    this.setState({ errorsList: ['Check your credentials and try again'] });
             });
     }
 
