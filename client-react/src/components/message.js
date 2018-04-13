@@ -7,32 +7,44 @@ export default class Message extends React.Component {
         var messageTypeStyle = '';
         var messageAuthor = '';
         var messageTime = '';
+        var messageAuthorStyle = 'message-author';
 
         if (this.props.message.type === 'Text') {
-            messageTypeStyle = 'text-message';
+            messageTypeStyle = 'message text';
             messageTime = moment(this.props.message.timestamp).format('HH:mm');
-            if (this.props.message.user.username === this.props.currentUser) {
-                messageTypeStyle += ' self';
+
+            if (this.props.message.user) {
+                if (this.props.message.user.username === this.props.currentUser) {
+                    messageTypeStyle += ' self';
+                }
+                else {
+                    messageTypeStyle += ' other';
+                    messageAuthor = !this.props.isCompact && this.props.message.user.username;
+                }
             }
             else {
+                messageAuthor = 'Anonymous';
                 messageTypeStyle += ' other';
-                messageAuthor = !this.props.isCompact && this.props.message.user.username;
+                messageAuthorStyle += ' del';
             }
-            if (this.props.isCompact)
-                messageTypeStyle += ' compact';
-        }
-        if (this.props.message.type === 'System') {
-            messageTypeStyle = 'system-message grey';
         }
 
+        if (this.props.message.type === 'System') {
+            messageTypeStyle = 'message system grey';
+        }
+
+        if (this.props.isCompact)
+            messageTypeStyle += ' compact';
+
         return (
-            <div className='message-row'>
+            <div className='message-row' >
                 <div className={messageTypeStyle}>
-                    <p className="message-author">{messageAuthor}</p>
+                    <p className={messageAuthorStyle}>{messageAuthor}</p>
                     {this.props.message.content}
-                    <p className="message-time">{messageTime}</p>
+                    {this.props.showTime && <p className="message-time">{messageTime}</p>}
                 </div>
             </div>
         );
     }
 }
+

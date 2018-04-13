@@ -68,6 +68,10 @@ html,
     background-color: #ddd !important;
 }
 
+.del {
+    text-decoration: line-through;
+}
+
 @media screen and (max-width: 1300px) {
     .wrapper.shadow {
         width: 100%;
