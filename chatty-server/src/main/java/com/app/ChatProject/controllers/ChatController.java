@@ -3,6 +3,7 @@ package com.app.ChatProject.controllers;
 import com.app.ChatProject.JsonMaps.ChatUserMap;
 import com.app.ChatProject.entities.Chat;
 import com.app.ChatProject.entities.ChatUser;
+import com.app.ChatProject.entities.Message;
 import com.app.ChatProject.entities.User;
 import com.app.ChatProject.repositories.ChatUsersRepository;
 import com.app.ChatProject.repositories.ChatsRepository;
@@ -48,17 +49,30 @@ public class ChatController {
      */
     @PostMapping("/users/chats")
     public ResponseEntity<?> createChat(
-            @Valid @RequestBody ChatUserMap chatUserMap, HttpServletRequest request) {
+            @Valid @RequestBody ChatUserMap chatUserMap,
+            HttpServletRequest request) {
 
+        // Creates and saves new Chat.
         String uId = UUID.randomUUID().toString();
-
         Chat chat = new Chat();
         chat.setUid(uId);
         chat.setLink(uId);
         chat.setName(chatUserMap.getChatName());
-
         chatsRepository.save(chat);
 
+        // Creates and saves ChatUser from User who made request.
+        ChatUser chatUserFromToken = new ChatUser();
+        String token = request.getHeader("Authorization");
+        JwtUtil jwtUtil = new JwtUtil();
+        String userName = jwtUtil.getUsernameFromToken(token);
+        User userFromToken = usersRepository.findByUsername(userName);
+        chatUserFromToken.setUser(userFromToken);
+        chatUserFromToken.setChat(chat);
+        chatUserFromToken.setAdmin(true);
+        chatUsersRepository.save(chatUserFromToken);
+
+        // Creates and saves ChatUser for every User in request body.
+        // Saves a System message for every added User.
         for (int i = 0; i < chatUserMap.getUsers().size(); i++) {
             User user = usersRepository.findByUsername(chatUserMap.getUsers().get(i).getUsername());
 
@@ -68,21 +82,14 @@ public class ChatController {
             chatUser.setAdmin(chatUserMap.getUsers().get(i).isIsAdmin());
 
             chatUsersRepository.save(chatUser);
+
+            Message systemMessage = new Message();
+            systemMessage.setChat(chat);
+            systemMessage.setContent(userFromToken.getUsername() + " added " + user.getUsername());
+            systemMessage.setType("System");
+            
+            messagesRepository.save(systemMessage);
         }
-
-        ChatUser chatUser = new ChatUser();
-
-        String token = request.getHeader("Authorization");
-
-        JwtUtil jwtUtil = new JwtUtil();
-        String userName = jwtUtil.getUsernameFromToken(token);
-        User user = usersRepository.findByUsername(userName);
-
-        chatUser.setUser(user);
-        chatUser.setChat(chat);
-        chatUser.setAdmin(true);
-
-        chatUsersRepository.save(chatUser);
 
         URI location = URI.create("/chats/" + chat.getId());
 

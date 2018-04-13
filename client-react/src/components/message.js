@@ -1,23 +1,38 @@
 import React from 'react';
 import '../styles/message.css';
+import moment from 'moment';
 
 export default class Message extends React.Component {
     render() {
+        var messageTypeStyle = '';
+        var messageAuthor = '';
+        var messageTime = '';
 
-        var rowStyle = 'row';
-        if (this.props.currentUser === this.props.author)
-            rowStyle += ' right';
-        if (this.props.shorter)
-            rowStyle += ' shorter';
+        if (this.props.message.type === 'Text') {
+            messageTypeStyle = 'text-message';
+            messageTime = moment(this.props.message.timestamp).format('HH:mm');
+            if (this.props.message.user.username === this.props.currentUser) {
+                messageTypeStyle += ' self';
+            }
+            else {
+                messageTypeStyle += ' other';
+                messageAuthor = !this.props.isCompact && this.props.message.user.username;
+            }
+            if (this.props.isCompact)
+                messageTypeStyle += ' compact';
+        }
+        if (this.props.message.type === 'System') {
+            messageTypeStyle = 'system-message grey';
+        }
 
         return (
-            <div className={rowStyle}>
-                <div className={this.props.author === '' ? 'message system' : 'message'}>
-                    <p className="message-author">{this.props.visibleAuthor && this.props.author}</p>
-                    {this.props.message}
+            <div className='message-row'>
+                <div className={messageTypeStyle}>
+                    <p className="message-author">{messageAuthor}</p>
+                    {this.props.message.content}
+                    <p className="message-time">{messageTime}</p>
                 </div>
             </div>
         );
-
     }
 }

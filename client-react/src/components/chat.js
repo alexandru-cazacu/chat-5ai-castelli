@@ -91,9 +91,6 @@ export default class Chat extends Component {
                     messages.splice(i, 0, {
                         content: currDate.format('DD MMM'),
                         type: 'System',
-                        user: {
-                            username: 'System'
-                        }
                     });
                     i++;
                 }
