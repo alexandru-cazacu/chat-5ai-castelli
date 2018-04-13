@@ -7,22 +7,31 @@ import ErrorMessage from './error-message';
 
 export default class MessagesList extends React.Component {
     render() {
-
         var lastUser = '';
 
         var messages = this.props.messages && this.props.messages.map((message) => {
             // console.log(message);
-
             var visibleAuthor = lastUser !== message.user.username ? true : false;
             lastUser = message.user.username;
 
-            return <Message
-                key={message.id}
-                message={message.content}
-                author={message.user.username}
-                currentUser={this.props.currentUser}
-                visibleAuthor={visibleAuthor}
-            />;
+            if (message.type === 'Text')
+                return <Message
+                    key={message.id}
+                    message={message.content}
+                    author={message.user.username}
+                    currentUser={this.props.currentUser}
+                    visibleAuthor={visibleAuthor}
+                    shorter={!visibleAuthor}
+                />;
+            else
+                return <Message
+                    key={message.id}
+                    message={message.content}
+                    author={''}
+                    currentUser={this.props.currentUser}
+                    visibleAuthor={visibleAuthor}
+                    shorter={!visibleAuthor}
+                />;
         });
 
         return (

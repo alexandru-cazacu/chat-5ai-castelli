@@ -9,7 +9,7 @@ export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: ['friendship', 'culture', 'neat', 'educational', 'love', 'lovely', 'fantastic', 'smooth', 'deep', 'tense'],
+            messages: ['friendship', 'culture', 'neat', 'educational', 'love', 'lovely', 'fantastic', 'smooth', 'deep', 'meme', 'meme'],
             colors: ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#f1c40f', '#e67e22', '#e74c3c', '#7f8c8d', '#d35400']
         };
     }
@@ -39,8 +39,8 @@ export default class HomePage extends React.Component {
 
                 <div className="centered-card clean">
                     <img src={logo} className="main-logo" alt="Main Logo" />
-                    <div className='home-message'>Chatty is <div className='home-message color' style={{ color: this.state.colors[Math.floor((Math.random() * 9))] }}>
-                        {this.state.messages[Math.floor((Math.random() * 9))]}.
+                    <div className='home-message'>Chatty is <div className='home-message color' style={{ color: this.state.colors[Math.floor((Math.random() * 12))] }}>
+                        {this.state.messages[Math.floor((Math.random() * 9))]}
                     </div>
                     </div>
                     <br />

@@ -8,6 +8,7 @@ import {
 import InputField from './input-field';
 import 'react-custom-scroll/dist/customScroll.css';
 import MessagesList from './messages-list';
+import moment from 'moment';
 
 export default class Chat extends Component {
 
@@ -77,6 +78,30 @@ export default class Chat extends Component {
     }
 
     render() {
+
+        var messages = this.state.messages;
+
+        if (messages !== undefined) {
+            var prevDate = moment('', 'YYYY-MM-DD');
+            for (var i = 0; i < messages.length; i++) {
+                var currDate = moment(messages[i].timestamp, 'YYYY-MM-DD');
+                var diffDays = currDate.diff(prevDate, 'days');
+
+                if (diffDays !== 0) {
+                    messages.splice(i, 0, {
+                        content: currDate.format('DD MMM'),
+                        type: 'System',
+                        user: {
+                            username: 'System'
+                        }
+                    });
+                    i++;
+                }
+
+                prevDate = currDate;
+            }
+        }
+
         if (this.props.chatid !== -1)
             return (
                 <div className="messages-list">

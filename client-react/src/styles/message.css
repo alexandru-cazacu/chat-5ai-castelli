@@ -1,5 +1,53 @@
+.message-row {
+    padding: 0 3em;
+}
+
+.message-row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.message-row .text-message {
+    float: left;
+}
+
+.message-row .text-message.other {
+    float: left;
+}
+
+.message-row .text-message.self {
+    float: right;
+}
+
+.message-row .system-message {
+
+}
+
+.message-row .system-message.red {
+
+}
+
+.message-row .system-message.green {
+
+}
+
+.message-row .system-message.blue {
+
+}
+
+.message-row .system-message.grey {
+
+}
+
+
+
 .row {
     padding: 8px 3em;
+}
+
+.row.shorter {
+    padding-top: 0;
 }
 
 .row:after {
@@ -13,11 +61,20 @@
     border-top-left-radius: 0;
     padding: 8px 12px;
     max-width: 60%;
-    min-width: 200px;
     float: left;
     /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
     border: 2px solid #ddd;
     color: #111;
+}
+
+.row .message.system {
+    border-radius: 1em;
+    padding: 4px 8px;
+    background-color: #ddd;
+    display: inline-block;
+    text-align: center;
+    clear: both;
+    float: none;
 }
 
 .row .message-author {
