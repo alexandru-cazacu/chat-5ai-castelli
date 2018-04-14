@@ -18,12 +18,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collections;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
@@ -43,10 +40,12 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.addAllowedOrigin("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "Access-Control-Allow-Origin"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token", "Access-Control-Allow-Origin"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -75,7 +74,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.headers().cacheControl();
-        
+
         http.cors().configurationSource(corsConfigurationSource());
 
     }
