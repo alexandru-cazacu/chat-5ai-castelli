@@ -1,25 +1,26 @@
-import React from 'react';
-import InputField from '../components/input-field';
-import Button from '../components/button';
-import Select from '../components/select';
-import ErrorsList from '../components/errors-list';
-import AuthService from '../utils/auth-service';
-import '../styles/sign-up-page.css';
-import { Link } from 'react-router-dom';
-import { CHATTY_API_SIGNIN_USER } from '../utils/api-requests';
+import React from "react";
+import AuthService from "../utils/auth-service";
+import { Link } from "react-router-dom";
+import { CHATTY_API_SIGNIN_USER } from "../utils/api-requests";
+import InputField from "../components/input-field";
+import Button from "../components/button";
+import Select from "../components/select";
+import ErrorsList from "../components/errors-list";
+import HeaderWithDrawer from "../components/header-with-drawer";
+import "../styles/sign-up-page.css";
 
 export default class SignUpPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            surname: '',
+            name: "",
+            surname: "",
             birthday: undefined,
-            sex: '',
-            mail: '',
-            username: '',
-            password: '',
+            sex: "",
+            mail: "",
+            username: "",
+            password: "",
             errorsList: []
         };
 
@@ -43,31 +44,17 @@ export default class SignUpPage extends React.Component {
 
     componentWillMount() {
         if (this.Auth.loggedIn())
-            this.props.history.replace('/chat');
+            this.props.history.replace("/chat");
     }
 
     render() {
         return (
             <div>
-                <div className="header">
-                    <div className="wrapper">
-                        <div className="title">Chatty</div>
-                        <div className="nav">
-                            <div className="item">
-                                <i className="material-icons">home</i>
-                                <Link to="/" className="text">Home</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-in" className="text">Sign In</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-up" className="text">Sign Up</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <HeaderWithDrawer items={[
+                    <Link to="/" className="text">Home</Link>,
+                    <Link to="/sign-in" className="text">Sign In</Link>,
+                    <Link to="/sign-up" className="text">Sign Up</Link>
+                ]} />
 
                 <div className="centered-card">
                     <h1 className='title'>Sign Up</h1>
@@ -75,7 +62,7 @@ export default class SignUpPage extends React.Component {
                     <InputField name='name' placeholder='Name...' onChange={this.handleChange} />
                     <InputField name='surname' placeholder='Surname...' onChange={this.handleChange} />
                     <InputField name='birthday' type='date' placeholder='Birthday...' onChange={this.handleChange} />
-                    <Select name='sex' placeholder='Sex...' options={['Male', 'Female', 'Other']} onChange={this.handleChange} />
+                    <Select name='sex' placeholder='Sex...' options={["Male", "Female", "Other"]} onChange={this.handleChange} />
                     <InputField name='mail' placeholder='Mail...' onChange={this.handleChange} />
                     <InputField name='username' placeholder='Username...' onChange={this.handleChange} />
                     <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange} />

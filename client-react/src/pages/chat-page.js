@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import Header from '../components/header';
-import ChatsList from '../components/chats-list';
-import CreateChatPanel from './create-chat-panel';
-import Chat from '../components/chat';
+import HeaderWithDrawer from "../components/header-with-drawer";
+import ChatsList from "../components/chats-list";
+import CreateChatPanel from "./create-chat-panel";
+import Chat from "../components/chat";
 import {
     CHATTY_API_GET_CHAT
-} from '../utils/api-requests';
+} from "../utils/api-requests";
 
-import '../styles/chat-page.css';
+import "../styles/chat-page.css";
 
-import AuthService from '../utils/auth-service';
-import withAuth from '../components/with-auth';
+import AuthService from "../utils/auth-service";
+import withAuth from "../components/with-auth";
 const Auth = new AuthService();
 
 class ChatPage extends React.Component {
@@ -21,7 +21,7 @@ class ChatPage extends React.Component {
         this.state = {
             showCreateChatPanel: false,
             chatid: -1,
-            chatName: ''
+            chatName: ""
         };
 
         this.handleOpenCreateChatPanel = this.handleOpenCreateChatPanel.bind(this);
@@ -61,15 +61,14 @@ class ChatPage extends React.Component {
 
     handleLogout() {
         Auth.logout();
-        this.props.history.replace('/sign-in');
+        this.props.history.replace("/sign-in");
     }
 
     render() {
         return (
             <div className="App">
-                <Header
-                    onOpenCreateChatPanel={this.handleOpenCreateChatPanel}
-                    onLogout={this.handleLogout}
+                <HeaderWithDrawer
+                    items={[]}
                 />
                 <div className='fixed-body'>
                     <div className="wrapper shadow">

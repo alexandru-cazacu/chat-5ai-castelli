@@ -16,11 +16,13 @@
     width: 100%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%);
+    left: 0;
+    transform: translate(0, -50%);
     box-sizing: border-box;
     text-align: center;
     overflow: visible;
     text-align: center;
+    border: 0;
 }
 
 .centered-card.clean:hover {
@@ -41,4 +43,19 @@
     padding-right: 150px;
     box-sizing: border-box;
     display: inline-block;
+}
+
+@media screen and (max-width: 1080px) {
+    .left-card-home,
+    .right-card-home {
+        width: 100%;
+        padding: 0;
+        padding-right: 8px;
+        box-sizing: border-box;
+        display: block;
+    }
+
+    .left-card-home > * {
+        margin: 8px 0;
+    }
 }

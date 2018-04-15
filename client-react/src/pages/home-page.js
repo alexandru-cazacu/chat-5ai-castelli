@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import HeaderWithDrawer from "../components/header-with-drawer";
 import logo from "../images/chat3.svg";
 import "../styles/sign-up-page.css";
 import "../styles/home-page.css";
 
-export default class HomePage extends Component {
 
+export default class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,28 +18,15 @@ export default class HomePage extends Component {
     render() {
         return (
             <div>
-                <div className="header">
-                    <div className="wrapper">
-                        <div className="title">Chatty</div>
-                        <div className="nav">
-                            <div className="item">
-                                <i className="material-icons">home</i>
-                                <Link to="/" className="text">Home</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-in" className="text">Sign In</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-up" className="text">Sign Up</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <HeaderWithDrawer items={[
+                    <Link to="/" className="text">Home</Link>,
+                    <Link to="/sign-in" className="text">Sign In</Link>,
+                    <Link to="/sign-up" className="text">Sign Up</Link>
+                ]} />
 
                 <div className="centered-card clean">
                     <img src={logo} className="main-logo" alt="Main Logo" />
+                    <br />
                     <div className='home-message'>Chatty is <div className='home-message color' style={{ color: this.state.colors[Math.floor((Math.random() * 12))] }}>
                         {this.state.messages[Math.floor((Math.random() * 9))]}
                     </div>

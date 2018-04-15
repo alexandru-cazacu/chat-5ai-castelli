@@ -1,15 +1,8 @@
 .main-logo {
-    width: 48px;
-}
-
-.main-title {
+    display: inline-block;
+    height: 3em;
+    width: 3em;
     text-align: center;
-    font-weight: bold;
-    font-size: 6em;
-    letter-spacing: 0.2em;
-    float: right;
-    line-height: 150px;
-    margin-left: 32px;
 }
 
 .card-title {
@@ -18,7 +11,7 @@
 
 .centered-card {
     border-radius: 5px;
-    width: 400px;
+    width: 350px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -26,11 +19,8 @@
     padding: 8px 16px;
     box-sizing: border-box;
     text-align: center;
-    transition: all 1s cubic-bezier(.25,.8,.25,1);
-}
-
-.centered-card:hover {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border: 1px solid #ddd;
 }
 
 .centered-card > * {
@@ -41,3 +31,20 @@
 .centered-card button, {
     margin: 8px 0 !important;
 } */
+
+@media screen and (max-width: 1080px) {
+    .centered-card {
+        border-radius: 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        width: 100%;
+        transform: translate(0, -50%);
+        padding: 16px 32px;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow: 0 0 0;
+        border: 0;
+    }
+}

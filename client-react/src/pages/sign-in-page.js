@@ -1,19 +1,20 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import AuthService from '../utils/auth-service';
-import InputField from '../components/input-field';
-import Button from '../components/button';
-import ErrorsList from '../components/errors-list';
-import '../styles/sign-up-page.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import AuthService from "../utils/auth-service";
+import HeaderWithDrawer from "../components/header-with-drawer";
+import InputField from "../components/input-field";
+import Button from "../components/button";
+import ErrorsList from "../components/errors-list";
+import "../styles/sign-up-page.css";
 
 export default class SignInPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            username: "",
+            password: "",
             errorsList: []
         };
 
@@ -25,21 +26,21 @@ export default class SignInPage extends React.Component {
 
     handleSubmit() {
         if (this.state.username.length === 0 || this.state.password.length === 0) {
-            this.setState({ errorsList: ['Please fill both fields'] });
+            this.setState({ errorsList: ["Please fill both fields"] });
             return;
         }
 
         this.Auth.login(this.state.username, this.state.password)
             .then(() => {
-                this.props.history.replace('/chat');
+                this.props.history.replace("/chat");
             })
             .catch((error) => {
-                if (error.name === 'TypeError')
-                    toast.error('Check your Connection and try again', {
+                if (error.name === "TypeError")
+                    toast.error("Check your Connection and try again", {
                         position: toast.POSITION.BOTTOM_CENTER
                     });
                 else
-                    this.setState({ errorsList: ['Check your credentials and try again'] });
+                    this.setState({ errorsList: ["Check your credentials and try again"] });
             });
     }
 
@@ -49,31 +50,17 @@ export default class SignInPage extends React.Component {
 
     componentWillMount() {
         if (this.Auth.loggedIn())
-            this.props.history.replace('/chat');
+            this.props.history.replace("/chat");
     }
 
     render() {
         return (
             <div>
-                <div className="header">
-                    <div className="wrapper">
-                        <div className="title">Chatty</div>
-                        <div className="nav">
-                            <div className="item">
-                                <i className="material-icons">home</i>
-                                <Link to="/" className="text">Home</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-in" className="text">Sign In</Link>
-                            </div>
-                            <div className="item">
-                                <i className="material-icons">account_circle</i>
-                                <Link to="/sign-up" className="text">Sign Up</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <HeaderWithDrawer items={[
+                    <Link to="/" className="text">Home</Link>,
+                    <Link to="/sign-in" className="text">Sign In</Link>,
+                    <Link to="/sign-up" className="text">Sign Up</Link>
+                ]} />
 
                 <div className="centered-card">
                     <h1 className='card-title'>Sign In</h1>

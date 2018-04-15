@@ -1,0 +1,122 @@
+.header {
+    height: 64px;
+    padding: 8px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ddd;
+}
+
+.header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.header .wrapper-header {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 48px;
+}
+
+.header .burger { display: none; }
+.header .back { display: none; }
+.header.drawer .burger { display: none; }
+.header.drawer .back { display: none; }
+
+.header .title {
+    color: black;
+    padding: 12px;
+    font-size: 22px;
+    line-height: 24px;
+    height: 24px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.header .nav {
+    float: right;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.header .nav .item {
+    color: #888;
+    border-radius: 28px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.header .nav .item:hover {
+    background-color: #00000011;
+}
+
+.header .nav .item .text {
+    padding: 16px 24px;
+    line-height: 16px;
+    float: right;
+    color: rgb(128, 128, 128);
+    text-decoration: none;
+}
+
+.header .material-icons {
+    color: #808080;
+    padding: 12px;
+    font-size: 24px;
+    box-sizing: border-box;
+    width: 48px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1080px) {
+
+    .header .wrapper-header {
+        width: 100%;
+    }
+
+    .header .burger {
+        display: inline-block;
+    }
+    
+    .header .back {
+        display: none;
+    }
+
+    .header.drawer .burger {
+        display: none;
+    }
+
+    .header.drawer .title {
+        display: none;
+    }
+
+    .header.drawer .back {
+        display: inline-block;
+        float: right;
+    }
+
+    .header .nav {
+        position: fixed;
+        top: 0;
+        right: 100%;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        border-right: 1px solid #ddd;
+        overflow: hidden;
+        z-index: 100;
+    }
+
+    .header.drawer .nav {
+        right: 64px;
+    }
+
+    .header .nav .item {
+        color: #888;
+        border-radius: 0;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .header .nav .item .text {
+        float: left;
+    }
+}

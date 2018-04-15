@@ -1,9 +1,9 @@
-import decode from 'jwt-decode';
+import decode from "jwt-decode";
 
 export default class AuthService {
     // Initializing important variables
     constructor(domain) {
-        this.domain = domain || 'http://localhost:8080'; // API server domain
+        this.domain = domain || "http://localhost:8080"; // API server domain
         this.fetch = this.fetch.bind(this); // React binding stuff
         this.login = this.login.bind(this);
         this.getProfile = this.getProfile.bind(this);
@@ -12,7 +12,7 @@ export default class AuthService {
     login(username, password) {
         // Get a token from api server using the fetch api
         return this.fetch(`${this.domain}/login`, {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify({
                 username,
                 password
@@ -45,17 +45,17 @@ export default class AuthService {
 
     setToken(idToken) {
         // Saves user token to localStorage
-        localStorage.setItem('id_token', idToken);
+        localStorage.setItem("id_token", idToken);
     }
 
     getToken() {
         // Retrieves the user token from localStorage
-        return localStorage.getItem('id_token');
+        return localStorage.getItem("id_token");
     }
 
     logout() {
         // Clear user token and profile data from localStorage
-        localStorage.removeItem('id_token');
+        localStorage.removeItem("id_token");
     }
 
     getProfile() {
@@ -67,14 +67,14 @@ export default class AuthService {
     fetch(url, options) {
         // performs api calls sending the required authentication headers
         const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Content-Type": "application/json"
         };
 
         // Setting Authorization header
         // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
         if (this.loggedIn()) {
-            headers['Authorization'] = this.getToken();
+            headers["Authorization"] = this.getToken();
         }
 
         return fetch(url, {
