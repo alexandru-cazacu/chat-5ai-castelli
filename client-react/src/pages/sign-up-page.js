@@ -9,6 +9,11 @@ import ErrorsList from "../components/errors-list";
 import HeaderWithDrawer from "../components/header-with-drawer";
 import "../styles/sign-up-page.css";
 
+import { ClipLoader } from "react-spinners";
+
+import store from "../_store";
+import { signUpUser } from "../_actionCreators";
+
 export default class SignUpPage extends React.Component {
 
     constructor(props) {
@@ -21,7 +26,8 @@ export default class SignUpPage extends React.Component {
             mail: "",
             username: "",
             password: "",
-            errorsList: []
+            errorsList: [],
+            loading: false
         };
 
         this.Auth = new AuthService();
@@ -29,22 +35,25 @@ export default class SignUpPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentWillMount() {
+
+        if (this.Auth.loggedIn())
+            this.props.history.replace("/chat");
+
+        store.subscribe(() => {
+            this.setState({
+                errorsList: [store.getState().signUpReducer.errorMessage],
+                loading: store.getState().signUpReducer.loading
+            });
+        });
+    }
+
     handleSubmit() {
-        // TODO validate input
-
-        CHATTY_API_SIGNIN_USER(this.state)
-            .then()
-            .catch();
-
+        store.dispatch(signUpUser(this.state));
     }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }
-
-    componentWillMount() {
-        if (this.Auth.loggedIn())
-            this.props.history.replace("/chat");
     }
 
     render() {
@@ -68,8 +77,15 @@ export default class SignUpPage extends React.Component {
                     <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange} />
                     <Button value='Sign In' onClick={this.handleSubmit} />
                     <ErrorsList errors={this.state.errorsList} />
+                    {this.state.loading &&
+                        <div className="spinner-container">
+                            <ClipLoader
+                                loading={this.state.loading}
+                            />
+                        </div>
+                    }
                 </div>
-            </div>
+            </div >
         );
     }
 }

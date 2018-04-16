@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { CHATTY_API_GET_CHATS } from "../utils/api-requests";
 import ErrorMessage from "./error-message";
 import InputField from "./input-field";
 import CustomScroll from "react-custom-scroll";
@@ -7,6 +6,8 @@ import "react-custom-scroll/dist/customScroll.css";
 
 import store from "../_store";
 import { getChatsList } from "../_actionCreators";
+
+import { ClipLoader } from "react-spinners";
 
 import "../styles/chats-list.css";
 
@@ -20,10 +21,13 @@ export default class ChatsList extends Component {
             errorMessage: {
                 message: "",
                 icon: ""
-            }
+            },
+            loading: false
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
+        this.updateChatsList = this.updateChatsList.bind(this);
+        store.subscribe(this.updateChatsList);
     }
 
     componentDidMount() {
@@ -31,30 +35,13 @@ export default class ChatsList extends Component {
     }
 
     updateChatsList() {
-        CHATTY_API_GET_CHATS()
-            .then((chatsList) => {
-                if (chatsList.data.length === 0) {
-                    this.setState({
-                        chatsList: [],
-                        errorMessage: {
-                            message: "Be the first one to write to a friend.",
-                            icon: "tag_faces"
-                        }
-                    });
-                    return;
-                }
-
-                this.setState({
-                    chatsList: chatsList.data,
-                    errorMessage: {},
-                });
-            })
-            .catch((error) => {
-                this.setState({
-                    chatsList: [],
-                    errorMessage: { message: "Please check your Connection." }
-                });
-            });
+        this.setState({
+            chatsList: store.getState().chatsReducer.chatsList,
+            errorMessage: {
+                message: store.getState().chatsReducer.errorMessage
+            },
+            loading: store.getState().chatsReducer.loading
+        });
     }
 
     handleChatSearch(e) {
@@ -103,6 +90,11 @@ export default class ChatsList extends Component {
                     <InputField placeholder='Search...' onChange={this.handleChatSearch} />
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 64px)">
+                    <div className="spinner-container">
+                        <ClipLoader
+                            loading={this.state.loading}
+                        />
+                    </div>
                     <div>
                         <ErrorMessage
                             show={this.state.errorMessage.message}

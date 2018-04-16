@@ -23,9 +23,9 @@ export default class HeaderWithDrawer extends React.Component {
             <div className={headerStyle}>
                 <div className="wrapper-header">
                     <i className="material-icons burger" onClick={this.toggleDrawer}>menu</i>
-                    <i className="material-icons back" onClick={this.toggleDrawer}>keyboard_backspace</i>
                     <div className="title">Chatty</div>
                     <div className="nav">
+                        <i className="material-icons back" onClick={this.toggleDrawer}>keyboard_backspace</i>
                         {items}
                     </div>
                 </div>

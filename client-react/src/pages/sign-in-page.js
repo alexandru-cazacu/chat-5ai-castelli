@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import AuthService from "../utils/auth-service";
 import HeaderWithDrawer from "../components/header-with-drawer";
 import InputField from "../components/input-field";
 import Button from "../components/button";
 import ErrorsList from "../components/errors-list";
 import "../styles/sign-up-page.css";
+
+import store from "../_store";
+import { signInUser } from "../_actionCreators";
 
 export default class SignInPage extends React.Component {
 
@@ -18,39 +20,39 @@ export default class SignInPage extends React.Component {
             errorsList: []
         };
 
-        this.Auth = new AuthService();
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleStoreChange = this.handleStoreChange.bind(this);
+    }
+    
+    componentWillMount() {
+        this.unsubscribe = store.subscribe(this.handleStoreChange);
+        this.handleStoreChange();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    handleStoreChange() {
+        if (store.getState().authReducer.areCredentialsCorrect) {
+            this.props.history.replace("/chat");
+        }
+
+        this.setState({
+            errorsList: [store.getState().authReducer.errorMessage]
+        });
     }
 
     handleSubmit() {
-        if (this.state.username.length === 0 || this.state.password.length === 0) {
-            this.setState({ errorsList: ["Please fill both fields"] });
-            return;
-        }
-
-        this.Auth.login(this.state.username, this.state.password)
-            .then(() => {
-                this.props.history.replace("/chat");
-            })
-            .catch((error) => {
-                if (error.name === "TypeError")
-                    toast.error("Check your Connection and try again", {
-                        position: toast.POSITION.BOTTOM_CENTER
-                    });
-                else
-                    this.setState({ errorsList: ["Check your credentials and try again"] });
-            });
+        store.dispatch(signInUser({
+            username: this.state.username,
+            password: this.state.password
+        }));
     }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }
-
-    componentWillMount() {
-        if (this.Auth.loggedIn())
-            this.props.history.replace("/chat");
     }
 
     render() {

@@ -19,7 +19,7 @@
 }
 
 .header .burger { display: none; }
-.header .back { display: none; }
+.header .back { display: none; margin: 8px !important; }
 .header.drawer .burger { display: none; }
 .header.drawer .back { display: none; }
 

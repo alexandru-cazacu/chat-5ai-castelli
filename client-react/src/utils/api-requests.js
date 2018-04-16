@@ -2,8 +2,8 @@ import axios from "axios";
 import AuthService from "./auth-service";
 const Auth = new AuthService();
 
-// const HOST = "http://localhost:8080";
-const HOST = "http://192.168.43.240:8080";
+const HOST = "http://localhost:8080";
+// const HOST = "http://192.168.43.240:8080";
 
 /* ==================================================
 AUTHENTICATION

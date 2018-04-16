@@ -1,24 +1,29 @@
 import { userAuthOps } from "../_actionTypes";
 
 const initialState = {
-    userName: "",
-    userToken: ""
+    loading: false,
+    areCredentialsCorrect: false,
+    errorMessage: ""
 };
 
 export default function authReducer(state = initialState, action) {
 
     switch (action.type) {
-    case userAuthOps.USER_LOGIN_REQUESTER:
+    case userAuthOps.SIGNIN_USER_REQUESTED:
         return Object.assign({}, state, {
-            userToken: ""
+            loading: true,
+            errorMessage: ""
         });
-    case userAuthOps.USER_LOGIN_RECEIVED:
+    case userAuthOps.SIGNIN_USER_RECEIVED:
         return Object.assign({}, state, {
-            userToken: ""
+            loading: false,
+            areCredentialsCorrect: true
         });
-    case userAuthOps.USER_LOGIN_FAILED:
+    case userAuthOps.SIGNIN_USER_FAILED:
         return Object.assign({}, state, {
-            userToken: ""
+            loading: false,
+            areCredentialsCorrect: false,
+            errorMessage: action.payload.name === "TypeError" ? "Check your Connection and try again" : "Check your Credentials and try again"
         });
     default:
         return state;
