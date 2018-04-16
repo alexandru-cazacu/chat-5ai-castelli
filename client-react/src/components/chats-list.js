@@ -24,10 +24,12 @@ export default class ChatsList extends Component {
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
-        this.tick = this.tick.bind(this);
     }
 
-    // ==================================================
+    componentDidMount() {
+        store.dispatch(getChatsList());
+    }
+
     updateChatsList() {
         CHATTY_API_GET_CHATS()
             .then((chatsList) => {
@@ -55,7 +57,6 @@ export default class ChatsList extends Component {
             });
     }
 
-    // ==================================================
     handleChatSearch(e) {
         this.setState({
             chatFilter: e.target.value,
@@ -63,7 +64,6 @@ export default class ChatsList extends Component {
         });
     }
 
-    // ==================================================
     filterChats(filter) {
         var filteredChats = [];
 
@@ -77,18 +77,6 @@ export default class ChatsList extends Component {
         return this.state.chatsList;
     }
 
-    tick() {
-        this.updateChatsList();
-    }
-    componentDidMount() {
-        this.updateChatsList();
-        this.interval = setInterval(this.tick, 5000);
-    }
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    // ==================================================
     render() {
         var filteredChats = this.filterChats(this.state.chatFilter);
         var chatList = filteredChats.map((chat) => {
