@@ -15,12 +15,8 @@ export default class HeaderWithDrawer extends React.Component {
         this.setState({ showDrawer: !this.state.showDrawer });
     }
 
-
     render() {
-        var items = this.props.items.map((item) => {
-            return (<div className="item">{item}</div>);
-        });
-
+        var items = this.props.items.map((item) => <div className="item">{item}</div>);
         var headerStyle = this.state.showDrawer ? "header drawer" : "header";
 
         return (

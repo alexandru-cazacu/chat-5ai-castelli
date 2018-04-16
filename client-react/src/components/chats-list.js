@@ -5,6 +5,9 @@ import InputField from "./input-field";
 import CustomScroll from "react-custom-scroll";
 import "react-custom-scroll/dist/customScroll.css";
 
+import store from "../_store";
+import { getChatsList } from "../_actionCreators";
+
 import "../styles/chats-list.css";
 
 export default class ChatsList extends Component {

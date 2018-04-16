@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import AuthService from '../utils/auth-service';
+import React, { Component } from "react";
+import AuthService from "../utils/auth-service";
 
 export default function withAuth(AuthComponent) {
-    const Auth = new AuthService('http://localhost:8080');
+    const Auth = new AuthService("http://localhost:8080");
     return class AuthWrapped extends Component {
         constructor() {
             super();
@@ -13,7 +13,7 @@ export default function withAuth(AuthComponent) {
 
         componentWillMount() {
             if (!Auth.loggedIn()) {
-                this.props.history.replace('/sign-in');
+                this.props.history.replace("/sign-in");
             }
             else {
                 try {
@@ -24,7 +24,7 @@ export default function withAuth(AuthComponent) {
                 }
                 catch (err) {
                     Auth.logout();
-                    this.props.history.replace('/sign-in');
+                    this.props.history.replace("/sign-in");
                 }
             }
         }
