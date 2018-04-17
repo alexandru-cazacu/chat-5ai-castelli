@@ -1,17 +1,17 @@
 import React from "react";
 
-import HeaderWithDrawer from "../components/header-with-drawer";
-import ChatsList from "../components/chats-list";
-import CreateChatPanel from "./create-chat-panel";
-import Chat from "../components/chat";
+import HeaderWithDrawer from "../../components/header-with-drawer";
+import ChatsList from "../../components/chats-list";
+import CreateChatPanel from "../../components/create-chat-panel";
+import Chat from "../../components/chat";
 import {
     CHATTY_API_GET_CHAT
-} from "../utils/api-requests";
+} from "../../utils/api-requests";
 
-import "../styles/chat-page.css";
+import "./style.css";
 
-import AuthService from "../utils/auth-service";
-import withAuth from "../components/with-auth";
+import AuthService from "../../utils/auth-service";
+import withAuth from "../../components/with-auth";
 const Auth = new AuthService();
 
 class ChatPage extends React.Component {

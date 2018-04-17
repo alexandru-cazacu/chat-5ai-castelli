@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import HeaderWithDrawer from "../components/header-with-drawer";
-import InputField from "../components/input-field";
-import Button from "../components/button";
-import ErrorsList from "../components/errors-list";
-import "../styles/sign-up-page.css";
+import HeaderWithDrawer from "../../components/header-with-drawer";
+import InputField from "../../components/input-field";
+import Button from "../../components/button";
+import ErrorsList from "components/errors-list";
 
-import store from "../store";
-import { signInUser } from "../actions";
+import store from "../../store";
+import { signInUser } from "../../actions";
 
 export default class SignInPage extends React.Component {
 

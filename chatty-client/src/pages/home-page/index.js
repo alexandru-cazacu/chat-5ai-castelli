@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import HeaderWithDrawer from "../components/header-with-drawer";
-import logo from "../images/chat3.svg";
-import "../styles/sign-up-page.css";
-import "../styles/home-page.css";
+import HeaderWithDrawer from "../../components/header-with-drawer";
+import logo from "../../images/chat3.svg";
+import "./style.css";
 
 
 export default class HomePage extends Component {

@@ -90,11 +90,13 @@ export default class ChatsList extends Component {
                     <InputField placeholder='Search...' onChange={this.handleChatSearch} />
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 64px)">
-                    <div className="spinner-container">
-                        <ClipLoader
-                            loading={this.state.loading}
-                        />
-                    </div>
+                    {this.state.loading &&
+                        <div className="spinner-container">
+                            <ClipLoader
+                                loading={this.state.loading}
+                            />
+                        </div>
+                    }
                     <div>
                         <ErrorMessage
                             show={this.state.errorMessage.message}

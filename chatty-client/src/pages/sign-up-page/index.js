@@ -1,17 +1,15 @@
 import React from "react";
-import AuthService from "../utils/auth-service";
 import { Link } from "react-router-dom";
-import InputField from "../components/input-field";
-import Button from "../components/button";
-import Select from "../components/select";
-import ErrorsList from "../components/errors-list";
-import HeaderWithDrawer from "../components/header-with-drawer";
-import "../styles/sign-up-page.css";
-
 import { ClipLoader } from "react-spinners";
-
-import store from "../store";
-import { signUpUser } from "../actions";
+import AuthService from "../../utils/auth-service";
+import InputField from "../../components/input-field";
+import Button from "../../components/button";
+import Select from "../../components/select";
+import ErrorsList from "../../components/errors-list";
+import HeaderWithDrawer from "../../components/header-with-drawer";
+import store from "../../store";
+import { signUpUser } from "../../actions";
+import "./style.css";
 
 export default class SignUpPage extends React.Component {
 
