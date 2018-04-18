@@ -8,10 +8,11 @@
 }
 
 .chat-card-no-hover {
-    padding: 8px;
+    padding: 12px 8px;
     position: relative;
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
+    height: 64px;
 }
 
 .chat-card {
@@ -57,19 +58,4 @@
 
 .input-field.search {
     width: 100%;
-}
-
-.spinner-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.spinner-container > * {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }

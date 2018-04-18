@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import AuthService from "../../utils/auth-service";
-import InputField from "../../components/input-field";
-import Button from "../../components/button";
-import Select from "../../components/select";
-import ErrorsList from "../../components/errors-list";
-import HeaderWithDrawer from "../../components/header-with-drawer";
-import store from "../../store";
-import { signUpUser } from "../../actions";
+import InputField from "components/input-field";
+import Button from "components/button";
+import Select from "components/select";
+import ErrorsList from "components/errors-list";
+import HeaderWithDrawer from "components/header-with-drawer";
+import store from "store";
+import { signUp } from "action-creators";
 import "./style.css";
 
 export default class SignUpPage extends React.Component {
@@ -27,15 +26,11 @@ export default class SignUpPage extends React.Component {
             loading: false
         };
 
-        this.Auth = new AuthService();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
-
-        if (this.Auth.loggedIn())
-            this.props.history.replace("/chat");
 
         store.subscribe(() => {
             this.setState({
@@ -46,7 +41,7 @@ export default class SignUpPage extends React.Component {
     }
 
     handleSubmit() {
-        store.dispatch(signUpUser(this.state));
+        store.dispatch(signUp(this.state));
     }
 
     handleChange(e) {
@@ -56,7 +51,7 @@ export default class SignUpPage extends React.Component {
     render() {
         return (
             <div>
-                <HeaderWithDrawer items={[
+                <HeaderWithDrawer links={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>

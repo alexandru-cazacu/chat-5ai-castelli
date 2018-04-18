@@ -1,38 +1,16 @@
-import React, { Component } from "react";
-import AuthService from "../utils/auth-service";
+import React from "react";
 
 export default function withAuth(AuthComponent) {
-    const Auth = new AuthService("http://localhost:8080");
-    return class AuthWrapped extends Component {
-        constructor() {
-            super();
-            this.state = {
-                user: null
-            };
-        }
-
+    return class AuthWrapped extends React.Component {
         componentWillMount() {
-            if (!Auth.loggedIn()) {
+            if (!localStorage.getItem("jwtToken"))
                 this.props.history.replace("/sign-in");
-            }
-            else {
-                try {
-                    const profile = Auth.getProfile();
-                    this.setState({
-                        user: profile
-                    });
-                }
-                catch (err) {
-                    Auth.logout();
-                    this.props.history.replace("/sign-in");
-                }
-            }
         }
 
         render() {
-            if (this.state.user) {
+            if (localStorage.getItem("jwtToken")) {
                 return (
-                    <AuthComponent history={this.props.history} user={this.state.user} />
+                    <AuthComponent history={this.props.history} />
                 );
             }
             else {

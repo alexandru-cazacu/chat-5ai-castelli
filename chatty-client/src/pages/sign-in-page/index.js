@@ -1,63 +1,53 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import HeaderWithDrawer from "../../components/header-with-drawer";
 import InputField from "../../components/input-field";
 import Button from "../../components/button";
 import ErrorsList from "components/errors-list";
 
-import store from "../../store";
-import { signInUser } from "../../actions";
+import store from "store";
+import { signIn } from "action-creators";
+import { connect } from "react-redux";
 
-export default class SignInPage extends React.Component {
-
+class SignInPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
             password: "",
-            errorsList: []
         };
 
+        this.handleStoreUpdate = this.handleStoreUpdate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleStoreChange = this.handleStoreChange.bind(this);
-    }
-    
-    componentWillMount() {
-        this.unsubscribe = store.subscribe(this.handleStoreChange);
-        this.handleStoreChange();
+        store.subscribe(this.handleStoreUpdate);
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
+    componentDidMount() {
+        this.handleStoreUpdate();
     }
 
-    handleStoreChange() {
-        if (store.getState().authReducer.areCredentialsCorrect) {
+    handleStoreUpdate() {
+        if (localStorage.getItem("jwtToken")) {
             this.props.history.replace("/chat");
         }
-
-        this.setState({
-            errorsList: [store.getState().authReducer.errorMessage]
-        });
-    }
-
-    handleSubmit() {
-        store.dispatch(signInUser({
-            username: this.state.username,
-            password: this.state.password
-        }));
     }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    handleSubmit() {
+        store.dispatch(signIn({
+            username: this.state.username,
+            password: this.state.password
+        }));
+    }
+
     render() {
         return (
             <div>
-                <HeaderWithDrawer items={[
+                <HeaderWithDrawer links={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>
@@ -68,10 +58,19 @@ export default class SignInPage extends React.Component {
                     <InputField name='username' placeholder='Username...' onChange={this.handleChange.bind(this)} />
                     <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange.bind(this)} />
                     <Button value='Sign In' onClick={this.handleSubmit.bind(this)} />
-                    <ErrorsList errors={this.state.errorsList} />
+                    <ErrorsList errors={this.props.errors} />
                 </div>
-                <ToastContainer />
             </div>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        errors: [state.authReducer.errorMessage]
+    };
+};
+
+export default connect(
+    mapStateToProps
+)(SignInPage);

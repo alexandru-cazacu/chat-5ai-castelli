@@ -17,7 +17,7 @@ export default class HomePage extends Component {
     render() {
         return (
             <div>
-                <HeaderWithDrawer items={[
+                <HeaderWithDrawer links={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>

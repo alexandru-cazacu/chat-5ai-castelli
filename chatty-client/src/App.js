@@ -1,7 +1,11 @@
 import React from "react";
 
+// Styles
 import "./styles/App.css";
 import "./styles/proto.css";
+
+// Components
+import FullPageSpinner from "components/full-page-spinner";
 
 // Pages
 import HomePage from "./pages/home-page";
@@ -13,14 +17,33 @@ import NotFoundPage from "./pages/not-found-page";
 // Redux + Router
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "store";
 
 export default class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: false
+        };
+
+        this.handleStoreUpdate = this.handleStoreUpdate.bind(this);
+        store.subscribe(this.handleStoreUpdate);
+    }
+
+    handleStoreUpdate() {
+        this.setState({
+            loading: store.getState().chatReducer.loading || store.getState().authReducer.loading
+        });
+    }
+
     render() {
         return (
             <Provider store={store}>
                 <Router>
                     <div className="App">
+                        <FullPageSpinner isVisible={this.state.loading} />
                         <Switch>
                             <Route exact path="/" component={HomePage} />
                             <Route exact path="/sign-in" component={SignInPage} />

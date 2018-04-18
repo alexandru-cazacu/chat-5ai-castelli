@@ -9,77 +9,61 @@ import {
 } from "../../utils/api-requests";
 
 import "./style.css";
+import store from "store";
+import { signOut, toggleCreateChatCard, getChats } from "action-creators";
 
-import AuthService from "../../utils/auth-service";
 import withAuth from "../../components/with-auth";
-const Auth = new AuthService();
+import { connect } from "react-redux";
 
 class ChatPage extends React.Component {
-
     constructor(props) {
         super(props);
-        this.state = {
-            showCreateChatPanel: false,
-            chatid: -1,
-            chatName: ""
-        };
 
-        this.handleOpenCreateChatPanel = this.handleOpenCreateChatPanel.bind(this);
-        this.handleCloseCreateChatPanel = this.handleCloseCreateChatPanel.bind(this);
-        this.handleSuccessfullyCreateChat = this.handleSuccessfullyCreateChat.bind(this);
-        this.handleUnsuccessfullyCreateChat = this.handleUnsuccessfullyCreateChat.bind(this);
+        this.handleSignOut = this.handleSignOut.bind(this);
         this.handleOpenChat = this.handleOpenChat.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
     }
 
-    handleOpenCreateChatPanel() {
-        this.setState({ showCreateChatPanel: true });
+    componentDidMount() {
+        store.dispatch(getChats());
     }
 
-    handleCloseCreateChatPanel() {
-        this.setState({ showCreateChatPanel: false });
-    }
-
-    handleSuccessfullyCreateChat() {
-        this.setState({ showCreateChatPanel: false });
-    }
-
-    handleUnsuccessfullyCreateChat() {
+    handleOpenChat() {
 
     }
 
-    handleOpenChat(chatid) {
-        CHATTY_API_GET_CHAT(chatid)
-            .then((response) => {
-                this.setState({
-                    chatName: response.data.name,
-                    chatid: chatid
-                });
-            })
-            .catch();
-    }
-
-    handleLogout() {
-        Auth.logout();
-        this.props.history.replace("/sign-in");
+    handleSignOut() {
+        store.dispatch(signOut());
+        this.props.history.replace("/");
     }
 
     render() {
         return (
             <div className="App">
                 <HeaderWithDrawer
-                    items={[]}
+                    items={[{
+                        name: "Create Chat",
+                        callback: () => store.dispatch(toggleCreateChatCard(true))
+                    },
+                    {
+                        name: "Sign Out",
+                        callback: this.handleSignOut
+                    }]}
                 />
                 <div className='fixed-body'>
                     <div className="wrapper shadow">
-                        <ChatsList onOpenChat={this.handleOpenChat} currentOpenChat={this.state.chatid} />
-                        {this.state.showCreateChatPanel &&
-                            <CreateChatPanel
-                                onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
-                                onSuccessfullyCreateChat={this.handleSuccessfullyCreateChat}
-                                onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
-                            />}
-                        {this.state.chatid !== -1 && <Chat chatid={this.state.chatid} chatName={this.state.chatName} />}
+                        <ChatsList
+                            chatsList={this.props.chats}
+                            errorMessage={this.props.errorMessage}
+                            loading={this.props.loading}
+                            currentOpenChat={this.props.currentOpenChatID}
+                        />
+                        <CreateChatPanel
+                            onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
+                            onSuccessfullyCreateChat={this.handleSuccessfullyCreateChat}
+                            onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
+                            visible={this.props.showCreateChatCard}
+                        />
+                        {<Chat messages={this.props.messagesList} />}
                     </div>
                 </div>
             </div>
@@ -87,4 +71,17 @@ class ChatPage extends React.Component {
     }
 }
 
-export default withAuth(ChatPage);
+const mapStateToProps = state => {
+    return {
+        chats: state.chatReducer.chatsList,
+        showCreateChatCard: state.chatReducer.showCreateChatCard,
+        errorMessage: state.chatReducer.errorMessage,
+        loading: state.chatReducer.loading,
+        currentOpenChatID: state.chatReducer.currentOpenChatID,
+        messagesList: state.messageReducer.messagesList
+    };
+};
+
+export default withAuth(connect(
+    mapStateToProps
+)(ChatPage));

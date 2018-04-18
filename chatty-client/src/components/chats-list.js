@@ -4,10 +4,8 @@ import InputField from "./input-field";
 import CustomScroll from "react-custom-scroll";
 import "react-custom-scroll/dist/customScroll.css";
 
-import store from "../store";
-import { getChatsList } from "../actions";
-
-import { ClipLoader } from "react-spinners";
+import store from "store";
+import { getChatsList, openChat, getMessages } from "action-creators";
 
 import "../styles/chats-list.css";
 
@@ -17,65 +15,43 @@ export default class ChatsList extends Component {
         super(props);
         this.state = {
             chatsList: [],
-            chatFilter: "",
-            errorMessage: {
-                message: "",
-                icon: ""
-            },
-            loading: false
+            chatFilter: ""
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
-        this.updateChatsList = this.updateChatsList.bind(this);
-        store.subscribe(this.updateChatsList);
-    }
-
-    componentDidMount() {
-        store.dispatch(getChatsList());
-    }
-
-    updateChatsList() {
-        this.setState({
-            chatsList: store.getState().chatsReducer.chatsList,
-            errorMessage: {
-                message: store.getState().chatsReducer.errorMessage
-            },
-            loading: store.getState().chatsReducer.loading
-        });
     }
 
     handleChatSearch(e) {
         this.setState({
-            chatFilter: e.target.value,
-            errorMessage: { message: "" }
+            chatFilter: e.target.value
         });
     }
 
     filterChats(filter) {
         var filteredChats = [];
 
-        if (filter !== "") {
-            this.state.chatsList.forEach((chat) => {
+        if (filter) {
+            this.props.chatsList.forEach((chat) => {
                 if (chat.name.toLowerCase().includes(filter.toLowerCase()))
                     filteredChats.push(chat);
             });
             return filteredChats;
         }
-        return this.state.chatsList;
+        return this.props.chatsList;
     }
 
     render() {
         var filteredChats = this.filterChats(this.state.chatFilter);
-        var chatList = filteredChats.map((chat) => {
+        var chatList = filteredChats.map((chat, index) => {
             var usrs = "";
-            for (var i = 0; i < chat.chatUsers.length; i++) {
-                usrs += (i !== 0 ? ", " + chat.chatUsers[i].user.username : chat.chatUsers[i].user.username);
-            }
+            if (chat.chatUsers) chat.chatUsers.map((chatUser) =>
+                usrs += chatUser.user.username
+            );
 
             return (
                 <div className={this.props.currentOpenChat === chat.id ? "chat-card active" : "chat-card"}
                     key={chat.uid}
-                    onClick={() => this.props.onOpenChat(chat.id)}>
+                    onClick={() => {store.dispatch(openChat(chat.id)); store.dispatch(getMessages(this.props.currentOpenChat)); }}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
                     <p className="title">{chat.name}</p>
                     <p className="subtitle1">{usrs}</p>
@@ -90,18 +66,11 @@ export default class ChatsList extends Component {
                     <InputField placeholder='Search...' onChange={this.handleChatSearch} />
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 64px)">
-                    {this.state.loading &&
-                        <div className="spinner-container">
-                            <ClipLoader
-                                loading={this.state.loading}
-                            />
-                        </div>
-                    }
                     <div>
                         <ErrorMessage
-                            show={this.state.errorMessage.message}
-                            message={this.state.errorMessage.message}
-                            icon={this.state.errorMessage.icon}
+                            show={this.props.errorMessage.message}
+                            message={this.props.errorMessage}
+                            icon={this.props.errorMessage.icon}
                         />
                         {chatList}
                     </div>

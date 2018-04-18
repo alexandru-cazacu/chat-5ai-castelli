@@ -1,4 +1,4 @@
-import { userAuthOps } from "../actions/action-types";
+import { authActions } from "action-types";
 
 const initialState = {
     userDetails: {},
@@ -8,16 +8,16 @@ const initialState = {
 export default function signUpReducer(state = initialState, action) {
 
     switch (action.type) {
-    case userAuthOps.SIGNUP_USER_REQUESTED:
+    case authActions.SIGNUP_USER_REQUESTED:
         return Object.assign({}, state, {
             loading: true,
         });
-    case userAuthOps.SIGNUP_USER_RECEIVED:
+    case authActions.SIGNUP_USER_RECEIVED:
         return Object.assign({}, state, {
             loading: false,
             userDetails: action.payload.user,
         });
-    case userAuthOps.SIGNUP_USER_FAILED:
+    case authActions.SIGNUP_USER_FAILED:
         console.log(action.payload);
         return Object.assign({}, state, {
             loading: false,

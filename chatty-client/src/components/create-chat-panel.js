@@ -1,18 +1,17 @@
-import React from 'react';
-import Subtract from 'array-subtract';
-
-import PersonInGroupList from '../components/personInGroupList';
+import React from "react";
+import Subtract from "array-subtract";
+import PersonInGroupList from "../components/personInGroupList";
 import {
     CHATTY_API_CREATE_CHAT,
     CHATTY_API_SEARCH_USERS,
     CHATTY_API_GET_USER
-} from '../utils/api-requests';
-
-import close from '../images/close.svg';
-
-import '../styles/create-chat-panel.css';
-import SuggestionsList from '../components/suggestions-list';
-import ButtonGroup from '../components/button-group';
+} from "../utils/api-requests";
+import SuggestionsList from "../components/suggestions-list";
+import ButtonGroup from "../components/button-group";
+import store from "store";
+import { toggleCreateChatCard } from "action-creators";
+import close from "../images/close.svg";
+import "../styles/create-chat-panel.css";
 
 export default class CreateChatPanel extends React.Component {
 
@@ -21,8 +20,8 @@ export default class CreateChatPanel extends React.Component {
         this.state = {
             invitedPeople: [],
             suggestedPeople: [],
-            searchedPerson: '',
-            chatName: '',
+            searchedPerson: "",
+            chatName: "",
             error: undefined,
             currentUser: {}
         };
@@ -65,14 +64,14 @@ export default class CreateChatPanel extends React.Component {
     }
 
     handleSubmit(e) {
-        if (e.key === 'Enter' && this.state.suggestedPeople.length > 0) {
+        if (e.key === "Enter" && this.state.suggestedPeople.length > 0) {
             var invPeople = this.state.invitedPeople;
             invPeople.push(this.state.suggestedPeople[0]);
 
             this.setState({
                 invitedPeople: invPeople,
                 suggestedPeople: [],
-                searchedPerson: ''
+                searchedPerson: ""
             });
         }
     }
@@ -80,9 +79,9 @@ export default class CreateChatPanel extends React.Component {
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
 
-        if (e.target.name === 'chatName') return;
+        if (e.target.name === "chatName") return;
 
-        CHATTY_API_SEARCH_USERS(e.target.value, 'compact')
+        CHATTY_API_SEARCH_USERS(e.target.value, "compact")
             .then((result) => {
                 var subtract = new Subtract((itemA, itemB) => { return itemA.username === itemB.username; });
                 result = subtract.sub(result.data, this.state.invitedPeople);
@@ -111,54 +110,57 @@ export default class CreateChatPanel extends React.Component {
 
         invitedPeople = invitedPeople.reverse();
 
-        return (
-            <div className="floating-card-container">
-                <div className="floating-card">
-                    <img src={close} className="close-button-img" onClick={this.props.onCloseCreateChatPanel} alt="Close panel" />
-                    <h1>New Chat</h1>
-                    <div className="space"></div>
+        if (!this.props.visible)
+            return null;
+        else
+            return (
+                <div className="floating-card-container">
+                    <div className="floating-card">
+                        <img src={close} className="close-button-img" onClick={() => store.dispatch(toggleCreateChatCard(false))} alt="Close panel" />
+                        <h1>New Chat</h1>
+                        <div className="space"></div>
 
-                    <input
-                        type="text"
-                        name="chatName"
-                        placeholder="Chat name..."
-                        value={this.state.chatName}
-                        onChange={this.handleChange}
-                        className="input-field col-6 first"
-                    />
-
-                    <div className="suggestions-list-container col-6 last">
                         <input
                             type="text"
-                            name="searchedPerson"
-                            placeholder="Add a person..."
-                            value={this.state.searchedPerson}
+                            name="chatName"
+                            placeholder="Chat name..."
+                            value={this.state.chatName}
                             onChange={this.handleChange}
-                            onKeyPress={this.handleSubmit}
-                            className="input-field"
+                            className="input-field col-6 first"
                         />
 
-                        <SuggestionsList suggestions={this.state.suggestedPeople} />
-                    </div>
-                    <div className="space"></div>
-                    <h3>Invited people</h3>
-                    <div className="space"></div>
-                    <div>{invitedPeople}</div>
+                        <div className="suggestions-list-container col-6 last">
+                            <input
+                                type="text"
+                                name="searchedPerson"
+                                placeholder="Add a person..."
+                                value={this.state.searchedPerson}
+                                onChange={this.handleChange}
+                                onKeyPress={this.handleSubmit}
+                                className="input-field"
+                            />
 
-                    <ButtonGroup
-                        buttons={[
-                            {
-                                value: 'Cancel',
-                                callback: this.props.onCloseCreateChatPanel
-                            },
-                            {
-                                value: 'Confirm',
-                                callback: this.handleChatCreation
-                            }
-                        ]} />
+                            <SuggestionsList suggestions={this.state.suggestedPeople} />
+                        </div>
+                        <div className="space"></div>
+                        <h3>Invited people</h3>
+                        <div className="space"></div>
+                        <div>{invitedPeople}</div>
+
+                        <ButtonGroup
+                            buttons={[
+                                {
+                                    value: "Cancel",
+                                    callback: () => store.dispatch(toggleCreateChatCard(false))
+                                },
+                                {
+                                    value: "Confirm",
+                                    callback: this.handleChatCreation
+                                }
+                            ]} />
+                    </div>
+                    {this.state.error}
                 </div>
-                {this.state.error}
-            </div>
-        );
+            );
     }
 }

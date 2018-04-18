@@ -21,7 +21,6 @@ export default class Chat extends Component {
         super(props);
         this.state = {
             value: "",
-            messages: [],
             currentUser: "",
             chatName: ""
         };
@@ -94,7 +93,7 @@ export default class Chat extends Component {
 
     render() {
 
-        var messages = this.state.messages;
+        var messages = this.props.messages;
 
         if (messages !== undefined) {
             var prevDate = moment("", "YYYY-MM-DD");
@@ -125,7 +124,7 @@ export default class Chat extends Component {
                             </div>
                         </div>
                     </div>
-                    <MessagesList messages={this.state.messages} currentUser={this.state.currentUser} />
+                    <MessagesList messages={this.props.messages} currentUser={this.state.currentUser} />
                     <div className="input-area">
                         <InputField
                             placeholder='Type a message'
