@@ -1,19 +1,15 @@
 import React from "react";
-
-import HeaderWithDrawer from "../../components/header-with-drawer";
-import ChatsList from "../../components/chats-list";
-import CreateChatPanel from "../../components/create-chat-panel";
-import Chat from "../../components/chat";
-import {
-    CHATTY_API_GET_CHAT
-} from "../../utils/api-requests";
-
-import "./style.css";
 import store from "store";
 import { signOut, toggleCreateChatCard, getChats } from "action-creators";
-
-import withAuth from "../../components/with-auth";
 import { connect } from "react-redux";
+
+// Components
+import HeaderWithDrawer from "components/header-with-drawer";
+import ChatsList from "components/chats-list";
+import CreateChatPanel from "components/create-chat-panel";
+import Chat from "components/chat";
+import withAuth from "components/with-auth";
+import "./styles/chat-page.css";
 
 class ChatPage extends React.Component {
     constructor(props) {
@@ -55,7 +51,7 @@ class ChatPage extends React.Component {
                             chatsList={this.props.chats}
                             errorMessage={this.props.errorMessage}
                             loading={this.props.loading}
-                            currentOpenChat={this.props.currentOpenChatID}
+                            currentOpenChat={this.props.currentOpenChat}
                         />
                         <CreateChatPanel
                             onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
@@ -63,7 +59,7 @@ class ChatPage extends React.Component {
                             onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
                             visible={this.props.showCreateChatCard}
                         />
-                        {<Chat messages={this.props.messagesList} />}
+                        {<Chat currentOpenChat={this.props.currentOpenChat} messages={this.props.messagesList} />}
                     </div>
                 </div>
             </div>
@@ -77,7 +73,7 @@ const mapStateToProps = state => {
         showCreateChatCard: state.chatReducer.showCreateChatCard,
         errorMessage: state.chatReducer.errorMessage,
         loading: state.chatReducer.loading,
-        currentOpenChatID: state.chatReducer.currentOpenChatID,
+        currentOpenChat: state.chatReducer.currentOpenChat,
         messagesList: state.messageReducer.messagesList
     };
 };

@@ -1,6 +1,6 @@
 .header {
     height: 64px;
-    padding: 8px;
+    padding: 12px;
     box-sizing: border-box;
     border-bottom: 1px solid #ddd;
 }
@@ -15,34 +15,28 @@
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    height: 48px;
+    height: 40px;
 }
-
-.header .burger { display: none; }
-.header .back { display: none; margin: 8px !important; }
-.header.drawer .burger { display: none; }
-.header.drawer .back { display: none; }
 
 .header .title {
     color: black;
-    padding: 12px;
-    font-size: 22px;
-    line-height: 24px;
-    height: 24px;
+    font-size: 24px;
+    height: 40px;
+    line-height: 40px;
     font-weight: bold;
-    display: inline-block;
+    float: left;
 }
 
 .header .nav {
     float: right;
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1); /* drawer-visible animation */
 }
 
 .header .nav .item {
-    color: #888;
-    border-radius: 28px;
+    border-radius: 500px;
     cursor: pointer;
     display: inline-block;
+    margin-left: 8px;
 }
 
 .header .nav .item:hover {
@@ -50,47 +44,48 @@
 }
 
 .header .nav .item > * {
-    padding: 16px 24px;
+    padding: 12px 24px;
     line-height: 16px;
+    height: 16px;
     float: right;
-    color: rgb(128, 128, 128);
+    color: #888;
     text-decoration: none;
 }
 
 .header .material-icons {
-    color: #808080;
-    padding: 12px;
+    color: #888;
+    padding: 8px;
     font-size: 24px;
+    line-height: 24px;
     box-sizing: border-box;
-    width: 48px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
+    display: inline-block;
 }
 
-@media screen and (max-width: 1080px) {
+.header .back,
+.header .burger {
+    display: none;
+    float: left;
+}
+
+@media screen and (max-width: 720px) {
 
     .header .wrapper-header {
         width: 100%;
     }
-
-    .header .burger {
-        display: inline-block;
-    }
     
-    .header .back {
-        display: none;
+    .header .burger {
+        display: block;
+        margin-right: 12px;
     }
 
-    .header.drawer .burger {
-        display: none;
-    }
-
-    .header.drawer .title {
-        display: none;
-    }
-
-    .header.drawer .back {
-        display: inline-block;
+    .header .back,
+    .header.drawer-visible .back {
+        display: block;
         float: right;
+        margin: 12px;
     }
 
     .header .nav {
@@ -100,13 +95,14 @@
         bottom: 0;
         left: 0;
         background-color: #fff;
-        border-right: 1px solid #ddd;
         overflow: hidden;
         z-index: 100;
     }
-
-    .header.drawer .nav {
+    
+    .header.drawer-visible .nav {
+        border-right: 1px solid #ddd;
         right: 64px;
+        margin-right: 0;
     }
 
     .header .nav .item {
@@ -114,9 +110,10 @@
         border-radius: 0;
         display: inline-block;
         width: 100%;
+        margin-left: 0;
     }
     
-    .header .nav .item .text {
+    .header .nav .item > * {
         float: left;
     }
 }

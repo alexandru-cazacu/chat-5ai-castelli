@@ -3,7 +3,8 @@ import {
     CHATTY_API_SIGNUP_USER,
     CHATTY_API_SIGNIN_USER,
     CHATTY_API_GET_CHATS,
-    CHATTY_API_GET_MESSAGES
+    CHATTY_API_GET_MESSAGES,
+    CHATTY_API_CREATE_MESSAGE
 } from "utils/api-requests";
 
 import setAuthorizationToken from "utils/setAuthorizationToken";
@@ -100,13 +101,21 @@ export function createChat() {
 
 }
 
-export function openChat(id) {
+/**
+ * Opens chat given chat ID.
+ * @param {*} chatId Chat ID
+ */
+export function openChat(chatDetails) {
     return {
         type: chatActions.OPEN_CHAT,
-        payload: id
+        payload: chatDetails
     };
 }
 
+/**
+ * Opens/closes CreateChatCard.
+ * @param {*} isVisible 
+ */
 export function toggleCreateChatCard(isVisible) {
     return {
         type: chatActions.TOGGLE_CREATE_CHAT_CARD,
@@ -114,8 +123,24 @@ export function toggleCreateChatCard(isVisible) {
     };
 }
 
-export function sendMessage() {
-
+export function sendMessage(message, chatId) {
+    return function (dispatch) {
+        dispatch({
+            type: messageActions.SEND_MESSAGE_REQUESTED,
+        });
+        return CHATTY_API_CREATE_MESSAGE(message, chatId)
+            .then((response) => {
+                dispatch({
+                    type: messageActions.SEND_MESSAGE_RECEIVED,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: messageActions.SEND_MESSAGE_FAILED,
+                    payload: error
+                });
+            });
+    };
 }
 
 /**
@@ -133,6 +158,10 @@ export function getMessages(chatId) {
                 dispatch({
                     type: messageActions.GET_MESSAGES_RECEIVED,
                     payload: response
+                });
+                dispatch({
+                    type: chatActions.OPEN_CHAT,
+                    payload: chatId
                 });
             })
             .catch((error) => {

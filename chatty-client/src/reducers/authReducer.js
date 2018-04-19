@@ -14,7 +14,6 @@ export default function authReducer(state = initialState, action) {
         return Object.assign({}, state, {
             loading: true,
             areCredentialsCorrect: false,
-            errorMessage: undefined,
             user: {}
         });
     case authActions.SIGNIN_USER_RECEIVED:
@@ -26,7 +25,7 @@ export default function authReducer(state = initialState, action) {
     case authActions.SIGNIN_USER_FAILED:
         return Object.assign({}, state, {
             loading: false,
-            errorMessage: action.payload.name === "TypeError" ? "Check your Connection and try again" : "Wrong username or password",
+            errorMessage: "Wrong username or password"
         });
     case authActions.SIGNOUT_USER:
         return Object.assign({}, state, {

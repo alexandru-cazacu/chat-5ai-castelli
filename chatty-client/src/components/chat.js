@@ -1,22 +1,25 @@
 import React, { Component } from "react";
-import "../styles/messages-list.css";
+import moment from "moment";
+import SockJS from "sockjs-client";
+import Stomp from "@stomp/stompjs";
 import {
     CHATTY_API_GET_MESSAGES,
     CHATTY_API_CREATE_MESSAGE,
     CHATTY_API_GET_USER
 } from "../utils/api-requests";
-import InputField from "./input-field";
-import "react-custom-scroll/dist/customScroll.css";
-import MessagesList from "./messages-list";
-import moment from "moment";
+import store from "store";
+import { sendMessage } from "action-creators";
 
-import SockJS from "sockjs-client";
-import Stomp from "@stomp/stompjs";
+// Components
+import InputField from "./input-field";
+import MessagesList from "./messages-list";
+import "react-custom-scroll/dist/customScroll.css";
+import "../styles/messages-list.css";
+
 
 var stompClient = null;
 
 export default class Chat extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -75,11 +78,8 @@ export default class Chat extends Component {
                 username: this.state.currentUser
             };
 
-            CHATTY_API_CREATE_MESSAGE(message, this.props.chatid)
-                .then(() => this.renderMessages())
-                .catch();
-
-            stompClient.send("/app/sendMessages", {}, JSON.stringify({"name": "name"}));
+            store.dispatch(sendMessage(message, this.props.currentOpenChat.id));
+            stompClient.send("/app/sendMessages", {}, JSON.stringify({ "name": "name" }));
         }
     }
 
@@ -92,10 +92,9 @@ export default class Chat extends Component {
     }
 
     render() {
-
         var messages = this.props.messages;
 
-        if (messages !== undefined) {
+        if (this.props.currentOpenChat) {
             var prevDate = moment("", "YYYY-MM-DD");
             for (var i = 0; i < messages.length; i++) {
                 var currDate = moment(messages[i].timestamp, "YYYY-MM-DD");
@@ -113,21 +112,18 @@ export default class Chat extends Component {
             }
         }
 
-        if (this.props.chatid !== -1)
+        var chatName = "";
+
+        if (this.props.currentOpenChat)
             return (
                 <div className="messages-list">
                     <div className="header chat">
-                        <div className="title">{this.props.chatName}</div>
-                        <div className="nav">
-                            <div className="item">
-                                <i className="material-icons">more_vert</i>
-                            </div>
-                        </div>
+                        <div className="title">{this.props.currentOpenChat.name}</div>
                     </div>
                     <MessagesList messages={this.props.messages} currentUser={this.state.currentUser} />
                     <div className="input-area">
                         <InputField
-                            placeholder='Type a message'
+                            placeholder='Type a message...'
                             onChange={this.handleChange}
                             onKeyPress={this.handleSubmit}
                         />

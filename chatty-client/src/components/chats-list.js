@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import store from "store";
+import { openChat, getMessages } from "action-creators";
+
+// Components
 import ErrorMessage from "./error-message";
 import InputField from "./input-field";
 import CustomScroll from "react-custom-scroll";
 import "react-custom-scroll/dist/customScroll.css";
-
-import store from "store";
-import { getChatsList, openChat, getMessages } from "action-creators";
-
 import "../styles/chats-list.css";
 
 export default class ChatsList extends Component {
@@ -49,9 +49,9 @@ export default class ChatsList extends Component {
             );
 
             return (
-                <div className={this.props.currentOpenChat === chat.id ? "chat-card active" : "chat-card"}
+                <div className={this.props.currentOpenChat.id === chat.id ? "chat-card active" : "chat-card"}
                     key={chat.uid}
-                    onClick={() => {store.dispatch(openChat(chat.id)); store.dispatch(getMessages(this.props.currentOpenChat)); }}>
+                    onClick={() => store.dispatch(getMessages(chat.id))}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
                     <p className="title">{chat.name}</p>
                     <p className="subtitle1">{usrs}</p>
@@ -67,11 +67,7 @@ export default class ChatsList extends Component {
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 64px)">
                     <div>
-                        <ErrorMessage
-                            show={this.props.errorMessage.message}
-                            message={this.props.errorMessage}
-                            icon={this.props.errorMessage.icon}
-                        />
+                        <ErrorMessage message={this.props.errorMessage} />
                         {chatList}
                     </div>
                 </CustomScroll>

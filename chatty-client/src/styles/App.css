@@ -17,7 +17,7 @@ html,
 
 .wrapper {
     width: 90%;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     position: absolute;
     top: 0;
@@ -29,6 +29,10 @@ html,
 .wrapper.shadow {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     border-radius: 5px;
+}
+
+.content-wrapper {
+    margin-right: 0 !important;
 }
 
 /* ==================== GRID ==================== */

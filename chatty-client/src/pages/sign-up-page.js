@@ -8,7 +8,7 @@ import ErrorsList from "components/errors-list";
 import HeaderWithDrawer from "components/header-with-drawer";
 import store from "store";
 import { signUp } from "action-creators";
-import "./style.css";
+import "./styles/sign-up-page.css";
 
 export default class SignUpPage extends React.Component {
 

@@ -5,7 +5,7 @@ const initialState = {
     errorMessage: "",
     loading: false,
     showCreateChatCard: false,
-    currentOpenChatID: undefined
+    currentOpenChat: undefined
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -13,11 +13,13 @@ export default function chatReducer(state = initialState, action) {
     switch (action.type) {
     case chatActions.GET_CHATS_REQUESTED:
         return Object.assign({}, state, {
-            loading: true
+            loading: true,
+            chatsList: []
         });
     case chatActions.GET_CHATS_RECEIVED:
         return Object.assign({}, state, {
             chatsList: action.payload.data,
+            errorMessage: action.payload.data.length === 0 ? "Be the first one to write to a friend" : "",
             loading: false,
         });
     case chatActions.GET_CHATS_FAILED:

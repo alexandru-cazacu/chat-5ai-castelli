@@ -1,9 +1,7 @@
 import React from "react";
-
-import "../styles/header-with-drawer.css";
+import "./style.css";
 
 export default class HeaderWithDrawer extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -31,10 +29,8 @@ export default class HeaderWithDrawer extends React.Component {
                     <p>{item.name}</p>
                 </div>);
 
-        var headerStyle = this.state.showDrawer ? "header drawer" : "header";
-
         return (
-            <div className={headerStyle}>
+            <div className={"header " + (this.state.showDrawer ? "drawer-visible" : "")}>
                 <div className="wrapper-header">
                     <i className="material-icons burger" onClick={this.toggleDrawer}>menu</i>
                     <div className="title">Chatty</div>

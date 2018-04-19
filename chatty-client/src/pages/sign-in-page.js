@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import HeaderWithDrawer from "../../components/header-with-drawer";
-import InputField from "../../components/input-field";
-import Button from "../../components/button";
-import ErrorsList from "components/errors-list";
-
 import store from "store";
 import { signIn } from "action-creators";
 import { connect } from "react-redux";
+
+// Components
+import HeaderWithDrawer from "components/header-with-drawer";
+import InputField from "components/input-field";
+import Button from "components/button";
+import ErrorsList from "components/errors-list";
+
 
 class SignInPage extends React.Component {
     constructor(props) {
@@ -17,17 +19,17 @@ class SignInPage extends React.Component {
             password: "",
         };
 
-        this.handleStoreUpdate = this.handleStoreUpdate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        store.subscribe(this.handleStoreUpdate);
     }
 
     componentDidMount() {
-        this.handleStoreUpdate();
+        if (localStorage.getItem("jwtToken")) {
+            this.props.history.replace("/chat");
+        }
     }
 
-    handleStoreUpdate() {
+    componentWillUpdate() {
         if (localStorage.getItem("jwtToken")) {
             this.props.history.replace("/chat");
         }
@@ -57,7 +59,7 @@ class SignInPage extends React.Component {
                     <h1 className='card-title'>Sign In</h1>
                     <InputField name='username' placeholder='Username...' onChange={this.handleChange.bind(this)} />
                     <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange.bind(this)} />
-                    <Button value='Sign In' onClick={this.handleSubmit.bind(this)} />
+                    <Button value={this.props.loading ? "Signing In..." : "Sign In"} onClick={this.handleSubmit.bind(this)} />
                     <ErrorsList errors={this.props.errors} />
                 </div>
             </div>
@@ -67,7 +69,8 @@ class SignInPage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        errors: [state.authReducer.errorMessage]
+        errors: [state.authReducer.errorMessage],
+        loading: state.authReducer.loading
     };
 };
 
