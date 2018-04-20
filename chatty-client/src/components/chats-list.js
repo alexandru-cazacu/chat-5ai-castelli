@@ -49,7 +49,7 @@ export default class ChatsList extends Component {
             );
 
             return (
-                <div className={this.props.currentOpenChat.id === chat.id ? "chat-card active" : "chat-card"}
+                <div className={this.props.currentOpenChatID === chat.id ? "chat-card active" : "chat-card"}
                     key={chat.uid}
                     onClick={() => store.dispatch(getMessages(chat.id))}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />

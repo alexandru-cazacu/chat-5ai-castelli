@@ -10,11 +10,6 @@ import {
 import setAuthorizationToken from "utils/setAuthorizationToken";
 import jwt from "jsonwebtoken";
 
-/**
- * Sets token in local storage given username & password.
- * 
- * @param {*} userCredentials Username & password
- */
 export function signIn(userCredentials) {
     return function (dispatch) {
         dispatch({
@@ -63,9 +58,6 @@ export function signUp(userDetails) {
     };
 }
 
-/**
- * Removes token from local storage.
- */
 export function signOut() {
     localStorage.removeItem("jwtToken");
     return {
@@ -73,9 +65,6 @@ export function signOut() {
     };
 }
 
-/**
- * Gets chats list based on current token in local storage.
- */
 export function getChats() {
     return function (dispatch) {
         dispatch({
@@ -101,21 +90,13 @@ export function createChat() {
 
 }
 
-/**
- * Opens chat given chat ID.
- * @param {*} chatId Chat ID
- */
-export function openChat(chatDetails) {
+export function openChat(chatId) {
     return {
         type: chatActions.OPEN_CHAT,
-        payload: chatDetails
+        payload: chatId
     };
 }
 
-/**
- * Opens/closes CreateChatCard.
- * @param {*} isVisible 
- */
 export function toggleCreateChatCard(isVisible) {
     return {
         type: chatActions.TOGGLE_CREATE_CHAT_CARD,
@@ -143,11 +124,6 @@ export function sendMessage(message, chatId) {
     };
 }
 
-/**
- * Gets messages list given chat ID.
- * 
- * @param {*} chatId Chat ID
- */
 export function getMessages(chatId) {
     return function (dispatch) {
         dispatch({

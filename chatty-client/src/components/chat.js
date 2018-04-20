@@ -23,30 +23,15 @@ export default class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "",
-            currentUser: "",
-            chatName: ""
+            value: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.tick = this.tick.bind(this);
-        this.renderMessages = this.renderMessages.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps !== this.props)
-            this.renderMessages(nextProps.chatid);
     }
 
     componentDidMount() {
-        this.renderMessages();
         this.interval = setInterval(this.tick, 100000);
-
-        CHATTY_API_GET_USER()
-            .then((response) => {
-                this.setState({ currentUser: response.data.username });
-            })
-            .catch();
 
         var wsocket = new SockJS("http://localhost:8080/ws-chat/");
         stompClient = Stomp.over(wsocket);
@@ -55,15 +40,6 @@ export default class Chat extends Component {
                 console.log(greeting);
             });
         });
-    }
-
-    renderMessages(chatid) {
-        if (chatid === undefined)
-            chatid = this.props.chatid;
-
-        CHATTY_API_GET_MESSAGES(chatid)
-            .then((response) => this.setState({ messages: response.data }))
-            .catch();
     }
 
     handleChange(e) {
@@ -78,7 +54,7 @@ export default class Chat extends Component {
                 username: this.state.currentUser
             };
 
-            store.dispatch(sendMessage(message, this.props.currentOpenChat.id));
+            store.dispatch(sendMessage(message, this.props.currentOpenChatID));
             stompClient.send("/app/sendMessages", {}, JSON.stringify({ "name": "name" }));
         }
     }
@@ -92,9 +68,9 @@ export default class Chat extends Component {
     }
 
     render() {
-        var messages = this.props.messages;
+        var messages = this.props.messagesList;
 
-        if (this.props.currentOpenChat) {
+        if (this.props.currentOpenChatID) {
             var prevDate = moment("", "YYYY-MM-DD");
             for (var i = 0; i < messages.length; i++) {
                 var currDate = moment(messages[i].timestamp, "YYYY-MM-DD");
@@ -112,15 +88,15 @@ export default class Chat extends Component {
             }
         }
 
-        var chatName = "";
+        var chatName = "asdf";
 
-        if (this.props.currentOpenChat)
+        if (this.props.currentOpenChatID)
             return (
                 <div className="messages-list">
                     <div className="header chat">
-                        <div className="title">{this.props.currentOpenChat.name}</div>
+                        <div className="title">{chatName}</div>
                     </div>
-                    <MessagesList messages={this.props.messages} currentUser={this.state.currentUser} />
+                    <MessagesList messages={this.props.messagesList} currentUser={this.props.user} />
                     <div className="input-area">
                         <InputField
                             placeholder='Type a message...'

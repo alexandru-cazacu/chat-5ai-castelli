@@ -5,7 +5,7 @@ const initialState = {
     errorMessage: "",
     loading: false,
     showCreateChatCard: false,
-    currentOpenChat: undefined
+    currentOpenChatID: undefined
 };
 
 export default function chatReducer(state = initialState, action) {

@@ -48,10 +48,10 @@ class ChatPage extends React.Component {
                 <div className='fixed-body'>
                     <div className="wrapper shadow">
                         <ChatsList
-                            chatsList={this.props.chats}
+                            chatsList={this.props.chatsList}
                             errorMessage={this.props.errorMessage}
                             loading={this.props.loading}
-                            currentOpenChat={this.props.currentOpenChat}
+                            currentOpenChatID={this.props.currentOpenChatID}
                         />
                         <CreateChatPanel
                             onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
@@ -59,7 +59,12 @@ class ChatPage extends React.Component {
                             onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
                             visible={this.props.showCreateChatCard}
                         />
-                        {<Chat currentOpenChat={this.props.currentOpenChat} messages={this.props.messagesList} />}
+                        <Chat
+                            user={this.props.user}
+                            chatsList={this.props.chatsList}
+                            messagesList={this.props.messagesList}
+                            currentOpenChatID={this.props.currentOpenChatID}
+                        />
                     </div>
                 </div>
             </div>
@@ -69,12 +74,13 @@ class ChatPage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        chats: state.chatReducer.chatsList,
+        chatsList: state.chatReducer.chatsList,
         showCreateChatCard: state.chatReducer.showCreateChatCard,
         errorMessage: state.chatReducer.errorMessage,
         loading: state.chatReducer.loading,
-        currentOpenChat: state.chatReducer.currentOpenChat,
-        messagesList: state.messageReducer.messagesList
+        currentOpenChatID: state.chatReducer.currentOpenChatID,
+        messagesList: state.messageReducer.messagesList,
+        user: state.authReducer.user
     };
 };
 

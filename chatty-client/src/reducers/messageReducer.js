@@ -2,8 +2,8 @@ import { messageActions } from "action-types";
 
 const initialState = {
     messagesList: [],
-    loading: false,
-    errorMessage: ""
+    errorMessage: "",
+    loading: false
 };
 
 export default function messageReducer(state = initialState, action) {
