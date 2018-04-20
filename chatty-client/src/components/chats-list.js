@@ -1,21 +1,20 @@
-import React, { Component } from "react";
-import store from "store";
-import { openChat, getMessages } from "action-creators";
+import React, { Component } from 'react';
+import store from 'store';
+import { openChat, getMessages } from 'action-creators';
 
 // Components
-import ErrorMessage from "./error-message";
-import InputField from "./input-field";
-import CustomScroll from "react-custom-scroll";
-import "react-custom-scroll/dist/customScroll.css";
-import "../styles/chats-list.css";
+import ErrorMessage from './error-message';
+import InputField from 'components/common/input-field';
+import CustomScroll from 'react-custom-scroll';
+import 'react-custom-scroll/dist/customScroll.css';
+import '../styles/chats-list.css';
 
 export default class ChatsList extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             chatsList: [],
-            chatFilter: ""
+            chatFilter: ''
         };
 
         this.handleChatSearch = this.handleChatSearch.bind(this);
@@ -43,13 +42,13 @@ export default class ChatsList extends Component {
     render() {
         var filteredChats = this.filterChats(this.state.chatFilter);
         var chatList = filteredChats.map((chat, index) => {
-            var usrs = "";
+            var usrs = '';
             if (chat.chatUsers) chat.chatUsers.map((chatUser) =>
                 usrs += chatUser.user.username
             );
 
             return (
-                <div className={this.props.currentOpenChatID === chat.id ? "chat-card active" : "chat-card"}
+                <div className={this.props.currentOpenChatID === chat.id ? 'chat-card active' : 'chat-card'}
                     key={chat.uid}
                     onClick={() => store.dispatch(getMessages(chat.id))}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />

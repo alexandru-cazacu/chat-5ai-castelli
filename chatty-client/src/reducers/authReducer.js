@@ -1,9 +1,9 @@
-import { authActions } from "action-types";
+import { authActions } from 'action-types';
 
 const initialState = {
     loading: false,
     areCredentialsCorrect: false,
-    errorMessage: undefined,
+    errorsList: [],
     user: {}
 };
 
@@ -25,13 +25,13 @@ export default function authReducer(state = initialState, action) {
     case authActions.SIGNIN_USER_FAILED:
         return Object.assign({}, state, {
             loading: false,
-            errorMessage: "Wrong username or password"
+            errorsList: ['Wrong username or password']
         });
     case authActions.SIGNOUT_USER:
         return Object.assign({}, state, {
             loading: false,
             areCredentialsCorrect: false,
-            errorMessage: undefined,
+            errorsList: [],
             user: {}
         });
     default:

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/input-field.css';
+import './style.css';
 
 export default class InputField extends React.Component {
     constructor(props) {
@@ -11,22 +11,17 @@ export default class InputField extends React.Component {
 
     handleChange(e) {
         this.setState({ value: e.target.value });
-        if (typeof this.props.onChange === 'function')
-            this.props.onChange(e);
+        if (typeof this.props.handleChange === 'function') this.props.handleChange(e);
     }
-
+    
     handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            this.setState({ value: '' });
-        }
-        if (typeof this.props.onKeyPress === 'function')
-            this.props.onKeyPress(e);
+        if (typeof this.props.handleKeyPress === 'function') this.props.handleKeyPress(e);
     }
 
     render() {
         return (
             <input
-                type={this.props.type === undefined ? 'text' : this.props.type}
+                type={!this.props.type ? 'text' : this.props.type}
                 name={this.props.name}
                 placeholder={this.props.placeholder}
                 value={this.state.value}

@@ -5,7 +5,11 @@
   "dependencies": {
     "array-subtract": "^2.0.0",
     "axios": "^0.18.0",
+    "jsonwebtoken": "^8.2.1",
     "jwt-decode": "^2.2.0",
+    "node-sass-chokidar": "^1.2.2",
+    "npm-run-all": "^4.1.2",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-custom-scroll": "^3.1.0",

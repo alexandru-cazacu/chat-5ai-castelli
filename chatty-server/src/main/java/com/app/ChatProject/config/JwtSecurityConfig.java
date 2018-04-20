@@ -40,11 +40,9 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.addAllowedOrigin("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "Access-Control-Allow-Origin"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token", "Access-Control-Allow-Origin"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -52,7 +50,6 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public JwtAuthenticationTokenFilter authenticationTokenFilter() {
-
         JwtAuthenticationTokenFilter filter = new JwtAuthenticationTokenFilter();
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(new JwtSuccessHandler());
@@ -72,10 +69,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**").permitAll();
 
         http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
         http.headers().cacheControl();
-
         http.cors().configurationSource(corsConfigurationSource());
-
     }
 }

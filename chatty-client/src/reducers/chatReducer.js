@@ -1,8 +1,8 @@
-import { chatActions } from "action-types";
+import { chatActions } from 'action-types';
 
 const initialState = {
     chatsList: [],
-    errorMessage: "",
+    errorMessage: '',
     loading: false,
     showCreateChatCard: false,
     currentOpenChatID: undefined
@@ -19,12 +19,12 @@ export default function chatReducer(state = initialState, action) {
     case chatActions.GET_CHATS_RECEIVED:
         return Object.assign({}, state, {
             chatsList: action.payload.data,
-            errorMessage: action.payload.data.length === 0 ? "Be the first one to write to a friend" : "",
+            errorMessage: action.payload.data.length === 0 ? 'Be the first one to write to a friend' : '',
             loading: false,
         });
     case chatActions.GET_CHATS_FAILED:
         return Object.assign({}, state, {
-            errorMessage: "Check your Connection and reload the page",
+            errorMessage: 'Check your Connection and reload the page',
             loading: false
         });
     case chatActions.TOGGLE_CREATE_CHAT_CARD:

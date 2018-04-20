@@ -21,10 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author Alex
- */
 @RestController
 public class ChatController {
 
@@ -87,7 +83,7 @@ public class ChatController {
             systemMessage.setChat(chat);
             systemMessage.setContent(userFromToken.getUsername() + " added " + user.getUsername());
             systemMessage.setType("System");
-            
+
             messagesRepository.save(systemMessage);
         }
 

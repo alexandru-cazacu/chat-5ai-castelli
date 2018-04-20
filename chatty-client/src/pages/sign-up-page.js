@@ -1,27 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
-import InputField from "components/input-field";
-import Button from "components/button";
-import Select from "components/select";
-import ErrorsList from "components/errors-list";
-import HeaderWithDrawer from "components/header-with-drawer";
-import store from "store";
-import { signUp } from "action-creators";
-import "./styles/sign-up-page.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
+import InputField from 'components/common/input-field';
+import Button from 'components/common/button';
+import Select from 'components/select';
+import ErrorsList from 'components/errors-list';
+import HeaderWithDrawer from 'components/header-with-drawer';
+import store from 'store';
+import { signUp } from 'action-creators';
+import './styles/sign-up-page.css';
 
 export default class SignUpPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            surname: "",
+            name: '',
+            surname: '',
             birthday: undefined,
-            sex: "",
-            mail: "",
-            username: "",
-            password: "",
+            sex: '',
+            mail: '',
+            username: '',
+            password: '',
             errorsList: [],
             loading: false
         };
@@ -63,7 +63,7 @@ export default class SignUpPage extends React.Component {
                     <InputField name='name' placeholder='Name...' onChange={this.handleChange} />
                     <InputField name='surname' placeholder='Surname...' onChange={this.handleChange} />
                     <InputField name='birthday' type='date' placeholder='Birthday...' onChange={this.handleChange} />
-                    <Select name='sex' placeholder='Sex...' options={["Male", "Female", "Other"]} onChange={this.handleChange} />
+                    <Select name='sex' placeholder='Sex...' options={['Male', 'Female', 'Other']} onChange={this.handleChange} />
                     <InputField name='mail' placeholder='Mail...' onChange={this.handleChange} />
                     <InputField name='username' placeholder='Username...' onChange={this.handleChange} />
                     <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange} />

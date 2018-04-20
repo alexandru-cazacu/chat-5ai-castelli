@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
 /* ==================== GENERAL ==================== */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 * {
     margin: 0;
@@ -10,7 +10,7 @@
 
 body,
 html,
-.App,
+.app,
 #root {
     height: 100%;
 }
@@ -19,35 +19,57 @@ html,
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
 }
 
-.wrapper.shadow {
+/* ==================== UTILS ==================== */
+
+.shadow {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     border-radius: 5px;
 }
 
-.content-wrapper {
-    margin-right: 0 !important;
+.padding-s {
+    box-sizing: border-box;
+    padding: 4px;
 }
+
+.padding-m {
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+.padding-l {
+    box-sizing: border-box;
+    padding: 12px;
+}
+
+.del {
+    text-decoration: line-through;
+
+}
+
+/* ==================== FIXES ==================== */
+
+.inner-handle { background-color: #ddd !important; }
+.content-wrapper { margin-right: 0 !important; }
 
 /* ==================== GRID ==================== */
 
+.row {
+    width: 100%;
+}
+
 .col-1,
-.col-2, 
+.col-2,
 .col-3,
-.col-4, 
-.col-5, 
+.col-4,
+.col-5,
 .col-6,
-.col-7, 
-.col-8, 
+.col-7,
+.col-8,
 .col-9,
-.col-10, 
-.col-11, 
+.col-10,
+.col-11,
 .col-12 {
     display: inline-block;
 }
@@ -65,26 +87,8 @@ html,
 .col-11 { width: 91.66%; }
 .col-12 { width: 100%; }
 
-.col-6.first { width: 49%; margin-right: 1% }
-.col-6.last { width: 49%; margin-left: 1% }
-
-.inner-handle {
-    background-color: #ddd !important;
-}
-
-.del {
-    text-decoration: line-through;
-}
-
 @media screen and (max-width: 1080px) {
-
     .wrapper {
         width: 100%;
-    }
-
-    .wrapper.shadow {
-        width: 100%;
-        box-shadow: 0 0 0;
-        border-radius: 0;
     }
 }

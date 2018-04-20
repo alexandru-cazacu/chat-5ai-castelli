@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './button';
+import Button from 'components/common/button';
 import '../styles/button-group.css';
 
 export default class ButtonGroup extends React.Component {

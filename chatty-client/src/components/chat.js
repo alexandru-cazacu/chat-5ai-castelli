@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import moment from "moment";
-import SockJS from "sockjs-client";
-import Stomp from "@stomp/stompjs";
+import React, { Component } from 'react';
+import moment from 'moment';
+import SockJS from 'sockjs-client';
+import Stomp from '@stomp/stompjs';
 import {
     CHATTY_API_GET_MESSAGES,
     CHATTY_API_CREATE_MESSAGE,
     CHATTY_API_GET_USER
-} from "../utils/api-requests";
-import store from "store";
-import { sendMessage } from "action-creators";
+} from '../utils/api-requests';
+import store from 'store';
+import { sendMessage } from 'action-creators';
 
 // Components
-import InputField from "./input-field";
-import MessagesList from "./messages-list";
-import "react-custom-scroll/dist/customScroll.css";
-import "../styles/messages-list.css";
+import InputField from 'components/common/input-field';
+import MessagesList from './messages-list';
+import 'react-custom-scroll/dist/customScroll.css';
+import '../styles/messages-list.css';
 
 
 var stompClient = null;
@@ -23,7 +23,7 @@ export default class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ""
+            value: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -33,10 +33,10 @@ export default class Chat extends Component {
     componentDidMount() {
         this.interval = setInterval(this.tick, 100000);
 
-        var wsocket = new SockJS("http://localhost:8080/ws-chat/");
+        var wsocket = new SockJS('http://localhost:8080/ws-chat/');
         stompClient = Stomp.over(wsocket);
         stompClient.connect({}, function (frame) {
-            stompClient.subscribe("/topic/getMessages", function (greeting) {
+            stompClient.subscribe('/topic/getMessages', function (greeting) {
                 console.log(greeting);
             });
         });
@@ -47,15 +47,15 @@ export default class Chat extends Component {
     }
 
     handleSubmit(e) {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             var message = {
                 content: this.state.value,
-                type: "Text",
+                type: 'Text',
                 username: this.state.currentUser
             };
 
             store.dispatch(sendMessage(message, this.props.currentOpenChatID));
-            stompClient.send("/app/sendMessages", {}, JSON.stringify({ "name": "name" }));
+            stompClient.send('/app/sendMessages', {}, JSON.stringify({ 'name': 'name' }));
         }
     }
 
@@ -71,15 +71,15 @@ export default class Chat extends Component {
         var messages = this.props.messagesList;
 
         if (this.props.currentOpenChatID) {
-            var prevDate = moment("", "YYYY-MM-DD");
+            var prevDate = moment('', 'YYYY-MM-DD');
             for (var i = 0; i < messages.length; i++) {
-                var currDate = moment(messages[i].timestamp, "YYYY-MM-DD");
-                var diffDays = currDate.diff(prevDate, "days");
+                var currDate = moment(messages[i].timestamp, 'YYYY-MM-DD');
+                var diffDays = currDate.diff(prevDate, 'days');
 
                 if (diffDays !== 0) {
                     messages.splice(i, 0, {
-                        content: currDate.format("DD MMM"),
-                        type: "System",
+                        content: currDate.format('DD MMM'),
+                        type: 'System',
                     });
                     i++;
                 }
@@ -88,7 +88,7 @@ export default class Chat extends Component {
             }
         }
 
-        var chatName = "asdf";
+        var chatName = 'asdf';
 
         if (this.props.currentOpenChatID)
             return (

@@ -1,17 +1,25 @@
-import React from "react";
-import "../styles/errors-list.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import '../styles/errors-list.css';
 
-export default function ErrorsList({errors}) {
-    if (errors && errors[0]) {
-        var errorsList = errors.map((error, index) => {
-            return <li key={index}>{error}</li>;
-        });
-        return (
-            <ul className='errors-list'>
-                {errorsList}
-            </ul>
-        );
+export default class ErrorsList extends React.Component {
+    render() {
+        if (this.props.errorsList.length === 0) {
+            return null;
+        }
+        else {
+            var errors = this.props.errorsList.map((error, index) => {
+                return <li key={index}>{error}</li>;
+            });
+            return (
+                <ul className='errors-list'>
+                    {errors}
+                </ul>
+            );
+        }
     }
-    else
-        return null;
 }
+
+ErrorsList.propTypes = {
+    errorsList: PropTypes.array.isRequired
+};

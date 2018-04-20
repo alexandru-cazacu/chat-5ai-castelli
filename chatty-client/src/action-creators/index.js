@@ -1,25 +1,26 @@
-import { authActions, chatActions, messageActions } from "action-types";
+import { authActions, chatActions, messageActions } from 'action-types';
 import {
     CHATTY_API_SIGNUP_USER,
     CHATTY_API_SIGNIN_USER,
     CHATTY_API_GET_CHATS,
     CHATTY_API_GET_MESSAGES,
     CHATTY_API_CREATE_MESSAGE
-} from "utils/api-requests";
+} from 'utils/api-requests';
 
-import setAuthorizationToken from "utils/setAuthorizationToken";
-import jwt from "jsonwebtoken";
+import setAuthorizationToken from 'utils/setAuthorizationToken';
+import jwt from 'jsonwebtoken';
 
 export function signIn(userCredentials) {
     return function (dispatch) {
         dispatch({
             type: authActions.SIGNIN_USER_REQUESTED,
+            payload: userCredentials
         });
         return CHATTY_API_SIGNIN_USER(userCredentials)
             .then((response) => {
                 var token = response.data.token;
-                localStorage.removeItem("jwtToken");
-                localStorage.setItem("jwtToken", token);
+                localStorage.removeItem('jwtToken');
+                localStorage.setItem('jwtToken', token);
                 setAuthorizationToken(token);
                 var user = jwt.decode(token);
 
@@ -59,7 +60,7 @@ export function signUp(userDetails) {
 }
 
 export function signOut() {
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem('jwtToken');
     return {
         type: authActions.SIGNOUT_USER,
     };

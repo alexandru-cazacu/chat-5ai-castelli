@@ -1,67 +1,41 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import store from "store";
-import { signIn } from "action-creators";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { signIn } from 'action-creators';
+import { connect } from 'react-redux';
+import store from 'store';
 
 // Components
-import HeaderWithDrawer from "components/header-with-drawer";
-import InputField from "components/input-field";
-import Button from "components/button";
-import ErrorsList from "components/errors-list";
-
+import HeaderWithDrawer from 'components/header-with-drawer';
+import InputField from 'components/common/input-field';
+import Button from 'components/common/button';
+import ErrorsList from 'components/errors-list';
+import SignInForm from 'components/sign-in-form';
+import PageSpinner from 'components/common/page-spinner';
 
 class SignInPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: "",
-            password: "",
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
     componentDidMount() {
-        if (localStorage.getItem("jwtToken")) {
-            this.props.history.replace("/chat");
+        if (localStorage.getItem('jwtToken')) {
+            this.props.history.replace('/chat');
         }
     }
 
     componentWillUpdate() {
-        if (localStorage.getItem("jwtToken")) {
-            this.props.history.replace("/chat");
+        if (localStorage.getItem('jwtToken')) {
+            this.props.history.replace('/chat');
         }
-    }
-
-    handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    handleSubmit() {
-        store.dispatch(signIn({
-            username: this.state.username,
-            password: this.state.password
-        }));
     }
 
     render() {
         return (
             <div>
+                <PageSpinner visible={this.props.loading} />
                 <HeaderWithDrawer links={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>
                 ]} />
 
-                <div className="centered-card">
-                    <h1 className='card-title'>Sign In</h1>
-                    <InputField name='username' placeholder='Username...' onChange={this.handleChange.bind(this)} />
-                    <InputField name='password' type='password' placeholder='Password...' onChange={this.handleChange.bind(this)} />
-                    <Button value={this.props.loading ? "Signing In..." : "Sign In"} onClick={this.handleSubmit.bind(this)} />
-                    <ErrorsList errors={this.props.errors} />
-                </div>
+                <SignInForm loading={this.props.loading} errorsList={this.props.errorsList} />
             </div>
         );
     }
@@ -69,7 +43,7 @@ class SignInPage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        errors: [state.authReducer.errorMessage],
+        errorsList: state.authReducer.errorsList,
         loading: state.authReducer.loading
     };
 };
