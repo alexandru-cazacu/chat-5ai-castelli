@@ -30,8 +30,7 @@ public class SignUpController {
         user.setPassword(hashedPassword);
         try {
             usersRepository.save(user);
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             if (usersRepository.findByUsername(user.getUsername()) != null) {
                 throw new UsernameException(user.getUsername());
             }
@@ -41,5 +40,4 @@ public class SignUpController {
         }
         return usersRepository.save(user);
     }
-
 }

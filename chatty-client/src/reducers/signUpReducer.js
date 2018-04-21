@@ -1,8 +1,9 @@
-import { authActions } from "action-types";
+import { authActions } from 'action-types';
 
 const initialState = {
     userDetails: {},
-    loading: false
+    loading: false,
+    errorsList: []
 };
 
 export default function signUpReducer(state = initialState, action) {
@@ -21,10 +22,7 @@ export default function signUpReducer(state = initialState, action) {
         console.log(action.payload);
         return Object.assign({}, state, {
             loading: false,
-            errorMessage: action.payload.name === "TypeError" ||
-            action.payload.name === "Error" ? 
-                "Check your Connection and try again" 
-                : "Check your Details and try again"
+            errorsList: [action.payload]
         });
     default:
         return state;

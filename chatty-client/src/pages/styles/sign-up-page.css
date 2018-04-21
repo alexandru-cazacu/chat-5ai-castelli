@@ -22,25 +22,22 @@
 .centered-card > * {
     margin-bottom: 16px;
 }
-/* .centered-card input,
-.centered-card select,
-.centered-card button, {
-    margin: 8px 0 !important;
-} */
 
-@media screen and (max-width: 512px) {
+@media screen and (max-width: 520px) {
     .centered-card {
-        border-radius: 0;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        width: 100%;
-        transform: translate(0, -50%);
-        padding: 16px 64px;
-        text-align: center;
-        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        position: inherit;
         box-shadow: 0 0 0;
-        border: 0;
+        width: 100%;
+        transform: none;
+        padding: 64px;
+        text-align: center;
+
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .centered-card {
+        padding: 0 
+        32px;
     }
 }

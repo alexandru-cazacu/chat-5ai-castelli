@@ -39,6 +39,7 @@ export function signIn(userCredentials) {
 }
 
 export function signUp(userDetails) {
+    console.log(userDetails);
     return function (dispatch) {
         dispatch({
             type: authActions.SIGNUP_USER_REQUESTED,
@@ -51,9 +52,15 @@ export function signUp(userDetails) {
                 });
             })
             .catch((error) => {
+                console.log(error.response);
+                var errorMessage = '';
+                if (error.response.data.status === 409)
+                    errorMessage = error.response.data.message;
+                else
+                    errorMessage = 'Check your details and try again';
                 dispatch({
                     type: authActions.SIGNUP_USER_FAILED,
-                    payload: error
+                    payload: errorMessage
                 });
             });
     };

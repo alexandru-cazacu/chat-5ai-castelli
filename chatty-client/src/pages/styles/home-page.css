@@ -1,61 +1,64 @@
 .home-message {
-    font-size: 3em;
-    margin-bottom: 8px;
-    display: inline-block;
+  font-size: 3em;
+  display: inline-block;
+  margin-bottom: 8px;
 }
 
 .home-message.color {
-    font-size: 1em;
-    text-decoration: underline;
-    font-style: italic;
-    font-weight: bold;
-    display: inline-block;
+  font-size: 1em;
+  text-decoration: underline;
+  font-style: italic;
+  font-weight: bold;
+  display: inline-block;
 }
 
-.centered-card.clean {
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(0, -50%);
-    box-sizing: border-box;
-    text-align: center;
-    overflow: visible;
-    text-align: center;
-    border: 0;
-}
-
-.centered-card.clean:hover {
-    box-shadow: 0 0 0;
+.home-page-centered-card {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  box-sizing: border-box;
+  text-align: center;
+  overflow: visible;
+  text-align: center;
+  border: 0;
 }
 
 .left-card-home {
-    width: 300px;
-    padding-left: 150px;
-    padding-right: 8px;
-    box-sizing: border-box;
-    display: inline-block;
+  padding-right: 8px;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 150px;
 }
 
 .right-card-home {
-    width: 300px;
-    padding-left: 8px;
-    padding-right: 150px;
-    box-sizing: border-box;
-    display: inline-block;
+  padding-left: 8px;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 150px;
 }
 
-@media screen and (max-width: 1080px) {
-    .left-card-home,
-    .right-card-home {
-        width: 100%;
-        padding: 0;
-        padding-right: 8px;
-        box-sizing: border-box;
-        display: block;
-    }
+@media screen and (max-width: 375px) {
+  .home-message {
+    font-size: 2em;
+  }
 
-    .left-card-home > * {
-        margin: 8px 0;
-    }
+  .home-page-centered-card {
+    padding: 64px;
+  }
+
+  .left-card-home,
+  .right-card-home {
+    width: 100%;
+    padding: 0;
+    padding-bottom: 16px;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .home-page-centered-card {
+    padding: 32px;
+  }
 }

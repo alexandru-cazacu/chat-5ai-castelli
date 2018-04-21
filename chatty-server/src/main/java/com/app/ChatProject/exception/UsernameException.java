@@ -12,7 +12,7 @@ public class UsernameException extends RuntimeException{
     private String username;
     
     public UsernameException(String username){
-        super(String.format("The username %s is already taken. Please choose another", username));
+        super(String.format("%s is already taken", username));
         this.username = username;
     }
     

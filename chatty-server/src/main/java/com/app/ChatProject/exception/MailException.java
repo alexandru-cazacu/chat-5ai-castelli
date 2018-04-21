@@ -8,7 +8,7 @@ public class MailException extends RuntimeException{
     private String mail;
 
     public MailException(String mail){
-        super(String.format("The mail %s is already used in another account. Please used another", mail));
+        super(String.format("%s is already taken", mail));
         this.mail = mail;
     }
 }

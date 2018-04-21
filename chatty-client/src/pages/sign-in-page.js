@@ -2,13 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { signIn } from 'action-creators';
 import { connect } from 'react-redux';
-import store from 'store';
 
 // Components
 import HeaderWithDrawer from 'components/header-with-drawer';
-import InputField from 'components/common/input-field';
-import Button from 'components/common/button';
-import ErrorsList from 'components/errors-list';
 import SignInForm from 'components/sign-in-form';
 import PageSpinner from 'components/common/page-spinner';
 

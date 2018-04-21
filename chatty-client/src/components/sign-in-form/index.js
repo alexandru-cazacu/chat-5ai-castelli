@@ -30,7 +30,6 @@ export default class SignInForm extends React.Component {
     }
 
     render() {
-        console.log(this.props.errorsList);
         return (
             <div className="centered-card">
                 <h1 className='card-title'>Sign In</h1>
