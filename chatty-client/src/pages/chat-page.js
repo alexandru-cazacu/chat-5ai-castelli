@@ -1,15 +1,15 @@
-import React from "react";
-import store from "store";
-import { signOut, toggleCreateChatCard, getChats } from "action-creators";
-import { connect } from "react-redux";
+import React from 'react';
+import store from 'store';
+import { signOut, toggleCreateChatCard, getChats } from 'action-creators';
+import { connect } from 'react-redux';
 
 // Components
-import HeaderWithDrawer from "components/header-with-drawer";
-import ChatsList from "components/chats-list";
-import CreateChatPanel from "components/create-chat-panel";
-import Chat from "components/chat";
-import withAuth from "components/with-auth";
-import "./styles/chat-page.css";
+import HeaderWithDrawer from 'components/header-with-drawer';
+import ChatsList from 'components/chats-list';
+import CreateChatPanel from 'components/create-chat-panel';
+import Chat from 'components/chat';
+import withAuth from 'components/with-auth';
+import './styles/chat-page.css';
 
 class ChatPage extends React.Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class ChatPage extends React.Component {
 
     handleSignOut() {
         store.dispatch(signOut());
-        this.props.history.replace("/");
+        this.props.history.replace('/');
     }
 
     render() {
@@ -37,11 +37,11 @@ class ChatPage extends React.Component {
             <div className="App">
                 <HeaderWithDrawer
                     items={[{
-                        name: "Create Chat",
+                        name: 'Create Chat',
                         callback: () => store.dispatch(toggleCreateChatCard(true))
                     },
                     {
-                        name: "Sign Out",
+                        name: 'Sign Out',
                         callback: this.handleSignOut
                     }]}
                 />

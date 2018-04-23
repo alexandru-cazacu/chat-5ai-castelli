@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     areCredentialsCorrect: false,
     errorsList: [],
-    user: {}
+    userDetails: {}
 };
 
 export default function authReducer(state = initialState, action) {
@@ -14,13 +14,13 @@ export default function authReducer(state = initialState, action) {
         return Object.assign({}, state, {
             loading: true,
             areCredentialsCorrect: false,
-            user: {}
+            userDetails: {}
         });
     case authActions.SIGNIN_USER_RECEIVED:
         return Object.assign({}, state, {
             loading: false,
             areCredentialsCorrect: true,
-            user: action.payload
+            userDetails: action.payload
         });
     case authActions.SIGNIN_USER_FAILED:
         return Object.assign({}, state, {
@@ -32,7 +32,7 @@ export default function authReducer(state = initialState, action) {
             loading: false,
             areCredentialsCorrect: false,
             errorsList: [],
-            user: {}
+            userDetails: {}
         });
     default:
         return state;

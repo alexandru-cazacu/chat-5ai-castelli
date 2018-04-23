@@ -7,7 +7,7 @@
 
 .centered-card {
     border-radius: 5px;
-    width: 320px;
+    width: 350px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -22,6 +22,16 @@
 .centered-card > * {
     margin-bottom: 16px;
 }
+
+.half-padded-left,
+.half-padded-right {
+    width: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.half-padded-left { padding-right: 8px }
+.half-padded-right { padding-left: 8px }
 
 @media screen and (max-width: 520px) {
     .centered-card {

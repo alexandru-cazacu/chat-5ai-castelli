@@ -28,6 +28,18 @@ class SignUpPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('jwtToken')) {
+            this.props.history.replace('/chat');
+        }
+    }
+
+    componentWillUpdate() {
+        if (localStorage.getItem('jwtToken')) {
+            this.props.history.replace('/chat');
+        }
+    }
+
     handleSubmit() {
         store.dispatch(signUp(this.state));
     }
@@ -48,14 +60,18 @@ class SignUpPage extends React.Component {
                 <div className="centered-card">
                     <h1 className='title'>Sign Up</h1>
 
-                    <div className="half-padded-right">
+                    <div className="half-padded-left">
                         <InputField name='name' placeholder='Name...' handleChange={this.handleChange} />
                     </div>
-                    <div className="half-padded-left">
+                    <div className="half-padded-right">
                         <InputField name='surname' placeholder='Surname...' handleChange={this.handleChange} />
                     </div>
-                    <InputField name='birthday' type='date' placeholder='Birthday...' handleChange={this.handleChange} />
-                    <Select name='sex' placeholder='Sex...' options={['Male', 'Female', 'Other']} onChange={this.handleChange} />
+                    <div className="half-padded-left">
+                        <InputField name='birthday' type='date' placeholder='Birthday...' handleChange={this.handleChange} />
+                    </div>
+                    <div className="half-padded-right">
+                        <Select name='sex' placeholder='Sex...' options={['Male', 'Female', 'Other']} onChange={this.handleChange} />
+                    </div>
                     <InputField name='mail' placeholder='Mail...' handleChange={this.handleChange} />
                     <InputField name='username' placeholder='Username...' handleChange={this.handleChange} />
                     <InputField name='password' type='password' placeholder='Password...' handleChange={this.handleChange} />
@@ -70,7 +86,8 @@ class SignUpPage extends React.Component {
 const mapStateToProps = state => {
     return {
         errorsList: state.signUpReducer.errorsList,
-        loading: state.signUpReducer.loading
+        loading: state.signUpReducer.loading,
+        signInLoading: state.authReducer.loading // Used to update view when you autosignin after signup
     };
 };
 

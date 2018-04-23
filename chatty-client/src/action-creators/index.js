@@ -7,6 +7,7 @@ import {
     CHATTY_API_CREATE_MESSAGE
 } from 'utils/api-requests';
 
+import store from 'store';
 import setAuthorizationToken from 'utils/setAuthorizationToken';
 import jwt from 'jsonwebtoken';
 
@@ -50,6 +51,10 @@ export function signUp(userDetails) {
                     type: authActions.SIGNUP_USER_RECEIVED,
                     payload: response
                 });
+                store.dispatch(signIn({
+                    username: userDetails.username,
+                    password: userDetails.password
+                }));
             })
             .catch((error) => {
                 console.log(error.response);
