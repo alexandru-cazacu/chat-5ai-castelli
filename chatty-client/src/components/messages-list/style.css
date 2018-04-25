@@ -10,17 +10,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    /* overflow-y: scroll; */
-}
-
-.input-area {
-    padding: 8px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-top: 1px solid #ddd;
-    box-sizing: border-box;
 }
 
 .messages-list .header.chat {

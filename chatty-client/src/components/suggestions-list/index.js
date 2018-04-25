@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/suggestions-list.css';
+import './style.css';
 
 export default class SuggestionsList extends React.Component {
     render() {

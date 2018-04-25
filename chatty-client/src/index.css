@@ -10,15 +10,21 @@
 
 body,
 html,
-.app,
-#root {
+#root,
+.app {
     height: 100%;
 }
 
-.wrapper {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+.grid-wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 300px 4fr 1fr;
+    grid-template-rows: 64px 64px auto 64px;
+    grid-template-areas:
+        "header header header header"
+        ". chatslist chatcontainer ."
+        ". chatslist chatcontainer ."
+        ". chatslist chatcontainer .";
 }
 
 /* ==================== UTILS ==================== */
@@ -45,8 +51,12 @@ html,
 
 .del {
     text-decoration: line-through;
-
 }
+
+.flex-filler { flex: 1 }
+.flex-filler-2 { flex: 2 }
+.flex-filler-3 { flex: 3 }
+.flex-filler-3 { flex: 4 }
 
 /* ==================== FIXES ==================== */
 

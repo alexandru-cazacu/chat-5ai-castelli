@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/message.css';
+import './style.css';
 import moment from 'moment';
 
 export default class Message extends React.Component {
@@ -14,7 +14,7 @@ export default class Message extends React.Component {
             messageTime = moment(this.props.message.timestamp).format('HH:mm');
 
             if (this.props.message.user) {
-                if (this.props.message.user.username === this.props.currentUser) {
+                if (this.props.message.user.username === this.props.currentUser.data.username) {
                     messageTypeStyle += ' self';
                 }
                 else {

@@ -8,7 +8,7 @@ import store from 'store';
 import { signUp } from 'action-creators';
 import { connect } from 'react-redux';
 import ErrorsList from 'components/errors-list';
-import HeaderWithDrawer from 'components/header-with-drawer';
+import PageHeader from 'components/page-header';
 import './styles/sign-up-page.css';
 
 class SignUpPage extends React.Component {
@@ -51,7 +51,7 @@ class SignUpPage extends React.Component {
     render() {
         return (
             <div>
-                <HeaderWithDrawer links={[
+                <PageHeader links={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>

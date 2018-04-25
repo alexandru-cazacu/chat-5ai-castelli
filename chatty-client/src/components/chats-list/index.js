@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import store from 'store';
 import { openChat, getMessages } from 'action-creators';
 
 // Components
-import ErrorMessage from './error-message';
+import ErrorMessage from 'components/error-message';
 import InputField from 'components/common/input-field';
 import CustomScroll from 'react-custom-scroll';
 import 'react-custom-scroll/dist/customScroll.css';
-import '../styles/chats-list.css';
+import './style.css';
 
 export default class ChatsList extends Component {
     constructor(props) {
@@ -21,9 +22,7 @@ export default class ChatsList extends Component {
     }
 
     handleChatSearch(e) {
-        this.setState({
-            chatFilter: e.target.value
-        });
+        this.setState({ chatFilter: e.target.value });
     }
 
     filterChats(filter) {
@@ -48,8 +47,8 @@ export default class ChatsList extends Component {
             );
 
             return (
-                <div className={this.props.currentOpenChatID === chat.id ? 'chat-card active' : 'chat-card'}
-                    key={chat.uid}
+                <div className='chat-card'
+                    key={chat.id}
                     onClick={() => store.dispatch(getMessages(chat.id))}>
                     <img className="avatar" src="https://source.unsplash.com/daily" alt="Avatar" />
                     <p className="title">{chat.name}</p>
@@ -60,13 +59,13 @@ export default class ChatsList extends Component {
         });
 
         return (
-            <div className="left-column" >
-                <div className="chat-card-no-hover">
-                    <InputField placeholder='Search...' onChange={this.handleChatSearch} />
+            <div className="chats-list-container" >
+                <div className="chats-list-search">
+                    <InputField placeholder='Search...' handleChange={this.handleChatSearch} />
                 </div>
                 <CustomScroll heightRelativeToParent="calc(100% - 64px)">
                     <div>
-                        <ErrorMessage message={this.props.errorMessage} />
+                        <ErrorMessage message={this.props.chatsListErrorMessage} />
                         {chatList}
                     </div>
                 </CustomScroll>
@@ -74,3 +73,9 @@ export default class ChatsList extends Component {
         );
     }
 }
+
+ChatsList.propTypes = {
+    chatsList: PropTypes.array.isRequired,
+    chatsListErrorMessage: PropTypes.array.isRequired,
+    currentOpenChatID: PropTypes.number.isRequired
+};

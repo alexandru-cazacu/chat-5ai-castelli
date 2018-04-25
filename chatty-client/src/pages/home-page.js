@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HeaderWithDrawer from 'components/header-with-drawer';
+import PageHeader from 'components/page-header';
 import logo from 'images/chat3.svg';
 import './styles/home-page.css';
 
@@ -17,7 +17,7 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <div>
-                <HeaderWithDrawer links={[
+                <PageHeader items={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>

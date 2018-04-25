@@ -1,11 +1,15 @@
 import React from 'react';
 import Button from 'components/common/button';
-import '../styles/button-group.css';
+import './style.css';
 
 export default class ButtonGroup extends React.Component {
     render() {
         var buttons = this.props.buttons.map((button) => {
-            return <div key={button.value} className='button-container'><Button value={button.value} onClick={button.callback} /></div>;
+            return <div
+                key={button.label}
+                className='button-container'>
+                <Button label={button.label} onClick={button.callback} />
+            </div>;
         });
         return (
             <div className="button-group">

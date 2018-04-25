@@ -1,0 +1,21 @@
+.chat-container {
+    grid-area: chatcontainer;
+    border-right: 1px solid #ddd;
+    position: relative;
+}
+
+.chat-container .chat-container-header {
+    border-bottom: 1px solid #ddd;
+    height: 64px;
+    box-sizing: border-box;
+}
+
+.input-area {
+    padding: 8px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #ddd;
+    box-sizing: border-box;
+}

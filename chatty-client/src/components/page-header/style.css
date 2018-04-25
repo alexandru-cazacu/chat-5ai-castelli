@@ -1,0 +1,32 @@
+.page-header {
+    border-bottom: 1px solid #ddd;
+    grid-area: header;
+    align-items: center;
+    display: flex;
+}
+
+.page-header .page-header-title {
+    color: #111111;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.page-header .item {
+    border-radius: 500px;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 12px 24px;
+}
+
+.page-header .item:hover {
+    background-color: #00000011;
+}
+
+.page-header .item > * {
+    padding: 12px 24px;
+    line-height: 16px;
+    height: 16px;
+    float: right;
+    color: #888;
+    text-decoration: none;
+}

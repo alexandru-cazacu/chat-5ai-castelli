@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles/errors-list.css';
+import './style.css';
 
 export default class ErrorsList extends React.Component {
     render() {

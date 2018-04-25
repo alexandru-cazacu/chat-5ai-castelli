@@ -5,7 +5,7 @@
     bottom: 0;
     position: fixed;
     background-color: #00000044;
-    z-index: 999;
+    z-index: 800;
 }
 
 .floating-card {

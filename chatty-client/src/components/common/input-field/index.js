@@ -16,6 +16,7 @@ export default class InputField extends React.Component {
     
     handleKeyPress(e) {
         if (typeof this.props.handleKeyPress === 'function') this.props.handleKeyPress(e);
+        if (this.props.resetOnSubmit && e.key === 'Enter') this.setState({ value: '' });
     }
 
     render() {

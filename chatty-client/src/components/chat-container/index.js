@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import SockJS from 'sockjs-client';
-import Stomp from '@stomp/stompjs';
-import {
-    CHATTY_API_GET_MESSAGES,
-    CHATTY_API_CREATE_MESSAGE,
-    CHATTY_API_GET_USER
-} from '../utils/api-requests';
+// import SockJS from 'sockjs-client';
+// import Stomp from '@stomp/stompjs';
 import store from 'store';
 import { sendMessage } from 'action-creators';
+import PropTypes from 'prop-types';
 
 // Components
 import InputField from 'components/common/input-field';
-import MessagesList from './messages-list';
+import MessagesList from 'components/messages-list';
 import 'react-custom-scroll/dist/customScroll.css';
-import '../styles/messages-list.css';
+import './style.css';
 
 
-var stompClient = null;
+// var stompClient = null;
 
-export default class Chat extends Component {
+export default class ChatContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,19 +23,16 @@ export default class Chat extends Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.tick = this.tick.bind(this);
     }
 
     componentDidMount() {
-        this.interval = setInterval(this.tick, 100000);
-
-        var wsocket = new SockJS('http://localhost:8080/ws-chat/');
-        stompClient = Stomp.over(wsocket);
-        stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/getMessages', function (greeting) {
-                console.log(greeting);
-            });
-        });
+        // var wsocket = new SockJS('http://localhost:8080/ws-chat/');
+        // stompClient = Stomp.over(wsocket);
+        // stompClient.connect({}, function (frame) {
+        //     stompClient.subscribe('/topic/getMessages', function (greeting) {
+        //         console.log(greeting);
+        //     });
+        // });
     }
 
     handleChange(e) {
@@ -51,20 +44,12 @@ export default class Chat extends Component {
             var message = {
                 content: this.state.value,
                 type: 'Text',
-                username: this.state.currentUser
+                username: this.props.currentUser.data.username
             };
 
-            store.dispatch(sendMessage(message, this.props.currentOpenChatID));
-            stompClient.send('/app/sendMessages', {}, JSON.stringify({ 'name': 'name' }));
+            store.dispatch(sendMessage(message, this.props.currentOpenChatId));
+            // stompClient.send('/app/sendMessages', {}, JSON.stringify({ 'name': 'name' }));
         }
-    }
-
-    tick() {
-        this.renderMessages();
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     render() {
@@ -88,25 +73,35 @@ export default class Chat extends Component {
             }
         }
 
-        var chatName = 'asdf';
-
-        if (this.props.currentOpenChatID)
+        if (this.props.currentOpenChatId)
             return (
-                <div className="messages-list">
-                    <div className="header chat">
-                        <div className="title">{chatName}</div>
+                <div className="chat-container">
+                    <div className="chat-container-header">
+                        <div className="title">{this.props.currentOpenChatId}</div>
                     </div>
-                    <MessagesList messages={this.props.messagesList} currentUser={this.props.user} />
+                    <MessagesList
+                        messages={this.props.messagesList}
+                        currentUser={this.props.currentUser} />
                     <div className="input-area">
                         <InputField
                             placeholder='Type a message...'
-                            onChange={this.handleChange}
-                            onKeyPress={this.handleSubmit}
+                            handleChange={this.handleChange}
+                            handleKeyPress={this.handleSubmit}
+                            resetOnSubmit={true}
                         />
                     </div>
                 </div>
             );
         else
-            return null;
+            return (
+                <div className="chat-container"></div>
+            );
     }
 }
+
+ChatContainer.propTypes = {
+    currentOpenChatId: PropTypes.object,
+    messagesList: PropTypes.array,
+    chatsList: PropTypes.array,
+    currentUser: PropTypes.object,
+};

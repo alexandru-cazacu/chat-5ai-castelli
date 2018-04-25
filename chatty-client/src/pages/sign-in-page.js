@@ -4,7 +4,7 @@ import { signIn } from 'action-creators';
 import { connect } from 'react-redux';
 
 // Components
-import HeaderWithDrawer from 'components/header-with-drawer';
+import PageHeader from 'components/page-header';
 import SignInForm from 'components/sign-in-form';
 import PageSpinner from 'components/common/page-spinner';
 
@@ -25,7 +25,7 @@ class SignInPage extends React.Component {
         return (
             <div>
                 <PageSpinner visible={this.props.loading} />
-                <HeaderWithDrawer links={[
+                <PageHeader items={[
                     <Link to="/" className="text">Home</Link>,
                     <Link to="/sign-in" className="text">Sign In</Link>,
                     <Link to="/sign-up" className="text">Sign Up</Link>

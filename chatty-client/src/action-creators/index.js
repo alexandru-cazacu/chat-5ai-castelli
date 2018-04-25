@@ -4,7 +4,8 @@ import {
     CHATTY_API_SIGNIN_USER,
     CHATTY_API_GET_CHATS,
     CHATTY_API_GET_MESSAGES,
-    CHATTY_API_CREATE_MESSAGE
+    CHATTY_API_CREATE_MESSAGE,
+    CHATTY_API_GET_USER
 } from 'utils/api-requests';
 
 import store from 'store';
@@ -40,7 +41,6 @@ export function signIn(userCredentials) {
 }
 
 export function signUp(userDetails) {
-    console.log(userDetails);
     return function (dispatch) {
         dispatch({
             type: authActions.SIGNUP_USER_REQUESTED,
@@ -71,6 +71,27 @@ export function signUp(userDetails) {
     };
 }
 
+export function getUserDetails() {
+    return function (dispatch) {
+        dispatch({
+            type: authActions.GET_USER_REQUESTED,
+        });
+        return CHATTY_API_GET_USER()
+            .then((response) => {
+                dispatch({
+                    type: authActions.GET_USER_RECEIVED,
+                    payload: response
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: authActions.GET_USER_FAILED,
+                    payload: 'Unable to retrieve User Details'
+                });
+            });
+    };
+}
+
 export function signOut() {
     localStorage.removeItem('jwtToken');
     return {
@@ -93,7 +114,7 @@ export function getChats() {
             .catch((error) => {
                 dispatch({
                     type: chatActions.GET_CHATS_FAILED,
-                    payload: error
+                    payload: 'Unable to retrieve Chats'
                 });
             });
     };
@@ -120,17 +141,18 @@ export function toggleCreateChatCard(isVisible) {
 export function sendMessage(message, chatId) {
     return function (dispatch) {
         dispatch({
-            type: messageActions.SEND_MESSAGE_REQUESTED,
+            type: messageActions.CREATE_MESSAGE_REQUESTED,
         });
         return CHATTY_API_CREATE_MESSAGE(message, chatId)
             .then((response) => {
                 dispatch({
-                    type: messageActions.SEND_MESSAGE_RECEIVED,
+                    type: messageActions.CREATE_MESSAGE_RECEIVED,
                 });
+                store.dispatch(getMessages(chatId));
             })
             .catch((error) => {
                 dispatch({
-                    type: messageActions.SEND_MESSAGE_FAILED,
+                    type: messageActions.CREATE_MESSAGE_FAILED,
                     payload: error
                 });
             });

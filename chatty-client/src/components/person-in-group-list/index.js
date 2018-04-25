@@ -1,6 +1,6 @@
 import React from 'react';
-import close from '../images/close.svg';
-import '../styles/person-in-group-list.css';
+import close from 'images/close.svg';
+import './style.css';
 
 export default class PersonInGroupList extends React.Component {
     render() {

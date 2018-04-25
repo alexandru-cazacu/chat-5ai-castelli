@@ -1,13 +1,11 @@
-.left-column {
-    width: 350px;
-    float: left;
-    
-    height: 100%;
+.chats-list-container {
     position: relative;
     border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    grid-area: chatslist;
 }
 
-.chat-card-no-hover {
+.chats-list-search {
     padding: 12px 8px;
     position: relative;
     border-bottom: 1px solid #ddd;
