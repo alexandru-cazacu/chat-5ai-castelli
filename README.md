@@ -12,8 +12,8 @@
 
 ## Screenshots
 
-![Login Page](/screenshots/login.jpeg)
-![Chat Page](/screenshots/chat.jpeg)
+![Login Page](/screenshots/login.png)
+![Chat Page](/screenshots/chat.png)
 
 ## Getting Started
 
