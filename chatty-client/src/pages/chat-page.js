@@ -1,6 +1,6 @@
 import React from 'react';
 import store from 'store';
-import { signOut, toggleCreateChatCard, getChats, getUserDetails } from 'action-creators';
+import { signOut, toggleCreateChatCard, getChats, getMessages, getUserDetails } from 'action-creators';
 import { connect } from 'react-redux';
 
 // Components
@@ -11,24 +11,33 @@ import ChatContainer from 'components/chat-container';
 import withAuth from 'components/with-auth';
 import './styles/chat-page.css';
 
+var timer = null;
+
 class ChatPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.handleSignOut = this.handleSignOut.bind(this);
-        this.handleOpenChat = this.handleOpenChat.bind(this);
+        this.tick = this.tick.bind(this);
+        store.dispatch(getUserDetails());
+        store.dispatch(getChats());
     }
 
     componentDidMount() {
-        store.dispatch(getUserDetails());
-        store.dispatch(getChats());
-        setInterval(function () {
-            store.dispatch(getChats());
-        }, 50000);
+        timer = setInterval(() => { this.tick(); }, 5000);
     }
 
-    handleOpenChat() {
+    tick() {
+        store.dispatch(getChats());
+        store.dispatch(getMessages(this.props.currentOpenChatId));
+    }
 
+    componentWillUnmount() {
+        clearInterval(timer);
+    }
+
+    getCurrentOpenChatId() {
+        return this.props.currentOpenChatId;
     }
 
     handleSignOut() {
@@ -56,10 +65,8 @@ class ChatPage extends React.Component {
                     currentOpenChatId={this.props.currentOpenChatId}
                 />
                 <CreateChatPanel
-                    onCloseCreateChatPanel={this.handleCloseCreateChatPanel}
-                    onSuccessfullyCreateChat={this.handleSuccessfullyCreateChat}
-                    onUnsuccessfullyCreateChat={this.handleUnsuccessfullyCreateChat}
                     visible={this.props.showCreateChatCard}
+                    currentUserDetails={this.props.userDetails}
                 />
                 <ChatContainer
                     currentUser={this.props.userDetails}

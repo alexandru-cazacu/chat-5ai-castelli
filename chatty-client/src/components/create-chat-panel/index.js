@@ -10,6 +10,7 @@ import SuggestionsList from 'components/suggestions-list';
 import ButtonGroup from 'components/button-group';
 import store from 'store';
 import { toggleCreateChatCard } from 'action-creators';
+import ErrorsList from 'components/errors-list';
 import close from 'images/close.svg';
 import './style.css';
 
@@ -22,8 +23,7 @@ export default class CreateChatPanel extends React.Component {
             suggestedPeople: [],
             searchedPerson: '',
             chatName: '',
-            error: undefined,
-            currentUser: {}
+            errorMessage: []
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,22 +32,22 @@ export default class CreateChatPanel extends React.Component {
         this.handleRemoveUser = this.handleRemoveUser.bind(this);
     }
 
-    componentDidMount() {
-        CHATTY_API_GET_USER()
-            .then((response) => {
-                this.setState({ currentUser: response.data });
-            })
-            .catch();
-    }
-
     handleChatCreation() {
-        CHATTY_API_CREATE_CHAT(this.state.chatName, this.state.invitedPeople)
-            .then(() => this.sendSuccess())
-            .catch((error) => console.log(error));
-    }
+        var errorMessages = [];
+        if (!this.state.chatName) {
+            errorMessages.push('Chose a Chat name');
+        }
+        if (this.state.invitedPeople.length === 0) {
+            errorMessages.push('Add at least one person');
+        }
+        if (errorMessages.length !== 0) {
+            this.setState({ errorMessage: errorMessages });
+            return;
+        }
 
-    sendSuccess() {
-        this.props.onSuccessfullyCreateChat();
+        CHATTY_API_CREATE_CHAT(this.state.chatName, this.state.invitedPeople)
+            .then(() => store.dispatch(toggleCreateChatCard(false)))
+            .catch((error) => console.log(error));
     }
 
     handleRemoveUser(username) {
@@ -99,20 +99,7 @@ export default class CreateChatPanel extends React.Component {
             />
         );
 
-        invitedPeople.push(
-            <PersonInGroupList
-                key={this.state.currentUser.id}
-                username={this.state.currentUser.username}
-                onRemoveUser={this.handleRemoveUser}
-                removable={false}
-            />
-        );
-
-        invitedPeople = invitedPeople.reverse();
-
-        if (!this.props.visible)
-            return null;
-        else
+        if (this.props.visible)
             return (
                 <div className="floating-card-container">
                     <div className="floating-card">
@@ -155,16 +142,18 @@ export default class CreateChatPanel extends React.Component {
                             buttons={[
                                 {
                                     label: 'Cancel',
-                                    callback: () => store.dispatch(toggleCreateChatCard(false))
+                                    onClick: () => store.dispatch(toggleCreateChatCard(false))
                                 },
                                 {
                                     label: 'Confirm',
-                                    callback: this.handleChatCreation
+                                    onClick: this.handleChatCreation
                                 }
                             ]} />
+                        <ErrorsList errorsList={this.state.errorMessage} />
                     </div>
-                    {this.state.error}
                 </div>
             );
+        else
+            return null;
     }
 }

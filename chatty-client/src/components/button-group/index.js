@@ -8,7 +8,7 @@ export default class ButtonGroup extends React.Component {
             return <div
                 key={button.label}
                 className='button-container'>
-                <Button label={button.label} onClick={button.callback} />
+                <Button label={button.label} handleClick={button.onClick} />
             </div>;
         });
         return (

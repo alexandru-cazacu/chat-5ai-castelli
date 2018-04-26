@@ -1,8 +1,8 @@
-import { messageActions } from "action-types";
+import { messageActions } from 'action-types';
 
 const initialState = {
     messagesList: [],
-    errorMessage: "",
+    errorMessage: '',
     loading: false
 };
 
@@ -14,13 +14,13 @@ export default function messageReducer(state = initialState, action) {
             loading: true
         });
     case messageActions.GET_MESSAGES_RECEIVED:
-        return Object.assign({}, state, {
+        return {...state,
             messagesList: action.payload.data,
-            loading: false,
-        });
+            loading: false
+        };
     case messageActions.GET_MESSAGES_FAILED:
         return Object.assign({}, state, {
-            errorMessage: "Check your Connection and reload the page",
+            errorMessage: 'Check your Connection and reload the page',
             loading: false
         });
     default:

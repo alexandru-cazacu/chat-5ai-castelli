@@ -13,7 +13,7 @@ export default class Message extends React.Component {
             messageTypeStyle = 'message text';
             messageTime = moment(this.props.message.timestamp).format('HH:mm');
 
-            if (this.props.message.user) {
+            if (this.props.message.user && this.props.currentUser.data) {
                 if (this.props.message.user.username === this.props.currentUser.data.username) {
                     messageTypeStyle += ' self';
                 }

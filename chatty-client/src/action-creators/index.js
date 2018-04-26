@@ -140,6 +140,8 @@ export function toggleCreateChatCard(isVisible) {
 
 export function sendMessage(message, chatId) {
     return function (dispatch) {
+        if (message.type === 'Text' && message.content.length === 0)
+            return;
         dispatch({
             type: messageActions.CREATE_MESSAGE_REQUESTED,
         });

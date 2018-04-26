@@ -35,7 +35,7 @@ public class Chat implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "chat")
-    //@JsonIgnore // Used to return only chat.
+    @JsonIgnore // Used to return only chat.
     private List<Message> messages;
 
     @OneToMany(mappedBy = "chat")

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import store from 'store';
-import { openChat, getMessages } from 'action-creators';
+import { getMessages } from 'action-creators';
 
 // Components
 import ErrorMessage from 'components/error-message';
@@ -78,7 +78,7 @@ export default class ChatsList extends Component {
 }
 
 ChatsList.propTypes = {
-    chatsList: PropTypes.array.isRequired,
-    chatsListErrorMessage: PropTypes.array.isRequired,
-    currentOpenChatID: PropTypes.number.isRequired
+    chatsList: PropTypes.array,
+    chatsListErrorMessage: PropTypes.array,
+    currentOpenChatID: PropTypes.number
 };

@@ -17,6 +17,8 @@
     cursor: pointer;
     margin-left: 8px;
     padding: 12px 24px;
+    text-decoration: none;
+    color: #888;
 }
 
 .page-header .item:hover {
@@ -29,5 +31,6 @@
     height: 16px;
     float: right;
     color: #888;
+    text-decoration: none;
     text-decoration: none;
 }

@@ -46,7 +46,7 @@ public class UserController {
 
         // Searches Users by string.
         if (username != null && username.length() >= 1) {
-            users = usersRepository.findByNameOrSurnameOrUsernameStartingWith(username, username, username);
+            users = usersRepository.findByUsernameStartingWith(username);
 
             if (users.isEmpty()) {
                 throw new ResourceNotFoundException("User", "username, name or lastname", username);

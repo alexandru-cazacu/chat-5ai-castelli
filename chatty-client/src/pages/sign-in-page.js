@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { signIn } from 'action-creators';
 import { connect } from 'react-redux';
 
 // Components
@@ -26,9 +25,9 @@ class SignInPage extends React.Component {
             <div>
                 <PageSpinner visible={this.props.loading} />
                 <PageHeader items={[
-                    <Link to="/" className="text">Home</Link>,
-                    <Link to="/sign-in" className="text">Sign In</Link>,
-                    <Link to="/sign-up" className="text">Sign Up</Link>
+                    <Link to="/" className="item">Home</Link>,
+                    <Link to="/sign-in" className="item">Sign In</Link>,
+                    <Link to="/sign-up" className="item">Sign Up</Link>
                 ]} />
 
                 <SignInForm loading={this.props.loading} errorsList={this.props.errorsList} />

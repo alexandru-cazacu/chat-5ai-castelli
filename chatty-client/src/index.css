@@ -55,6 +55,10 @@ html,
     text-decoration: line-through;
 }
 
+.space {
+    height: 16px;
+}
+
 .flex-filler { flex: 1 }
 .flex-filler-2 { flex: 2 }
 .flex-filler-3 { flex: 3 }

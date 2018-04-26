@@ -99,7 +99,8 @@ public class ChatController {
      * @return
      */
     @GetMapping("/users/chats")
-    public List<Chat> getUserChats(HttpServletRequest request) {
+    public List<Chat> getUserChats(HttpServletRequest request
+    ) {
         String token = request.getHeader("Authorization");
 
         JwtUtil jwtUtil = new JwtUtil();
@@ -125,7 +126,8 @@ public class ChatController {
      * @return
      */
     @GetMapping("/chats/{id}")
-    public Chat getChat(@PathVariable("id") int id) {
+    public Chat getChat(@PathVariable("id") int id
+    ) {
 
         Optional<Chat> chat = chatsRepository.findById(id);
 

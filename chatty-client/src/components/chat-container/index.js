@@ -53,34 +53,46 @@ export default class ChatContainer extends Component {
     }
 
     render() {
-        var messages = this.props.messagesList;
-
-        if (this.props.currentOpenChatID) {
-            var prevDate = moment('', 'YYYY-MM-DD');
-            for (var i = 0; i < messages.length; i++) {
-                var currDate = moment(messages[i].timestamp, 'YYYY-MM-DD');
-                var diffDays = currDate.diff(prevDate, 'days');
-
-                if (diffDays !== 0) {
-                    messages.splice(i, 0, {
-                        content: currDate.format('DD MMM'),
-                        type: 'System',
-                    });
-                    i++;
-                }
-
-                prevDate = currDate;
+        // var messages = this.props.messagesList;
+        var messages = JSON.parse(JSON.stringify(this.props.messagesList));
+        var prevDate = moment('', 'YYYY-MM-DD');
+        var i = 0;
+        messages.forEach((message) => {
+            var currentDate = moment(message.timestamp, 'YYYY-MM-DD');
+            var differenceInDays = currentDate.diff(prevDate, 'days');
+            var differenceInMonths = currentDate.diff(prevDate, 'months');
+            if (differenceInDays !== 0 && differenceInMonths !== 0) {
+                messages.splice(i, 0, {
+                    content: currentDate.format('DD MMM YYYY'),
+                    type: 'System',
+                });
             }
-        }
+            i++;
+            prevDate = currentDate;
+        });
+        var currentOpenChatName = '';
+        var usersInChat = '';
+
+        // Gets chat title and users list to display in header.
+        this.props.chatsList.forEach((chat) => {
+            if (chat.id === this.props.currentOpenChatId) {
+                currentOpenChatName = chat.name;
+                chat.chatUsers.forEach((userUser) => {
+                    usersInChat += userUser.user.username + ', ';
+                });
+            }
+        });
+        usersInChat = usersInChat.slice(0, -2);
 
         if (this.props.currentOpenChatId)
             return (
                 <div className="chat-container">
                     <div className="chat-container-header">
-                        <h3 className="title">{this.props.currentOpenChatId}</h3>
+                        <p className="chat-title">{currentOpenChatName}</p>
+                        <p className="users-list">{usersInChat}</p>
                     </div>
                     <MessagesList
-                        messages={this.props.messagesList}
+                        messages={messages}
                         currentUser={this.props.currentUser}
                     />
                     <div className="input-area">
@@ -101,7 +113,7 @@ export default class ChatContainer extends Component {
 }
 
 ChatContainer.propTypes = {
-    currentOpenChatId: PropTypes.object,
+    currentOpenChatId: PropTypes.number,
     messagesList: PropTypes.array,
     chatsList: PropTypes.array,
     currentUser: PropTypes.object,
