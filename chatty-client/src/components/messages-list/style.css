@@ -1,18 +1,7 @@
-.messages-list {
-    overflow: hidden;
-    height: 100%;
-    position: relative;
-}
-
-.message-area-container {
+.messages-list-container {
     position: absolute;
     top: 64px;
     right: 0;
-    bottom: 0;
+    bottom: 64px;
     left: 0;
-}
-
-.messages-list .header.chat {
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 0 0;
 }

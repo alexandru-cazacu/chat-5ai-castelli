@@ -34,9 +34,6 @@ public class SignUpController {
             if (usersRepository.findByUsername(user.getUsername()) != null) {
                 throw new UsernameException(user.getUsername());
             }
-            if (usersRepository.findByMail(user.getMail()) != null) {
-                throw new MailException(user.getMail());
-            }
         }
         return usersRepository.save(user);
     }

@@ -29,24 +29,6 @@ public class UserController {
 
     @Autowired
     private UsersRepository usersRepository;
-
-
-    /*@PostMapping(value = "/users")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
-
-        try {
-            usersRepository.save(user);
-        }
-        catch (DataIntegrityViolationException e) {
-            throw new UsernameException(user.getUsername());
-        }
-
-        return ResponseEntity.ok().build();
-    }*/
     
     /**
      * Retrieve Users.
@@ -128,11 +110,6 @@ public class UserController {
             throw new ResourceNotFoundException("User", "username", userName);
         }
 
-        user.setName(userDetails.getName());
-        user.setSurname(userDetails.getSurname());
-        user.setBirthday(userDetails.getBirthday());
-        user.setMail(userDetails.getMail());
-        user.setSex(userDetails.getSex());
         try {
             user.setUsername(userDetails.getUsername());
         }

@@ -13,5 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface MessagesRepository extends JpaRepository<Message, Integer> {
 
     public List<Message> findByChatUid(String uid);
+
     public List<Message> findByChatId(int id);
 }

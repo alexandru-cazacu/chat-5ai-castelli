@@ -5,6 +5,14 @@
     grid-area: chatslist;
 }
 
+.chats-list {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
 .chats-list-search {
     padding: 12px 8px;
     position: relative;

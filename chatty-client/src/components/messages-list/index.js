@@ -26,9 +26,10 @@ export default class MessagesList extends React.Component {
         });
 
         return (
-            <div className="message-area-container">
-                <CustomScroll heightRelativeToParent="calc(100% - 56px)" keepAtBottom={true}>
-                    <div className="message-area">
+            <div className="messages-list-container">
+                {/* <CustomScroll heightRelativeToParent="calc(100% - 64px)" keepAtBottom={true}> */}
+                <CustomScroll heightRelativeToParent="calc(100%)" keepAtBottom={true}>
+                    <div className="messages-list">
                         {messages}
                         <ErrorMessage
                             show={this.props.messages.length === 0}

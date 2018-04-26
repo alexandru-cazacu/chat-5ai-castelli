@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsersRepository extends JpaRepository<User, Integer> {
 
-    public List<User> findByNameOrSurnameOrUsernameStartingWith(String name, String surname, String username);
+    public List<User> findByUsernameStartingWith(String username);
 
     public User findByUsername(String username);
-
-    public User findByMail(String mail);
 }

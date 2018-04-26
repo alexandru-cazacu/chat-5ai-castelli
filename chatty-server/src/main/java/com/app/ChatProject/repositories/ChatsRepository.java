@@ -14,5 +14,4 @@ import org.springframework.stereotype.Repository;
 public interface ChatsRepository extends JpaRepository<Chat, Integer> {
 
     public Chat findByUid(String uid);
-
 }

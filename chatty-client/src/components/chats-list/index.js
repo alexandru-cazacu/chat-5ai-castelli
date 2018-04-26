@@ -63,12 +63,15 @@ export default class ChatsList extends Component {
                 <div className="chats-list-search">
                     <InputField placeholder='Search...' handleChange={this.handleChatSearch} />
                 </div>
-                <CustomScroll heightRelativeToParent="calc(100% - 64px)">
-                    <div>
-                        <ErrorMessage message={this.props.chatsListErrorMessage} />
-                        {chatList}
-                    </div>
-                </CustomScroll>
+                {/* <CustomScroll heightRelativeToParent="calc(100% - 64px)"> */}
+                <div className="chats-list">
+                    <CustomScroll heightRelativeToParent="calc(100%)">
+                        <div>
+                            {chatList}
+                            <ErrorMessage message={this.props.chatsListErrorMessage} />
+                        </div>
+                    </CustomScroll>
+                </div>
             </div>
         );
     }

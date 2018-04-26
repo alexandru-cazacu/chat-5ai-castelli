@@ -32,22 +32,6 @@ public class User implements Serializable {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "birthday")
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
-
-    @Column(name = "sex")
-    private String sex;
-
-    @Column(name = "mail")
-    private String mail;
-
     @Column(name = "username")
     private String username;
 
@@ -74,13 +58,8 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String name, String surname, Date birthday, String sex, String mail, String username, String password, Date lastSeen, List<Message> messages, List<ChatUser> chatUsers) {
+    public User(Integer id, String username, String password, Date lastSeen, List<Message> messages, List<ChatUser> chatUsers) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.mail = mail;
         this.username = username;
         this.password = password;
         this.lastSeen = lastSeen;
@@ -94,46 +73,6 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getUsername() {

@@ -77,11 +77,12 @@ export default class ChatContainer extends Component {
             return (
                 <div className="chat-container">
                     <div className="chat-container-header">
-                        <div className="title">{this.props.currentOpenChatId}</div>
+                        <h3 className="title">{this.props.currentOpenChatId}</h3>
                     </div>
                     <MessagesList
                         messages={this.props.messagesList}
-                        currentUser={this.props.currentUser} />
+                        currentUser={this.props.currentUser}
+                    />
                     <div className="input-area">
                         <InputField
                             placeholder='Type a message...'

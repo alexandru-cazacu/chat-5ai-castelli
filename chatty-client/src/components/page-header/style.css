@@ -3,6 +3,7 @@
     grid-area: header;
     align-items: center;
     display: flex;
+    padding: 12px;
 }
 
 .page-header .page-header-title {
